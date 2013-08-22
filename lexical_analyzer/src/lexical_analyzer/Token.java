@@ -9,8 +9,14 @@ package lexical_analyzer;
  */
 public class Token {
     private String lexeme, token;
-    private int line;
+    private int lineNumber;
 
+    public Token(String token, String lexeme, int lineNumber){
+        this.token = token;
+        this.lexeme = lexeme;
+        this.lineNumber = lineNumber;
+    }
+    
     public String getLexeme() {
         return lexeme;
     }
@@ -28,11 +34,11 @@ public class Token {
     }
 
     public int getLine() {
-        return line;
+        return lineNumber;
     }
 
     public void setLine(int n) {
-        line = n;
+        lineNumber = n;
     }
     
     /**
@@ -43,7 +49,7 @@ public class Token {
      */
     @Override
     public String toString() {
-        return "["+line+"]"+" "+token+" "+" "+lexeme+" ";
+        return "["+lineNumber+"]"+" "+token+" "+" "+lexeme+" ";
     }
     
     
