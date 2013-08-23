@@ -16,18 +16,18 @@ import java.util.logging.Logger;
 
 public class Reader {
     
-    private String filepath;
+    private String filePath;
     private File file;
     private BufferedReader buffer;
     
     public Reader (String path) {    
-        filepath = path;
+        filePath = path;
         open();
     }
     
     private void open () {
         try {
-            file = new File(filepath);
+            file = new File(filePath);
             buffer = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
@@ -42,18 +42,19 @@ public class Reader {
         }
     }
     
-    public int getChar () {
-        int readchar = 0;
+    public char getChar () {
+        char readChar = 0;
         try {                        
-            readchar = buffer.read();
-            
-            if (readchar <= 0) {
+            readChar = (char) buffer.read();
+                        
+            if (readChar == '\uFFFF') { // eof
                 close();
+                readChar = 0;
             }
         } catch (IOException ex) {
             Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
             close();
         }
-        return readchar;
+        return readChar;
     }
 }

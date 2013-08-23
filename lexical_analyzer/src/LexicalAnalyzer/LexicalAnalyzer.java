@@ -1,13 +1,14 @@
 package LexicalAnalyzer;
 
 import java.util.HashSet;
-import LexicalAnalyzer.Reader;
 
 /**
- *
+ * Analizador léxico. Clase encargada de la tokenización del código fuente.
  * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
  */
+
+
 public class LexicalAnalyzer {
     private StringBuilder code;
     private String buffer;
@@ -117,8 +118,8 @@ public class LexicalAnalyzer {
                                 return new Token(".", ".", lineNumber);
                             case '%':
                                 return new Token("%", "%", lineNumber);
-                            case '\0':
-                                return new Token("EOF", "\0", lineNumber);
+                            case '\uFFFF':
+                                return new Token("EOF", "\uFFFF", lineNumber);
                             default:
                                 throw new LexicalException("Line: " + lineNumber + "Unsupported char.");
                         }
@@ -143,7 +144,7 @@ public class LexicalAnalyzer {
                 case 2:
                     if (Character.isDigit(currentChar)) {
                         if (flagZero) {
-                            throw new LexicalException("Line: " + lineNumber + "Wrong number format. Integer starts with 0.");
+                            throw new LexicalException("Line: " + lineNumber + "Wrong number format. Integers start with 0.");
                         } else {
                             lexeme.append(currentChar);
                         }
@@ -152,7 +153,7 @@ public class LexicalAnalyzer {
                     }
                     break;
                 case 3:
-                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\0' && currentChar != '\n') {
+                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\uFFFF' && currentChar != '\n') {
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
@@ -163,8 +164,98 @@ public class LexicalAnalyzer {
                     } else if (currentChar == '\'') {
                         throw new LexicalException("Line: " + lineNumber + "Empty char.");
                     } else {
-                        // ACA CORTASTE WACHO
+                        throw new LexicalException("Line: " + lineNumber + "Wrong formed char.");
                     }
+                case 31:
+                    if (currentChar == '\'') {
+                        lexeme.append(currentChar);
+                        String lexemeString = lexeme.toString();
+                        return new Token("char", lexemeString, lineNumber);
+                    } else {
+                        throw new LexicalException("Line: " + lineNumber + "Wrong formed char.");
+                    }
+                case 32:
+                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\uFFFF' && currentChar != '\n') {
+                        lexeme.append(currentChar);
+                        currentState = 31;
+                        break;
+                    } else {
+                        throw new LexicalException("Line: " + lineNumber + "Wrong formed char.");
+                    }
+                case 4:
+                    if (currentChar != '\n' && currentChar != '"') {
+                        lexeme.append(currentChar);
+                        currentState = 41;
+                        break;
+                    } else if (currentChar == '"') {
+                        lexeme.append(currentChar);
+                        String lexemeString = lexeme.toString();
+                        return new Token("String", lexemeString, lineNumber);
+                    } else {
+                        throw new LexicalException("Line: " + lineNumber + "Wrong formed String.");   
+                    }
+                case 41:
+                    if (currentChar != '\n' && currentChar != '"') {
+                        lexeme.append(currentChar);
+                        break;
+                    } else if (currentChar == '"') {
+                        lexeme.append(currentChar);
+                        String lexemeString = lexeme.toString();
+                        return new Token("String", lexemeString, lineNumber);
+                    } else {
+                        throw new LexicalException("Line: " + lineNumber + "Wrong formed String.");   
+                    }
+                case 5:
+                    if (currentChar == '=') {
+                        return new Token(">=", ">=", lineNumber);
+                    } else {
+                        bufferPointer--;
+                        return new Token(">", ">", lineNumber);
+                    }
+                case 6:
+                    if (currentChar == '=') {
+                        return new Token("<=", "<=", lineNumber);
+                    } else {
+                        bufferPointer--;
+                        return new Token("<", "<", lineNumber);
+                    }
+                case 7:
+                    if (currentChar == '=') {
+                        return new Token("==", "==", lineNumber);
+                    } else {
+                        bufferPointer--;
+                        return new Token("=", "=", lineNumber);
+                    }
+                case 8:
+                    if (currentChar == '=') {
+                        return new Token("!=", "!=", lineNumber);
+                    } else {
+                        bufferPointer--;
+                        return new Token("!", "!", lineNumber);
+                    }
+                case 9:
+                    if (currentChar == '&') {
+                        return new Token("&&", "&&", lineNumber);
+                    } else {
+                        bufferPointer--;
+                        return new Token("&", "&", lineNumber);
+                    }
+                case 10:
+                    if (currentChar == '|') {
+                        return new Token("||", "||", lineNumber);
+                    } else {
+                        bufferPointer--;
+                        return new Token("|", "|", lineNumber);
+                    }
+                case 11:
+                    if (currentChar == '/') {
+                        proccessComment(); // S11.1
+                    } else if (currentChar == '*') {
+                        processBlockComment(); // S11.2
+                    } else {
+                        bufferPointer--; 
+                        return new Token("/", "/", lineNumber);
+                    }                    
             }
         }
     }
@@ -235,5 +326,13 @@ public class LexicalAnalyzer {
         keyWord = new StringBuilder("false");
         keyWords.add(keyWord);
         */
+    }
+
+    private void proccessComment() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void processBlockComment() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
