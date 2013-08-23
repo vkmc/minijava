@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package lexical_analyzer;
+package LexicalAnalyzer;
 
 import java.util.HashSet;
+import LexicalAnalyzer.Reader;
 
 /**
  *
@@ -15,21 +12,24 @@ public class LexicalAnalyzer {
     private StringBuilder code;
     private String buffer;
     private int lineNumber;
+    private Reader reader;
     
     private int currentState;  
     private char currentChar;
     private int bufferPointer;
    
     private HashSet<String> keyWords;
+
     
-    
-    public LexicalAnalyzer() {
+    public LexicalAnalyzer(String path) {
         this.currentState = 0;
         this.lineNumber = 0;
         this.bufferPointer = 0;
         
         keyWords = new HashSet<>();
         populateKeyWords();
+        
+        reader = new Reader(path);
     }
     
     public Token getToken() throws LexicalException {
@@ -39,7 +39,7 @@ public class LexicalAnalyzer {
         this.currentState = 0;
         
         while (true) {
-            //Leo caracter
+            currentChar = (char) reader.getChar();
             switch (currentState) {
                 case 0: {
                     if (currentChar == '_' || Character.isLetter(currentChar)) {

@@ -1,4 +1,4 @@
-package lexical_analyzer;
+package LexicalAnalyzer;
 
 /**
  * Representación interna de un Token
@@ -21,24 +21,24 @@ public class Token {
         return lexeme;
     }
 
-    public void setLexeme(String l) {
-        lexeme = l;
+    public void setLexeme(String lexeme) {
+        this.lexeme = lexeme;
     }
 
     public String getToken() {
         return token;
     }
 
-    public void setToken(String t) {
-        token = t;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public int getLine() {
+    public int getLineNumber() {
         return lineNumber;
     }
 
-    public void setLine(int n) {
-        lineNumber = n;
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
     }
     
     /**

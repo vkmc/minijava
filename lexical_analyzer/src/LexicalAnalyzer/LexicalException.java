@@ -1,4 +1,4 @@
-package lexical_analyzer;
+package LexicalAnalyzer;
 
 /*
  * Excepción lanzada al ocurrir un error léxico.
