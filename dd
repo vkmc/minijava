@@ -1,0 +1,25 @@
+23:04
+VMC
+jaja
+estamos dudosos con el tipo de errores que tenemos que capturar
+porque por ejemplo, vimos que ustedes capturaron si se ingresaba una cadena del tipo hola123, lo que es un identificador mal formado o un entero mal formado... (depende de como lo mires)
+y nos parecio que el analizador deberia cortar hola123 en hola y 123
+siendo dos cadenas totalmente validas
+que luego el parser se va a encargar de decir... "me mandaste un token de identificador y ahora un numero... cualquiera!" y tira un error
+pero no es cosa del analizador lexico
+se ve la duda o la complique?
+
+23:07
+MC
+ se entiende. Pasa que ese caso se toma todo como un mismo token. Las palabras del lenguaje estan separadas por espacios o tabs....
+...y en este caso no se puede efectuar la separación sobre esa palabra. Es una sola cosa...
+
+23:08
+VMC
+esta bien
+yo estaba pensando todo mas automata
+
+23:10
+MC
+una palabra consistia en los caracteres leidos que se encontraba desde un espacio hasta otro espacio. y era como uan regla que no se podai romper.
+(espacios o tabs)
