@@ -4,43 +4,39 @@ import java.util.HashSet;
 
 /**
  * Analizador léxico. Clase encargada de la tokenización del código fuente.
+ *
  * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
  */
+public class Tokenizer {
 
-
-public class LexicalAnalyzer {
     private StringBuilder code;
     private String buffer;
     private int lineNumber;
-    private Reader reader;
-    
-    private int currentState;  
+    private InputReader reader;
+    private int currentState;
     private char currentChar;
-    private int bufferPointer;
-   
     private HashSet<String> keyWords;
 
-    
-    public LexicalAnalyzer(String path) {
+    public Tokenizer(String path) {
         this.currentState = 0;
         this.lineNumber = 0;
-        this.bufferPointer = 0;
-        
+
         keyWords = new HashSet<>();
         populateKeyWords();
-        
-        reader = new Reader(path);
+
+        reader = new InputReader(path);
     }
-    
+
     public Token getToken() throws LexicalException {
         StringBuilder lexeme = new StringBuilder();
         boolean flagZero = false;
-        
+
         this.currentState = 0;
-        
+
         while (true) {
-            currentChar = (char) reader.getChar();
+            currentChar = (char) reader.readChar();
+
             switch (currentState) {
                 case 0: {
                     if (currentChar == '_' || Character.isLetter(currentChar)) {
@@ -57,15 +53,16 @@ public class LexicalAnalyzer {
                             case ' ':
                                 break;
                             case '\n':
+                                lineNumber++;
                                 break;
                             case '\'':
-                                currentState = 31;
+                                currentState = 3;
                                 lexeme.append(currentChar);
                                 break;
                             case '"':
                                 currentState = 4;
                                 lexeme.append(currentChar);
-                                break;  
+                                break;
                             case '>':
                                 currentState = 5;
                                 lexeme.append(currentChar);
@@ -119,7 +116,7 @@ public class LexicalAnalyzer {
                             case '%':
                                 return new Token("%", "%", lineNumber);
                             case '\uFFFF':
-                                return new Token("EOF", "\uFFFF", lineNumber);
+                                return new Token("EOF", "\0", lineNumber);
                             default:
                                 throw new LexicalException("Line: " + lineNumber + "Unsupported char.");
                         }
@@ -130,9 +127,9 @@ public class LexicalAnalyzer {
                     if (Character.isLetter(currentChar) || Character.isDigit(currentChar) || currentChar == '_') {
                         lexeme.append(currentChar);
                     } else {
-                        bufferPointer--;
+                        reader.resetPointer();
                         String lexemeString = lexeme.toString();
-                        if (keyWords.contains(lexemeString)){
+                        if (keyWords.contains(lexemeString)) {
                             // Es una palabra clave.
                             return new Token(lexemeString, lexemeString, lineNumber);
                         } else {
@@ -144,16 +141,19 @@ public class LexicalAnalyzer {
                 case 2:
                     if (Character.isDigit(currentChar)) {
                         if (flagZero) {
-                            throw new LexicalException("Line: " + lineNumber + "Wrong number format. Integers start with 0.");
+                            throw new LexicalException("Line: " + lineNumber + "Wrong number format. A number cannot start with 0.");
+                        } else if (Character.isLetter(currentChar) || notExpectedCharNumber(currentChar)) {
+                            throw new LexicalException("Line: " + lineNumber + "Wrong number format.");
                         } else {
                             lexeme.append(currentChar);
                         }
                     } else {
+                        reader.resetPointer();
                         return new Token("intLiteral", lexeme.toString(), lineNumber);
                     }
                     break;
                 case 3:
-                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\uFFFF' && currentChar != '\n') {
+                    if (currentChar != '\\' && currentChar != '\'' && !isEOF(currentChar) && currentChar != '\n') {
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
@@ -175,7 +175,7 @@ public class LexicalAnalyzer {
                         throw new LexicalException("Line: " + lineNumber + "Wrong formed char.");
                     }
                 case 32:
-                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\uFFFF' && currentChar != '\n') {
+                    if (currentChar != '\\' && currentChar != '\'' && isEOF(currentChar) && currentChar != '\n') {
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
@@ -192,7 +192,7 @@ public class LexicalAnalyzer {
                         String lexemeString = lexeme.toString();
                         return new Token("String", lexemeString, lineNumber);
                     } else {
-                        throw new LexicalException("Line: " + lineNumber + "Wrong formed String.");   
+                        throw new LexicalException("Line: " + lineNumber + "Wrong formed String.");
                     }
                 case 41:
                     if (currentChar != '\n' && currentChar != '"') {
@@ -203,59 +203,63 @@ public class LexicalAnalyzer {
                         String lexemeString = lexeme.toString();
                         return new Token("String", lexemeString, lineNumber);
                     } else {
-                        throw new LexicalException("Line: " + lineNumber + "Wrong formed String.");   
+                        throw new LexicalException("Line: " + lineNumber + "Wrong formed String.");
                     }
                 case 5:
                     if (currentChar == '=') {
                         return new Token(">=", ">=", lineNumber);
                     } else {
-                        bufferPointer--;
+                        reader.resetPointer();
                         return new Token(">", ">", lineNumber);
                     }
                 case 6:
                     if (currentChar == '=') {
                         return new Token("<=", "<=", lineNumber);
                     } else {
-                        bufferPointer--;
+                        reader.resetPointer();
                         return new Token("<", "<", lineNumber);
                     }
                 case 7:
                     if (currentChar == '=') {
                         return new Token("==", "==", lineNumber);
                     } else {
-                        bufferPointer--;
+                        reader.resetPointer();
                         return new Token("=", "=", lineNumber);
                     }
                 case 8:
                     if (currentChar == '=') {
                         return new Token("!=", "!=", lineNumber);
                     } else {
-                        bufferPointer--;
+                        reader.resetPointer();
                         return new Token("!", "!", lineNumber);
                     }
                 case 9:
                     if (currentChar == '&') {
                         return new Token("&&", "&&", lineNumber);
                     } else {
-                        bufferPointer--;
+                        reader.resetPointer();
                         return new Token("&", "&", lineNumber);
                     }
                 case 10:
                     if (currentChar == '|') {
                         return new Token("||", "||", lineNumber);
                     } else {
-                        bufferPointer--;
+                        reader.resetPointer();
                         return new Token("|", "|", lineNumber);
                     }
                 case 11:
                     if (currentChar == '/') {
                         proccessComment(); // S11.1
+                        currentState = 0;
+                        break;
                     } else if (currentChar == '*') {
                         processBlockComment(); // S11.2
+                        currentState = 0;
+                        break;
                     } else {
-                        bufferPointer--; 
+                        reader.resetPointer();
                         return new Token("/", "/", lineNumber);
-                    }                    
+                    }
             }
         }
     }
@@ -281,58 +285,87 @@ public class LexicalAnalyzer {
         keyWords.add("null");
         keyWords.add("true");
         keyWords.add("false");
-        
+
         /*
          * 
-        StringBuilder keyWord;
-        keyWord = new StringBuilder("class");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("extends");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("var");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("static");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("dynamic");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("void");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("boolean");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("char");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("int");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("String");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("if");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("else");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("while");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("for");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("return");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("this");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("new");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("null");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("true");
-        keyWords.add(keyWord);
-        keyWord = new StringBuilder("false");
-        keyWords.add(keyWord);
-        */
+         StringBuilder keyWord;
+         keyWord = new StringBuilder("class");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("extends");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("var");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("static");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("dynamic");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("void");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("boolean");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("char");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("int");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("String");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("if");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("else");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("while");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("for");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("return");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("this");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("new");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("null");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("true");
+         keyWords.add(keyWord);
+         keyWord = new StringBuilder("false");
+         keyWords.add(keyWord);
+         */
     }
 
     private void proccessComment() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        currentChar = (char) reader.readChar();
+
+        while (currentChar != '\n') {
+            currentChar = (char) reader.readChar();
+        }
     }
 
     private void processBlockComment() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean closeBlockComment = false;
+        char nextChar;
+        currentChar = (char) reader.readChar();
+
+        nextChar = (char) reader.readChar();
+
+        while (!closeBlockComment) {
+            if (currentChar == '*' && nextChar == '/') {
+                closeBlockComment = true;
+            }
+
+            currentChar = nextChar;
+            nextChar = (char) reader.readChar();
+        }
+    }
+
+    private boolean isEOF(char c) {
+        return (c == '\uFFFF');
+    }
+
+    private boolean notExpectedCharNumber(char currentChar) {
+        if (currentChar != ' ' || currentChar != '+' || currentChar != '-' || currentChar != '/' || currentChar != '*' || currentChar != '%') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

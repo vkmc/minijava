@@ -8,9 +8,8 @@ package LexicalAnalyzer;
  * @author Victoria Martínez de la Cruz
  */
 public class LexicalException extends Exception {
-    
+
     public LexicalException(String e) {
         super(e);
     }
-    
 }
