@@ -356,7 +356,7 @@ public class Tokenizer {
     /*
      * Procesamiento de los bloques de comentarios
      */
-    private void processBlockComment() {
+    private void processBlockComment() throws LexicalException {
         boolean closeBlockComment = false;
         char nextChar;
         currentChar = (char) reader.readChar();
@@ -370,6 +370,10 @@ public class Tokenizer {
 
             currentChar = nextChar;
             nextChar = (char) reader.readChar();
+        }
+        
+        if (nextChar == '\0') {
+            throw new LexicalException("Block comment not closed and reached EOF.");
         }
     }
 
