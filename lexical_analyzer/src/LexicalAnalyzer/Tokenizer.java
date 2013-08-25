@@ -28,6 +28,11 @@ public class Tokenizer {
         reader = new InputReader(path);
     }
 
+    /*
+     * Tokenización
+     * 
+     * @returns Token encontrado
+     */
     public Token getToken() throws LexicalException {
         StringBuilder lexeme = new StringBuilder();
         boolean flagZero = false;
@@ -88,11 +93,9 @@ public class Tokenizer {
                                 lexeme.append(currentChar);
                                 break;
                             case '*':
-                                currentState = 11;
-                                lexeme.append(currentChar);
-                                break;
+                                return new Token("*", "*", lineNumber);
                             case '/':
-                                currentState = 12;
+                                currentState = 11;
                                 lexeme.append(currentChar);
                                 break;
                             case '+':
@@ -115,10 +118,10 @@ public class Tokenizer {
                                 return new Token(".", ".", lineNumber);
                             case '%':
                                 return new Token("%", "%", lineNumber);
-                            case '\uFFFF':
+                            case '\0':
                                 return new Token("EOF", "\0", lineNumber);
                             default:
-                                throw new LexicalException("Line: " + lineNumber + "Unsupported char.");
+                                throw new LexicalException("Line: " + lineNumber + " - Unsupported char.");
                         }
                     }
                     break;
@@ -141,9 +144,9 @@ public class Tokenizer {
                 case 2:
                     if (Character.isDigit(currentChar)) {
                         if (flagZero) {
-                            throw new LexicalException("Line: " + lineNumber + "Wrong number format. A number cannot start with 0.");
+                            throw new LexicalException("Line: " + lineNumber + " - Wrong number format. A number cannot start with 0.");
                         } else if (Character.isLetter(currentChar) || notExpectedCharNumber(currentChar)) {
-                            throw new LexicalException("Line: " + lineNumber + "Wrong number format.");
+                            throw new LexicalException("Line: " + lineNumber + " - Wrong number format.");
                         } else {
                             lexeme.append(currentChar);
                         }
@@ -153,7 +156,7 @@ public class Tokenizer {
                     }
                     break;
                 case 3:
-                    if (currentChar != '\\' && currentChar != '\'' && !isEOF(currentChar) && currentChar != '\n') {
+                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\0' && currentChar != '\n') {
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
@@ -162,9 +165,9 @@ public class Tokenizer {
                         currentState = 32;
                         break;
                     } else if (currentChar == '\'') {
-                        throw new LexicalException("Line: " + lineNumber + "Empty char.");
+                        throw new LexicalException("Line: " + lineNumber + " - Empty char.");
                     } else {
-                        throw new LexicalException("Line: " + lineNumber + "Wrong formed char.");
+                        throw new LexicalException("Line: " + lineNumber + " - Wrong formed char.");
                     }
                 case 31:
                     if (currentChar == '\'') {
@@ -172,15 +175,15 @@ public class Tokenizer {
                         String lexemeString = lexeme.toString();
                         return new Token("char", lexemeString, lineNumber);
                     } else {
-                        throw new LexicalException("Line: " + lineNumber + "Wrong formed char.");
+                        throw new LexicalException("Line: " + lineNumber + " - Wrong formed char.");
                     }
                 case 32:
-                    if (currentChar != '\\' && currentChar != '\'' && isEOF(currentChar) && currentChar != '\n') {
+                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\0' && currentChar != '\n') {
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
                     } else {
-                        throw new LexicalException("Line: " + lineNumber + "Wrong formed char.");
+                        throw new LexicalException("Line: " + lineNumber + " - Wrong formed char.");
                     }
                 case 4:
                     if (currentChar != '\n' && currentChar != '"') {
@@ -192,7 +195,7 @@ public class Tokenizer {
                         String lexemeString = lexeme.toString();
                         return new Token("String", lexemeString, lineNumber);
                     } else {
-                        throw new LexicalException("Line: " + lineNumber + "Wrong formed String.");
+                        throw new LexicalException("Line: " + lineNumber + " - Wrong formed String.");
                     }
                 case 41:
                     if (currentChar != '\n' && currentChar != '"') {
@@ -203,7 +206,7 @@ public class Tokenizer {
                         String lexemeString = lexeme.toString();
                         return new Token("String", lexemeString, lineNumber);
                     } else {
-                        throw new LexicalException("Line: " + lineNumber + "Wrong formed String.");
+                        throw new LexicalException("Line: " + lineNumber + " - Wrong formed String.");
                     }
                 case 5:
                     if (currentChar == '=') {
@@ -251,10 +254,12 @@ public class Tokenizer {
                     if (currentChar == '/') {
                         proccessComment(); // S11.1
                         currentState = 0;
+                        lexeme = new StringBuilder();
                         break;
                     } else if (currentChar == '*') {
                         processBlockComment(); // S11.2
                         currentState = 0;
+                        lexeme = new StringBuilder();
                         break;
                     } else {
                         reader.resetPointer();
@@ -264,6 +269,9 @@ public class Tokenizer {
         }
     }
 
+    /*
+     * Palabras reservadas de MiniJava
+     */
     private void populateKeyWords() {
         keyWords.add("class");
         keyWords.add("extends");
@@ -332,6 +340,9 @@ public class Tokenizer {
          */
     }
 
+    /*
+     * Procesamiento de las líneas de comentario
+     */
     private void proccessComment() {
         currentChar = (char) reader.readChar();
 
@@ -340,6 +351,9 @@ public class Tokenizer {
         }
     }
 
+    /*
+     * Procesamiento de los bloques de comentarios
+     */
     private void processBlockComment() {
         boolean closeBlockComment = false;
         char nextChar;
@@ -347,7 +361,7 @@ public class Tokenizer {
 
         nextChar = (char) reader.readChar();
 
-        while (!closeBlockComment) {
+        while (!closeBlockComment && nextChar != '\0') {
             if (currentChar == '*' && nextChar == '/') {
                 closeBlockComment = true;
             }
@@ -357,15 +371,19 @@ public class Tokenizer {
         }
     }
 
-    private boolean isEOF(char c) {
-        return (c == '\uFFFF');
-    }
-
+    /*
+     * Verificación de número bien formado.
+     * Para facilitar la descripción de errores en futuras etapas se previene
+     * la aparición de combinaciones sintácticamente imposibles (e.g. 123hola)
+     * en esta etapa.
+     * 
+     * @returns true si el caracter encontrado determina un número mal formado, false en caso contrario
+     */
     private boolean notExpectedCharNumber(char currentChar) {
-        if (currentChar != ' ' || currentChar != '+' || currentChar != '-' || currentChar != '/' || currentChar != '*' || currentChar != '%') {
-            return true;
-        } else {
+        if (Character.isDigit(currentChar) || currentChar == ' ' || currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == '%') {
             return false;
+        } else {
+            return true;
         }
     }
 }
