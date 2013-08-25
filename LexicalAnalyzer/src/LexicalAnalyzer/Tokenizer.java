@@ -132,7 +132,7 @@ public class Tokenizer {
                     if (Character.isLetter(currentChar) || Character.isDigit(currentChar) || currentChar == '_') {
                         lexeme.append(currentChar);
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         String lexemeString = lexeme.toString();
                         if (keyWords.contains(lexemeString)) {
                             // Es una palabra clave.
@@ -153,7 +153,7 @@ public class Tokenizer {
                             lexeme.append(currentChar);
                         }
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         return new Token("intLiteral", lexeme.toString(), lineNumber);
                     }
                     break;
@@ -214,42 +214,42 @@ public class Tokenizer {
                     if (currentChar == '=') {
                         return new Token(">=", ">=", lineNumber);
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         return new Token(">", ">", lineNumber);
                     }
                 case 6:
                     if (currentChar == '=') {
                         return new Token("<=", "<=", lineNumber);
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         return new Token("<", "<", lineNumber);
                     }
                 case 7:
                     if (currentChar == '=') {
                         return new Token("==", "==", lineNumber);
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         return new Token("=", "=", lineNumber);
                     }
                 case 8:
                     if (currentChar == '=') {
                         return new Token("!=", "!=", lineNumber);
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         return new Token("!", "!", lineNumber);
                     }
                 case 9:
                     if (currentChar == '&') {
                         return new Token("&&", "&&", lineNumber);
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         return new Token("&", "&", lineNumber);
                     }
                 case 10:
                     if (currentChar == '|') {
                         return new Token("||", "||", lineNumber);
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         return new Token("|", "|", lineNumber);
                     }
                 case 11:
@@ -264,7 +264,7 @@ public class Tokenizer {
                         lexeme = new StringBuilder();
                         break;
                     } else {
-                        reader.resetPointer();
+                        reader.resetMark();
                         return new Token("/", "/", lineNumber);
                     }
             }
@@ -375,7 +375,7 @@ public class Tokenizer {
         if (nextChar == '\0') {
             throw new LexicalException("Block comment not closed and reached EOF.");
         } else {
-            reader.resetPointer(); // requerido para casos en el que el siguiente lexema se encuentra inmediatamente
+            reader.resetMark(); // requerido para casos en el que el siguiente lexema se encuentra inmediatamente
         }
     }
 

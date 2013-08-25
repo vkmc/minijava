@@ -23,7 +23,7 @@ public class InputReader {
     private InputStreamReader reader;
     private BufferedReader buffer;
     private InputStream in;
-    private int pointer, currentLineNumber;
+    private int mark;
 
     public InputReader(String filename) {
         this.filename = filename;
@@ -40,9 +40,7 @@ public class InputReader {
             in = new FileInputStream(file);
             reader = new InputStreamReader(in);
             buffer = new BufferedReader(reader);
-
             currentLine = buffer.readLine();
-            currentLineNumber = 0;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -79,13 +77,13 @@ public class InputReader {
             if (currentLine == null) {
                 c = '\0'; // null byte - EOF
                 close();
-            } else if (pointer >= currentLine.length()) { // /n
+            } else if (mark >= currentLine.length()) { // /n
                 currentLine = buffer.readLine();
                 c = '\n';
-                pointer = 0;
+                mark = 0;
             } else {
-                c = currentLine.charAt(pointer);
-                pointer++;
+                c = currentLine.charAt(mark);
+                mark++;
             }
 
         } catch (IOException ex) {
@@ -98,14 +96,14 @@ public class InputReader {
     /*
      * Retorna el valor actual del marcador
      */
-    public int getPointer() {
-        return pointer;
+    public int getMark() {
+        return mark;
     }
 
     /*
      * Vuelve el marcador una posición hacia atrás
      */
-    public void resetPointer() {
-        pointer--;
+    public void resetMark() {
+        mark--;
     }
 }

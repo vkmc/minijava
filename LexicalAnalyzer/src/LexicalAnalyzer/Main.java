@@ -13,8 +13,7 @@ import java.util.logging.Logger;
 public class Main {
 
     public static void main(String[] args) {
-        
-        //
+
         //if (args.length == 1) {
         Tokenizer t = new Tokenizer("/home/vkmc/program");
         LinkedList tokenList = createTokenList(t);
@@ -26,9 +25,9 @@ public class Main {
 
     }
 
-    private static LinkedList createTokenList(Tokenizer tokenizer) {
+    private static LinkedList<Token> createTokenList(Tokenizer tokenizer) {
         Token token;
-        LinkedList tokenList = new LinkedList();
+        LinkedList<Token> tokenList = new LinkedList();
         try {
             do {
                 token = tokenizer.getToken();
