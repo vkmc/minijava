@@ -57,6 +57,8 @@ public class Tokenizer {
                         switch (currentChar) {
                             case ' ':
                                 break;
+                            case '\t':
+                                break;
                             case '\n':
                                 lineNumber++;
                                 break;

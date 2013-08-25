@@ -1,21 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package LexicalAnalyzer;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * CLI para el analizador léxico.
  *
- * @author vkmc
+ * @author Ramiro Agís
+ * @author Victoria Martínez de la Cruz
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         Tokenizer t = new Tokenizer("/home/vkmc/program");
 
@@ -24,7 +19,7 @@ public class Main {
     }
 
     private static void printTokens(Tokenizer tokenizer) {
-        Token token = null;
+        Token token;
 
         try {
             do {
