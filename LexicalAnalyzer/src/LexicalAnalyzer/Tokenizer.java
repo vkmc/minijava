@@ -10,22 +10,19 @@ import java.util.HashSet;
  */
 public class Tokenizer {
 
-    private StringBuilder code;
-    private String buffer;
-    private int lineNumber;
-    private InputReader reader;
-    private int currentState;
+    private int lineNumber, currentState;
     private char currentChar;
-    private HashSet<String> keyWords;
+    private InputReader reader;
+    private HashSet<String> keywords;
 
-    public Tokenizer(String path) {
+    public Tokenizer(String filename) {
         this.currentState = 0;
         this.lineNumber = 0;
 
-        keyWords = new HashSet<>();
-        populateKeyWords();
+        keywords = new HashSet<>();
+        populateKeywords();
 
-        reader = new InputReader(path);
+        reader = new InputReader(filename);
     }
 
     /*
@@ -134,7 +131,7 @@ public class Tokenizer {
                     } else {
                         reader.resetMark();
                         String lexemeString = lexeme.toString();
-                        if (keyWords.contains(lexemeString)) {
+                        if (keywords.contains(lexemeString)) {
                             // Es una palabra clave.
                             return new Token(lexemeString, lexemeString, lineNumber);
                         } else {
@@ -274,71 +271,71 @@ public class Tokenizer {
     /*
      * Palabras reservadas de MiniJava
      */
-    private void populateKeyWords() {
-        keyWords.add("class");
-        keyWords.add("extends");
-        keyWords.add("var");
-        keyWords.add("static");
-        keyWords.add("dynamic");
-        keyWords.add("void");
-        keyWords.add("boolean");
-        keyWords.add("char");
-        keyWords.add("int");
-        keyWords.add("String");
-        keyWords.add("if");
-        keyWords.add("else");
-        keyWords.add("while");
-        keyWords.add("for");
-        keyWords.add("return");
-        keyWords.add("this");
-        keyWords.add("new");
-        keyWords.add("null");
-        keyWords.add("true");
-        keyWords.add("false");
+    private void populateKeywords() {
+        keywords.add("class");
+        keywords.add("extends");
+        keywords.add("var");
+        keywords.add("static");
+        keywords.add("dynamic");
+        keywords.add("void");
+        keywords.add("boolean");
+        keywords.add("char");
+        keywords.add("int");
+        keywords.add("String");
+        keywords.add("if");
+        keywords.add("else");
+        keywords.add("while");
+        keywords.add("for");
+        keywords.add("return");
+        keywords.add("this");
+        keywords.add("new");
+        keywords.add("null");
+        keywords.add("true");
+        keywords.add("false");
 
         /*
          * 
-         StringBuilder keyWord;
-         keyWord = new StringBuilder("class");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("extends");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("var");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("static");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("dynamic");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("void");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("boolean");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("char");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("int");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("String");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("if");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("else");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("while");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("for");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("return");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("this");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("new");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("null");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("true");
-         keyWords.add(keyWord);
-         keyWord = new StringBuilder("false");
-         keyWords.add(keyWord);
+         StringBuilder keyword;
+         keyword = new StringBuilder("class");
+         keywords.add(keyword);
+         keyword = new StringBuilder("extends");
+         keywords.add(keyword);
+         keyword = new StringBuilder("var");
+         keywords.add(keyword);
+         keyword = new StringBuilder("static");
+         keywords.add(keyword);
+         keyword = new StringBuilder("dynamic");
+         keywords.add(keyword);
+         keyword = new StringBuilder("void");
+         keywords.add(keyword);
+         keyword = new StringBuilder("boolean");
+         keywords.add(keyword);
+         keyword = new StringBuilder("char");
+         keywords.add(keyword);
+         keyword = new StringBuilder("int");
+         keywords.add(keyword);
+         keyword = new StringBuilder("String");
+         keywords.add(keyword);
+         keyword = new StringBuilder("if");
+         keywords.add(keyword);
+         keyword = new StringBuilder("else");
+         keywords.add(keyword);
+         keyword = new StringBuilder("while");
+         keywords.add(keyword);
+         keyword = new StringBuilder("for");
+         keywords.add(keyword);
+         keyword = new StringBuilder("return");
+         keywords.add(keyword);
+         keyword = new StringBuilder("this");
+         keywords.add(keyword);
+         keyword = new StringBuilder("new");
+         keywords.add(keyword);
+         keyword = new StringBuilder("null");
+         keywords.add(keyword);
+         keyword = new StringBuilder("true");
+         keywords.add(keyword);
+         keyword = new StringBuilder("false");
+         keywords.add(keyword);
          */
     }
 

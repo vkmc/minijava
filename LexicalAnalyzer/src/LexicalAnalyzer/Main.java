@@ -15,8 +15,8 @@ public class Main {
     public static void main(String[] args) {
 
         //if (args.length == 1) {
-        Tokenizer t = new Tokenizer("/home/vkmc/program");
-        LinkedList tokenList = createTokenList(t);
+        Tokenizer tokenizer = new Tokenizer("/home/vkmc/program");
+        LinkedList tokenList = createTokenList(tokenizer);
         printTokens(tokenList);
         //} else {
         //    System.err.println("Cantidad de argumentos inválida.");
