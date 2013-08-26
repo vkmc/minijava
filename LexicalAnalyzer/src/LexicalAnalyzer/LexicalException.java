@@ -9,6 +9,11 @@ package LexicalAnalyzer;
  */
 public class LexicalException extends Exception {
 
+    /**
+     * Constructor de la clase LexicalException.
+     *
+     * @param exc
+     */
     public LexicalException(String exc) {
         super(exc);
     }

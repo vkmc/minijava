@@ -15,6 +15,13 @@ public class Tokenizer {
     private InputReader reader;
     private HashSet<String> keywords;
 
+    /**
+     * Constructor de la clase Tokenizer
+     *
+     * Inicializa los marcadores y las estructuras de datos utilizadas.
+     *
+     * @param filename Path del archivo con el código fuente
+     */
     public Tokenizer(String filename) {
         this.currentState = 0;
         this.lineNumber = 0;
@@ -25,10 +32,15 @@ public class Tokenizer {
         reader = new InputReader(filename);
     }
 
-    /*
-     * Tokenización
-     * 
+    /**
+     * Proceso de tokenización.
+     *
+     * Análisis léxico del archivo de código fuente.
+     *
+     * Devuelve un token por vez recorriendo el archivo de forma secuencial.
+     *
      * @returns Token encontrado
+     * @throws LexicalException
      */
     public Token getToken() throws LexicalException {
         StringBuilder lexeme = new StringBuilder();
@@ -268,8 +280,15 @@ public class Tokenizer {
         }
     }
 
-    /*
-     * Palabras reservadas de MiniJava
+    /**
+     * Palabras reservadas de MiniJava.
+     *
+     * Inicialización de una estructura de datos con las palabras reservadas de
+     * MiniJava.
+     *
+     * Si un lexema es reconocido como palabra reservada, se creará el Token
+     * adecuado.
+     *
      */
     private void populateKeywords() {
         keywords.add("class");
@@ -339,8 +358,10 @@ public class Tokenizer {
          */
     }
 
-    /*
-     * Procesamiento de las líneas de comentario
+    /**
+     * Procesamiento de las líneas de comentario.
+     *
+     * Consume la línea comentada para seguir con la tokenización.
      */
     private void proccessComment() {
         currentChar = (char) reader.readChar();
@@ -350,8 +371,14 @@ public class Tokenizer {
         }
     }
 
-    /*
-     * Procesamiento de los bloques de comentarios
+    /**
+     * Procesamiento de los bloques de comentarios.
+     *
+     * Consume el bloque de comentarios para seguir con la tokenización. Si se
+     * encuentra el fin de archivo, se considera como un error y se lanzará una
+     * excepción.
+     *
+     * @throws LexicalException
      */
     private void processBlockComment() throws LexicalException {
         boolean closeBlockComment = false;
@@ -376,13 +403,15 @@ public class Tokenizer {
         }
     }
 
-    /*
+    /**
      * Verificación de número bien formado.
-     * Para facilitar la descripción de errores en futuras etapas se previene
-     * la aparición de combinaciones sintácticamente imposibles (e.g. 123hola)
-     * en esta etapa.
-     * 
-     * @returns true si el caracter encontrado determina un número mal formado, false en caso contrario
+     *
+     * Para facilitar la descripción de errores en futuras etapas se previene la
+     * aparición de combinaciones sintácticamente imposibles (e.g. 123hola) en
+     * esta etapa.
+     *
+     * @returns true si el caracter encontrado determina un número mal formado,
+     * false en caso contrario
      */
     private boolean notExpectedCharNumber(char currentChar) {
         if (Character.isDigit(currentChar) || currentChar == ' ' || currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == '%') {

@@ -12,6 +12,11 @@ import java.util.logging.Logger;
  */
 public class Main {
 
+    /**
+     * Constructor de la clase Main.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 
         //if (args.length == 1) {
@@ -25,6 +30,12 @@ public class Main {
 
     }
 
+    /**
+     * Lista de tokens generados al procesar un archivo con código fuente.
+     *
+     * @param tokenizer
+     * @return lista de Tokens
+     */
     private static LinkedList<Token> createTokenList(Tokenizer tokenizer) {
         Token token;
         LinkedList<Token> tokenList = new LinkedList();
@@ -40,6 +51,11 @@ public class Main {
         return tokenList;
     }
 
+    /**
+     * Muestra por pantalla la lista de tokens recibida como parámetro.
+     *
+     * @param tokenList
+     */
     private static void printTokens(LinkedList<Token> tokenList) {
 
         System.out.println(String.format("%-8s%-20s%-20s", "No.", "Token", "Lexeme"));

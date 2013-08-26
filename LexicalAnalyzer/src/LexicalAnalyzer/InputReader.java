@@ -25,13 +25,19 @@ public class InputReader {
     private InputStream in;
     private int mark;
 
+    /**
+     * Constructor de la clase InputReader.
+     * 
+     * @param filename Path del archivo con el código fuente
+     */
     public InputReader(String filename) {
         this.filename = filename;
         open();
     }
 
-    /*
-     * Apertura del archivo fuente
+    /**
+     * Apertura del archivo con el código fuente.
+     * 
      * Inicialización de variables de control para el recorrido del mismo.
      */
     private void open() {
@@ -48,8 +54,8 @@ public class InputReader {
         }
     }
 
-    /*
-     * Cierre del archivo fuente.
+    /**
+     * Cierre del archivo con el código fuente.
      */
     private void close() {
         try {
@@ -59,8 +65,9 @@ public class InputReader {
         }
     }
 
-    /*
+    /**
      * Lectura de caracteres.
+     * 
      * Se procesa el archivo línea por linea
      *  - Si la línea a procesar es nula, entonces se alcanzó el fin de archivo
      *  - Si el marcador de lectura (pointer) es mayor al tamaño de la línea a procesar,
@@ -93,14 +100,16 @@ public class InputReader {
         return c;
     }
 
-    /*
-     * Retorna el valor actual del marcador
+    /**
+     * Retorna el valor actual del marcador.
+     * 
+     * @return mark, valor actual del marcador
      */
     public int getMark() {
         return mark;
     }
 
-    /*
+    /**
      * Vuelve el marcador una posición hacia atrás
      */
     public void resetMark() {
