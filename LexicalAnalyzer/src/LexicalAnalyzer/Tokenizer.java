@@ -1,5 +1,7 @@
 package LexicalAnalyzer;
 
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.HashSet;
 
 /**
@@ -14,6 +16,7 @@ public class Tokenizer {
     private char currentChar;
     private InputReader reader;
     private HashSet<String> keywords;
+    private CharsetEncoder asciiEncoder;
 
     /**
      * Constructor de la clase Tokenizer
@@ -30,6 +33,8 @@ public class Tokenizer {
         populateKeywords();
 
         reader = new InputReader(filename);
+
+        asciiEncoder = Charset.forName("US-ASCII").newEncoder(); // Control de caracteres ASCII basico
     }
 
     /**
@@ -162,6 +167,9 @@ public class Tokenizer {
                     break;
                 case 3:
                     if (currentChar != '\\' && currentChar != '\'' && currentChar != '\0' && currentChar != '\n') {
+                        if (!isValidChar(currentChar)) {
+                            throw new LexicalException("Line: " + lineNumber + " - Caracter no soportado.");
+                        }                        
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
@@ -184,6 +192,9 @@ public class Tokenizer {
                     }
                 case 32:
                     if (currentChar != '\\' && currentChar != '\'' && currentChar != '\0' && currentChar != '\n') {
+                        if (!isValidChar(currentChar)) {
+                            throw new LexicalException("Line: " + lineNumber + " - Caracter no soportado.");
+                        }
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
@@ -192,6 +203,9 @@ public class Tokenizer {
                     }
                 case 4:
                     if (currentChar != '\n' && currentChar != '"') {
+                        if (!isValidChar(currentChar)) {
+                            throw new LexicalException("Line: " + lineNumber + " - Caracter no soportado.");
+                        }
                         lexeme.append(currentChar);
                         currentState = 41;
                         break;
@@ -204,6 +218,9 @@ public class Tokenizer {
                     }
                 case 41:
                     if (currentChar != '\n' && currentChar != '"') {
+                        if (!isValidChar(currentChar)) {
+                            throw new LexicalException("Line: " + lineNumber + " - Caracter no soportado.");
+                        }
                         lexeme.append(currentChar);
                         break;
                     } else if (currentChar == '"') {
@@ -246,18 +263,18 @@ public class Tokenizer {
                         return new Token("&&", "&&", lineNumber);
                     } else {
                         reader.resetMark();
-                        throw new LexicalException("Line: "+lineNumber+" - Operador no soportado.");
+                        throw new LexicalException("Line: " + lineNumber + " - Operador no soportado.");
                     }
                 case 10:
                     if (currentChar == '|') {
                         return new Token("||", "||", lineNumber);
                     } else {
                         reader.resetMark();
-                        throw new LexicalException("Line: "+lineNumber+" - Operador no soportado.");
+                        throw new LexicalException("Line: " + lineNumber + " - Operador no soportado.");
                     }
                 case 11:
                     if (currentChar == '/') {
-                        throw new LexicalException("Line: "+lineNumber+" - Bloque de comentario mal cerrado.");
+                        throw new LexicalException("Line: " + lineNumber + " - Bloque de comentario mal cerrado.");
                     } else {
                         reader.resetMark();
                         return new Token("*", "*", lineNumber);
@@ -278,9 +295,9 @@ public class Tokenizer {
             }
         }
     }
-    
-    // Inicializacion de estructuras
 
+    // Inicializacion de estructuras
+    
     /**
      * Palabras reservadas de MiniJava.
      *
@@ -313,9 +330,9 @@ public class Tokenizer {
         keywords.add("true");
         keywords.add("false");
     }
-    
-    // Procesamiento de comentarios
 
+    // Procesamiento de comentarios
+    
     /**
      * Procesamiento de las líneas de comentario.
      *
@@ -325,13 +342,13 @@ public class Tokenizer {
         currentChar = (char) reader.readChar();
 
         while (currentChar != '\n') {
-            if (!validChar(currentChar)) {
+            if (!isValidChar(currentChar)) {
                 throw new LexicalException("Line: " + lineNumber + " - Caracter no soportado.");
             }
 
             currentChar = (char) reader.readChar();
         }
-        
+
         lineNumber++;
     }
 
@@ -352,14 +369,15 @@ public class Tokenizer {
         nextChar = (char) reader.readChar();
 
         while (!closeBlockComment && nextChar != '\0') {
-            if (!validChar(currentChar) || !validChar(nextChar)) {
+
+            if (!isValidChar(currentChar)) {
                 throw new LexicalException("Line: " + lineNumber + " - Caracter no soportado.");
             }
-            
+
             if (currentChar == '\n') {
                 lineNumber++;
             }
-            
+
             if (currentChar == '*' && nextChar == '/') {
                 closeBlockComment = true;
             }
@@ -376,9 +394,8 @@ public class Tokenizer {
             reader.resetMark(); // requerido para casos en el que el siguiente lexema se encuentra inmediatamente
         }
     }
-    
-    // Controles de validez
 
+    // Controles de validez
     /**
      * Verificación de número bien formado.
      *
@@ -396,67 +413,20 @@ public class Tokenizer {
             return true;
         }
     }
-    
-    /**
-     * Controla que el caracter pasado por parametro pertenezca al alfabeto de MiniJava.
-     * 
-     * @param currentChar
-     * @return true si el caracter pertenece al alfabeto, false el caso contrario
-     */
-    private boolean validChar(char currentChar) {
-        return isASCIILetter(currentChar) || Character.isDigit(currentChar) || isPunctuationChar(currentChar) || isOperator(currentChar) || isEscapeChar(currentChar) || isWhitespace(currentChar);
-    }
 
     /**
-     * Controla que el caracter pasado por parametro pertenezca al conjunto de letras ASCII basico.
-     * 
+     * Controla que el caracter pasado por parametro pertenezca al conjunto de
+     * letras ASCII basico.
+     *
      * @param currentChar
-     * @return true si el caracter pertenece al conjunto de letras ASCII basico, false en caso contrario
+     * @return true si el caracter pertenece al conjunto de letras ASCII basico,
+     * false en caso contrario
      */
     private boolean isASCIILetter(char currentChar) {
         return (currentChar >= 'a' && currentChar <= 'z') || (currentChar >= 'A' && currentChar <= 'Z');
     }
 
-    /**
-     * Controla que el caracter pasado por parametro pertenezca al conjunto de simbolos de puntuacion usados en MiniJava.
-     * 
-     * @param currentChar
-     * @return true si el caracter pertenece al conjunto de simbolos de puntuacion, false en caso contrario
-     */
-    private boolean isPunctuationChar(char currentChar) {
-        return currentChar == '(' || currentChar == ')' || currentChar == '{' || currentChar == '}' || currentChar == ';' || currentChar == ',' || currentChar == '.';
-    }
-
-    /**
-     * Controla que el caracter pasado por parametro pertenezca al conjunto de operadores usados en MiniJava.
-     * 
-     * @param currentChar
-     * @return true si el caracter petenece al conjunto de operadores, false en caso contrario
-     */
-    
-    private boolean isOperator(char currentChar) {
-        return currentChar == '+' || currentChar == '-' || currentChar == '*' || currentChar == '/' || currentChar == '>' || currentChar == '<' || currentChar == '!' || currentChar == '=' || currentChar == '|' || currentChar == '&' || currentChar == '%';
-    }
-
-    /**
-     * Controla que el caracter pasado por parametro sea el caracter de escape.
-     * 
-     * @param currentChar
-     * @return true si el caracter es el caracter de escape, false en caso contrario
-     */
-    private boolean isEscapeChar(char currentChar) {
-        return currentChar == '\\';
-    }
-
-    /**
-     * Controla que el caracter pasado por parametro sea un espacio en blanco.
-     * 
-     * Se consideran "espacios en blanco" al espacio, al tab y al salto de linea.
-     * 
-     * @param currentChar
-     * @return true si el caracter es un espacio en blanco, false en caso contrario
-     */
-    private boolean isWhitespace(char currentChar) {
-        return currentChar == ' ' || currentChar == '\t' || currentChar == '\n';
+    private boolean isValidChar(char currentChar) {
+        return asciiEncoder.canEncode(currentChar);
     }
 }
