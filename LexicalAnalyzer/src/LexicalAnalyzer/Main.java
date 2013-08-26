@@ -1,5 +1,9 @@
 package LexicalAnalyzer;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,16 +22,21 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-
-        //if (args.length == 1) {
-        Tokenizer tokenizer = new Tokenizer("/home/vkmc/program");
+        if (args.length == 0 || args.length > 2) {
+            System.err.println("Cantidad de argumentos invalida.");
+            System.err.println("Uso: java -jar tokenizer <IN_FILE> [<OUT_FILE>]");
+            return;
+        }
+        Tokenizer tokenizer = new Tokenizer(args[0]);
         LinkedList tokenList = createTokenList(tokenizer);
-        printTokens(tokenList);
-        //} else {
-        //    System.err.println("Cantidad de argumentos inválida.");
-        //    System.err.println("Uso: java -jar tokenizer <source>");
-        //}
-
+        
+        if (args.length == 1) {
+            printTokens(tokenList);
+            System.out.println("El analizador lexico ha terminado correctamente.\n");
+        } else if (args.length == 2) {
+            writeTokens(tokenList, args[1]);
+            System.out.println("El analizador lexico ha terminado correctamente. Resultado volcado en el archivo \""+args[1]+"\"");
+        }
     }
 
     /**
@@ -57,12 +66,36 @@ public class Main {
      * @param tokenList
      */
     private static void printTokens(LinkedList<Token> tokenList) {
-
         System.out.println(String.format("%-8s%-20s%-20s", "No.", "Token", "Lexeme"));
-
         for (Token t : tokenList) {
             System.out.println(t.toString());
         }
-
+    }
+    
+     /**
+     * Escribe en el archivo destino la lista de tokens recibida como parámetro.
+     * Si el archivo existe reemplaza completamente su contenido.
+     * Si el archivo no existe, lo crea.
+     * 
+     * @param tokenList
+     * @param path
+     */
+    private static void writeTokens(LinkedList<Token> tokenList, String path) {
+        File file = new File(path);
+        BufferedWriter buffer;
+        
+        try {
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            buffer = new BufferedWriter(new FileWriter(file));
+            buffer.write(String.format("%-8s%-20s%-20s\n", "No.", "Token", "Lexeme"));
+            for (Token t : tokenList) {
+                buffer.write(String.format("%-8s%-20s%-20s\n", t.getToken(), t.getLexeme(), t.getLineNumber()));
+            }
+            buffer.close();
+        } catch (IOException ex) {
+            System.err.println("Error al escribir en el archivo de salida.");
+        }
     }
 }

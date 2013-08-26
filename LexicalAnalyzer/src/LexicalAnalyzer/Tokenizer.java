@@ -24,7 +24,7 @@ public class Tokenizer {
      */
     public Tokenizer(String filename) {
         this.currentState = 0;
-        this.lineNumber = 0;
+        this.lineNumber = 1;
 
         keywords = new HashSet<>();
         populateKeywords();

@@ -48,9 +48,11 @@ public class InputReader {
             buffer = new BufferedReader(reader);
             currentLine = buffer.readLine();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("El sistema no puede encontrar el archivo especificado.");
+            //Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al leer el archivo de entrada.");
+            //Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -61,7 +63,8 @@ public class InputReader {
         try {
             buffer.close();
         } catch (IOException ex) {
-            Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al cerrar el archivo de entrada.");
+            //Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
