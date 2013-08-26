@@ -153,12 +153,12 @@ public class Tokenizer {
                     }
                     break;
                 case 2:
-                    if (Character.isDigit(currentChar)) {
+                    if (Character.isLetter(currentChar) || notExpectedCharNumber(currentChar)) {
+                        throw new LexicalException("Line: " + lineNumber + " - Wrong number format.");
+                    } else if (Character.isDigit(currentChar)) {
                         if (flagZero) {
                             throw new LexicalException("Line: " + lineNumber + " - Wrong number format. A number cannot start with 0.");
-                        } else if (Character.isLetter(currentChar) || notExpectedCharNumber(currentChar)) {
-                            throw new LexicalException("Line: " + lineNumber + " - Wrong number format.");
-                        } else {
+                        } else  {
                             lexeme.append(currentChar);
                         }
                     } else {
