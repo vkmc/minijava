@@ -1,7 +1,5 @@
 package LexicalAnalyzer;
 
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.util.HashSet;
 
 /**
@@ -16,7 +14,6 @@ public class Tokenizer {
     private char currentChar;
     private InputReader reader;
     private HashSet<String> keywords;
-    private CharsetEncoder asciiEncoder;
 
     /**
      * Constructor de la clase Tokenizer
@@ -33,8 +30,6 @@ public class Tokenizer {
         populateKeywords();
 
         reader = new InputReader(filename);
-
-        asciiEncoder = Charset.forName("US-ASCII").newEncoder(); // Control de caracteres ASCII basico
     }
 
     /**
@@ -169,7 +164,7 @@ public class Tokenizer {
                     if (currentChar != '\\' && currentChar != '\'' && currentChar != '\0' && currentChar != '\n') {
                         if (!isValidChar(currentChar)) {
                             throw new LexicalException("Line: " + lineNumber + " - Caracter no soportado.");
-                        }                        
+                        }
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
@@ -297,7 +292,6 @@ public class Tokenizer {
     }
 
     // Inicializacion de estructuras
-    
     /**
      * Palabras reservadas de MiniJava.
      *
@@ -332,7 +326,6 @@ public class Tokenizer {
     }
 
     // Procesamiento de comentarios
-    
     /**
      * Procesamiento de las líneas de comentario.
      *
@@ -427,6 +420,6 @@ public class Tokenizer {
     }
 
     private boolean isValidChar(char currentChar) {
-        return asciiEncoder.canEncode(currentChar);
+        return currentChar >= 32 && currentChar < 127;
     }
 }
