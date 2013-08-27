@@ -5,13 +5,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * CLI para el analizador léxico.
  *
- * @author Ramiro Agís
+ * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
  */
 public class Main {
@@ -32,10 +30,10 @@ public class Main {
         
         if (args.length == 1) {
             printTokens(tokenList);
-            System.out.println("El analizador lexico ha terminado correctamente.\n");
+            System.out.println("El analizador lexico ha terminado.\n");
         } else if (args.length == 2) {
             writeTokens(tokenList, args[1]);
-            System.out.println("El analizador lexico ha terminado correctamente. Resultado volcado en el archivo \""+args[1]+"\"");
+            System.out.println("El analizador lexico ha terminado. Resultado volcado en el archivo \""+args[1]+"\"");
         }
     }
 
@@ -54,7 +52,7 @@ public class Main {
                 tokenList.add(token);
             } while (!token.getToken().equals("EOF"));
         } catch (LexicalException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
         }
 
         return tokenList;
@@ -95,7 +93,7 @@ public class Main {
             }
             buffer.close();
         } catch (IOException ex) {
-            System.err.println("Error al escribir en el archivo de salida.");
+            System.out.println("Error al escribir en el archivo de salida.");
         }
     }
 }

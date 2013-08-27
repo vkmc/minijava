@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Lectura del archivo fuente.
  *
- * @author Ramiro Agís
+ * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
  */
 public class InputReader {
@@ -49,10 +49,8 @@ public class InputReader {
             currentLine = buffer.readLine();
         } catch (FileNotFoundException ex) {
             System.err.println("El sistema no puede encontrar el archivo especificado.");
-            //Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             System.err.println("Error al leer el archivo de entrada.");
-            //Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -64,7 +62,6 @@ public class InputReader {
             buffer.close();
         } catch (IOException ex) {
             System.err.println("Error al cerrar el archivo de entrada.");
-            //Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -97,7 +94,7 @@ public class InputReader {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error al leer caracter de buffer.");
         }
 
         return c;

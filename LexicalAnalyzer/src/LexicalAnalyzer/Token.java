@@ -4,7 +4,7 @@ package LexicalAnalyzer;
  * Representación lógica de un Token. Un Token es una cadena de caracteres con
  * significado propio.
  *
- * @author Ramiro Agís
+ * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
  */
 public class Token {
