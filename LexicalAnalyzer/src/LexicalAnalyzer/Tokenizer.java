@@ -336,6 +336,7 @@ public class Tokenizer {
     }
 
     // Procesamiento de comentarios
+    
     /**
      * Procesamiento de las líneas de comentario.
      *
@@ -393,11 +394,12 @@ public class Tokenizer {
             throw new LexicalException("El bloque de comentario no esta cerrado y se alcanzo el fin de archivo.");
         } else {
             reader.resetMark(); // requerido para casos en el que el siguiente lexema se encuentra inmediatamente
-            checkNL(currentChar);
+            checkNL(nextChar);
         }
     }
 
     // Controles de validez
+    
     /**
      * Verificación de número bien formado.
      *
@@ -437,7 +439,7 @@ public class Tokenizer {
      * false en caso contrario
      */
     private boolean isValidChar(char currentChar) {
-        return currentChar >= 32 && currentChar < 127;
+        return currentChar == '\n' || currentChar == '\t' || currentChar >= 32 && currentChar < 127;
     }
     
     /**
