@@ -411,7 +411,7 @@ public class Tokenizer {
      * false en caso contrario
      */
     private boolean notExpectedCharNumber(char currentChar) {
-        if (Character.isDigit(currentChar) || currentChar == ' ' || currentChar == '\t' || currentChar == '\n' || currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == '%' || currentChar == ';' || currentChar == '>' || currentChar == '<' || currentChar == '=' || currentChar == '!' || currentChar == ')') {
+        if (Character.isDigit(currentChar) || currentChar == ' ' || currentChar == '\t' || currentChar == '\n' || currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == '%' || currentChar == ',' || currentChar == ';' || currentChar == '>' || currentChar == '<' || currentChar == '=' || currentChar == '!' || currentChar == ')') {
             return false;
         } else {
             return true;
