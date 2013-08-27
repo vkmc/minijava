@@ -136,6 +136,7 @@ public class Tokenizer {
                         lexeme.append(currentChar);
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         String lexemeString = lexeme.toString();
                         if (keywords.contains(lexemeString)) {
                             // Es una palabra clave.
@@ -157,6 +158,7 @@ public class Tokenizer {
                         }
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         return new Token("intLiteral", lexeme.toString(), lineNumber);
                     }
                     break;
@@ -230,6 +232,7 @@ public class Tokenizer {
                         return new Token(">=", ">=", lineNumber);
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         return new Token(">", ">", lineNumber);
                     }
                 case 6:
@@ -237,6 +240,7 @@ public class Tokenizer {
                         return new Token("<=", "<=", lineNumber);
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         return new Token("<", "<", lineNumber);
                     }
                 case 7:
@@ -244,6 +248,7 @@ public class Tokenizer {
                         return new Token("==", "==", lineNumber);
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         return new Token("=", "=", lineNumber);
                     }
                 case 8:
@@ -251,6 +256,7 @@ public class Tokenizer {
                         return new Token("!=", "!=", lineNumber);
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         return new Token("!", "!", lineNumber);
                     }
                 case 9:
@@ -258,6 +264,7 @@ public class Tokenizer {
                         return new Token("&&", "&&", lineNumber);
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         throw new LexicalException("Linea: " + lineNumber + " - Operador no soportado.");
                     }
                 case 10:
@@ -265,6 +272,7 @@ public class Tokenizer {
                         return new Token("||", "||", lineNumber);
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         throw new LexicalException("Linea: " + lineNumber + " - Operador no soportado.");
                     }
                 case 11:
@@ -272,6 +280,7 @@ public class Tokenizer {
                         throw new LexicalException("Linea: " + lineNumber + " - Bloque de comentario mal cerrado.");
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         return new Token("*", "*", lineNumber);
                     }
                 case 12:
@@ -285,6 +294,7 @@ public class Tokenizer {
                         break;
                     } else {
                         reader.resetMark();
+                        checkNL(currentChar);
                         return new Token("/", "/", lineNumber);
                     }
             }
@@ -381,10 +391,9 @@ public class Tokenizer {
 
         if (nextChar == '\0') {
             throw new LexicalException("El bloque de comentario no esta cerrado y se alcanzo el fin de archivo.");
-        } else if (nextChar == '\n') {
-            lineNumber++;   // requerido para casos en el que el siguiente caracter es un salto de linea
         } else {
             reader.resetMark(); // requerido para casos en el que el siguiente lexema se encuentra inmediatamente
+            checkNL(currentChar);
         }
     }
 
@@ -400,7 +409,7 @@ public class Tokenizer {
      * false en caso contrario
      */
     private boolean notExpectedCharNumber(char currentChar) {
-        if (Character.isDigit(currentChar) || currentChar == ' ' || currentChar == '\t' || currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == '%' || currentChar == ';') {
+        if (Character.isDigit(currentChar) || currentChar == ' ' || currentChar == '\t' || currentChar == '\n' || currentChar == '+' || currentChar == '-' || currentChar == '/' || currentChar == '*' || currentChar == '%' || currentChar == ';' || currentChar == '>' || currentChar == '<' || currentChar == '=' || currentChar == '!') {
             return false;
         } else {
             return true;
@@ -419,7 +428,27 @@ public class Tokenizer {
         return (currentChar >= 'a' && currentChar <= 'z') || (currentChar >= 'A' && currentChar <= 'Z');
     }
 
+    /**
+     * Controla que el caracter pasado por parametro pertenezca al conjunto de
+     * caracteres imprimibles ASCII basico.
+     * 
+     * @param currentChar
+     * @return true si el caracter pertenece al conjunt ode caracteres ASCII basico,
+     * false en caso contrario
+     */
     private boolean isValidChar(char currentChar) {
         return currentChar >= 32 && currentChar < 127;
+    }
+    
+    /**
+     * Controla el incremento de lineas en caso de que se haya cambiado de linea y no
+     * llegue a procesarse.
+     * 
+     * @param currentChar 
+     */
+    private void checkNL(char currentChar) {
+        if (currentChar == '\n') {
+            lineNumber++;
+        }
     }
 }
