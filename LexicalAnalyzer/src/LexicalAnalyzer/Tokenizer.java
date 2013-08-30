@@ -96,7 +96,7 @@ public class Tokenizer {
                                 break;
                             case '|':
                                 currentState = 10;
-                                break;                            
+                                break;
                             case '/':
                                 currentState = 11;
                                 break;
@@ -123,6 +123,7 @@ public class Tokenizer {
                             case '%':
                                 return new Token("%", "%", lineNumber);
                             case '\0':
+                                lineNumber--;
                                 return new Token("EOF", "\\0", lineNumber);
                             default:
                                 throw new LexicalException("Linea: " + lineNumber + " - Caracter no soportado (" + currentChar + ").");
@@ -322,7 +323,6 @@ public class Tokenizer {
     }
 
     // Procesamiento de comentarios
-    
     /**
      * Procesamiento de las líneas de comentario.
      *
@@ -384,7 +384,6 @@ public class Tokenizer {
     }
 
     // Controles de validez
-    
     /**
      * Verificación de número bien formado.
      *
@@ -418,20 +417,20 @@ public class Tokenizer {
     /**
      * Controla que el caracter pasado por parametro pertenezca al conjunto de
      * caracteres imprimibles ASCII basico.
-     * 
+     *
      * @param currentChar
-     * @return true si el caracter pertenece al conjunt ode caracteres ASCII basico,
-     * false en caso contrario
+     * @return true si el caracter pertenece al conjunt ode caracteres ASCII
+     * basico, false en caso contrario
      */
     private boolean isValidChar(char currentChar) {
         return currentChar == '\n' || currentChar == '\t' || currentChar >= 32 && currentChar < 127;
     }
-    
+
     /**
-     * Controla el incremento de lineas en caso de que se haya cambiado de linea y no
-     * llegue a procesarse.
-     * 
-     * @param currentChar 
+     * Controla el incremento de lineas en caso de que se haya cambiado de linea
+     * y no llegue a procesarse.
+     *
+     * @param currentChar
      */
     private void checkNL(char currentChar) {
         if (currentChar == '\n') {
