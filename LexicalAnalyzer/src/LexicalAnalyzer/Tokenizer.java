@@ -96,17 +96,16 @@ public class Tokenizer {
                                 break;
                             case '|':
                                 currentState = 10;
-                                break;
-                            case '*':
-                                currentState = 11;
-                                break;
+                                break;                            
                             case '/':
-                                currentState = 12;
+                                currentState = 11;
                                 break;
                             case '+':
                                 return new Token("+", "+", lineNumber);
                             case '-':
                                 return new Token("-", "-", lineNumber);
+                            case '*':
+                                return new Token("*", "*", lineNumber);
                             case '(':
                                 return new Token("(", "(", lineNumber);
                             case ')':
@@ -124,7 +123,7 @@ public class Tokenizer {
                             case '%':
                                 return new Token("%", "%", lineNumber);
                             case '\0':
-                                return new Token("EOF", "\0", lineNumber);
+                                return new Token("EOF", "\\0", lineNumber);
                             default:
                                 throw new LexicalException("Linea: " + lineNumber + " - Caracter no soportado (" + currentChar + ").");
                         }
@@ -135,20 +134,21 @@ public class Tokenizer {
                     if (isASCIILetter(currentChar) || Character.isDigit(currentChar) || currentChar == '_') {
                         lexeme.append(currentChar);
                     } else {
-                        reader.resetMark();
-                        checkNL(currentChar);
+                        Token token;
                         String lexemeString = lexeme.toString();
                         if (keywords.contains(lexemeString)) {
                             // Es una palabra clave.
-                            return new Token(lexemeString, lexemeString, lineNumber);
+                            token = new Token(lexemeString, lexemeString, lineNumber);
                         } else {
                             // Es un identificador.
-                            return new Token("id", lexemeString, lineNumber);
+                            token = new Token("id", lexemeString, lineNumber);
                         }
+                        checkNL(currentChar);
+                        return token;
                     }
                     break;
                 case 2:
-                    if (isASCIILetter(currentChar) || notExpectedCharNumber(currentChar)) {
+                    if (isASCIILetter(currentChar)) {
                         throw new LexicalException("Linea: " + lineNumber + " - Numero mal formado.");
                     } else if (Character.isDigit(currentChar)) {
                         if (flagZero) {
@@ -157,9 +157,9 @@ public class Tokenizer {
                             lexeme.append(currentChar);
                         }
                     } else {
-                        reader.resetMark();
+                        Token token = new Token("intLiteral", lexeme.toString(), lineNumber);
                         checkNL(currentChar);
-                        return new Token("intLiteral", lexeme.toString(), lineNumber);
+                        return token;
                     }
                     break;
                 case 3:
@@ -188,7 +188,7 @@ public class Tokenizer {
                         throw new LexicalException("Linea: " + lineNumber + " - Caracter mal formado.");
                     }
                 case 32:
-                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\0' && currentChar != '\n') {
+                    if (currentChar != '\0' && currentChar != '\n') {   // \t, t o n?
                         if (!isValidChar(currentChar)) {
                             throw new LexicalException("Linea: " + lineNumber + " - Caracter no soportado (" + currentChar + ").");
                         }
@@ -231,7 +231,6 @@ public class Tokenizer {
                     if (currentChar == '=') {
                         return new Token(">=", ">=", lineNumber);
                     } else {
-                        reader.resetMark();
                         checkNL(currentChar);
                         return new Token(">", ">", lineNumber);
                     }
@@ -239,7 +238,6 @@ public class Tokenizer {
                     if (currentChar == '=') {
                         return new Token("<=", "<=", lineNumber);
                     } else {
-                        reader.resetMark();
                         checkNL(currentChar);
                         return new Token("<", "<", lineNumber);
                     }
@@ -247,7 +245,6 @@ public class Tokenizer {
                     if (currentChar == '=') {
                         return new Token("==", "==", lineNumber);
                     } else {
-                        reader.resetMark();
                         checkNL(currentChar);
                         return new Token("=", "=", lineNumber);
                     }
@@ -255,7 +252,6 @@ public class Tokenizer {
                     if (currentChar == '=') {
                         return new Token("!=", "!=", lineNumber);
                     } else {
-                        reader.resetMark();
                         checkNL(currentChar);
                         return new Token("!", "!", lineNumber);
                     }
@@ -263,7 +259,6 @@ public class Tokenizer {
                     if (currentChar == '&') {
                         return new Token("&&", "&&", lineNumber);
                     } else {
-                        reader.resetMark();
                         checkNL(currentChar);
                         throw new LexicalException("Linea: " + lineNumber + " - Operador no soportado.");
                     }
@@ -271,19 +266,10 @@ public class Tokenizer {
                     if (currentChar == '|') {
                         return new Token("||", "||", lineNumber);
                     } else {
-                        reader.resetMark();
                         checkNL(currentChar);
                         throw new LexicalException("Linea: " + lineNumber + " - Operador no soportado.");
                     }
                 case 11:
-                    if (currentChar == '/') {
-                        throw new LexicalException("Linea: " + lineNumber + " - Bloque de comentario mal cerrado.");
-                    } else {
-                        reader.resetMark();
-                        checkNL(currentChar);
-                        return new Token("*", "*", lineNumber);
-                    }
-                case 12:
                     if (currentChar == '/') {
                         proccessComment(); // S11.1
                         currentState = 0;
@@ -293,9 +279,9 @@ public class Tokenizer {
                         currentState = 0;
                         break;
                     } else {
-                        reader.resetMark();
+                        Token token = new Token("/", "/", lineNumber);
                         checkNL(currentChar);
-                        return new Token("/", "/", lineNumber);
+                        return token;
                     }
             }
         }
@@ -353,7 +339,7 @@ public class Tokenizer {
             currentChar = (char) reader.readChar();
         }
 
-        lineNumber++;
+        checkNL(currentChar);
     }
 
     /**
@@ -379,7 +365,7 @@ public class Tokenizer {
             }
 
             if (currentChar == '\n') {
-                lineNumber++;
+                checkNL(currentChar);
             }
 
             if (currentChar == '*' && nextChar == '/') {
@@ -393,7 +379,6 @@ public class Tokenizer {
         if (nextChar == '\0') {
             throw new LexicalException("El bloque de comentario no esta cerrado y se alcanzo el fin de archivo.");
         } else {
-            reader.resetMark(); // requerido para casos en el que el siguiente lexema se encuentra inmediatamente
             checkNL(nextChar);
         }
     }
@@ -451,6 +436,8 @@ public class Tokenizer {
     private void checkNL(char currentChar) {
         if (currentChar == '\n') {
             lineNumber++;
+        } else {
+            reader.resetMark();
         }
     }
 }

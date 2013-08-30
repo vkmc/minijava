@@ -113,8 +113,6 @@ public class InputReader {
      * Vuelve el marcador una posición hacia atrás
      */
     public void resetMark() {
-        if (mark > 0) {
-            mark--;
-        }
+        mark--;
     }
 }
