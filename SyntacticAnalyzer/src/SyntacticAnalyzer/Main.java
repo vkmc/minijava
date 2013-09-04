@@ -18,7 +18,7 @@ public class Main {
             System.err.println("Cantidad de argumentos invalida.");
             System.err.println("Uso: java -jar SyntacticAnalyzer <IN_FILE>");
         } else {
-            Parser parser = new Parser();
+            Parser parser = new Parser(args[0]);
             try {
                 parser.analize();
                 System.out.println("El analizador sintactico fue exitoso. El programa no contiene errores sintacticos o lexicos.\n");
