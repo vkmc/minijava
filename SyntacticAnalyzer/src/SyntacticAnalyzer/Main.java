@@ -1,17 +1,20 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package SyntacticAnalyzer;
 
 /**
- * Clase principal del analizador sintáctico.
  *
- * @author Ramiro Agis
- * @author Victoria Martínez de la Cruz
+ * @author vkmc
  */
-public class SyntacticAnalyzer {
-
-    /**
+public class Main {
+    
+       /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
     }
+    
 }
