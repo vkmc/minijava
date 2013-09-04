@@ -7,6 +7,14 @@ package SyntacticAnalyzer;
  * @author Victoria Martínez de la Cruz
  */
 public class Parser {
+    private Tokenizer tokenizer;
+    private Token lookAhead, currentToken; 
+    
+    public void analize() throws SyntacticException, LexicalException {
+        lookAhead = tokenizer.getToken();
+        currentToken = null;
+        Inicial();
+    }
     private void Class() throws LexicalException, SyntacticException {
         
     }
