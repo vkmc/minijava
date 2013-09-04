@@ -164,7 +164,7 @@ public class Tokenizer {
                     }
                     break;
                 case 3:
-                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\0' && currentChar != '\n') {
+                    if (currentChar != '\\' && currentChar != '\'' && currentChar != '\n') {
                         if (!isValidChar(currentChar)) {
                             throw new LexicalException("Linea: " + lineNumber + " - Caracter no soportado (" + currentChar + ").");
                         }
@@ -189,7 +189,7 @@ public class Tokenizer {
                         throw new LexicalException("Linea: " + lineNumber + " - Caracter mal formado.");
                     }
                 case 32:
-                    if (currentChar != '\0' && currentChar != '\n') {   // \t, t o n?
+                    if (currentChar != '\n' && currentChar != '\t') {
                         if (!isValidChar(currentChar)) {
                             throw new LexicalException("Linea: " + lineNumber + " - Caracter no soportado (" + currentChar + ").");
                         }
@@ -232,42 +232,44 @@ public class Tokenizer {
                     if (currentChar == '=') {
                         return new Token(">=", ">=", lineNumber);
                     } else {
+                        Token token = new Token(">", ">", lineNumber);
                         checkNL(currentChar);
-                        return new Token(">", ">", lineNumber);
+                        return token;
                     }
                 case 6:
                     if (currentChar == '=') {
                         return new Token("<=", "<=", lineNumber);
                     } else {
+                        Token token = new Token("<", "<", lineNumber);
                         checkNL(currentChar);
-                        return new Token("<", "<", lineNumber);
+                        return token;
                     }
                 case 7:
                     if (currentChar == '=') {
                         return new Token("==", "==", lineNumber);
                     } else {
+                        Token token = new Token("=", "=", lineNumber);
                         checkNL(currentChar);
-                        return new Token("=", "=", lineNumber);
+                        return token;
                     }
                 case 8:
                     if (currentChar == '=') {
                         return new Token("!=", "!=", lineNumber);
                     } else {
+                        Token token = new Token("!", "!", lineNumber);
                         checkNL(currentChar);
-                        return new Token("!", "!", lineNumber);
+                        return token;
                     }
                 case 9:
                     if (currentChar == '&') {
                         return new Token("&&", "&&", lineNumber);
                     } else {
-                        checkNL(currentChar);
                         throw new LexicalException("Linea: " + lineNumber + " - Operador no soportado.");
                     }
                 case 10:
                     if (currentChar == '|') {
                         return new Token("||", "||", lineNumber);
                     } else {
-                        checkNL(currentChar);
                         throw new LexicalException("Linea: " + lineNumber + " - Operador no soportado.");
                     }
                 case 11:
