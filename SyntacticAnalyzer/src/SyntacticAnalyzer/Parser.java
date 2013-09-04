@@ -8,6 +8,15 @@ package SyntacticAnalyzer;
  */
 public class Parser {
 
+    private Tokenizer tokenizer;
+    private Token lookAhead, currentToken; 
+    
+    public void analize() throws SyntacticException, LexicalException {
+        lookAhead = tokenizer.getToken();
+        currentToken = null;
+        Inicial();
+    }
+
     private void Inicial() throws LexicalException, SyntacticException {
     }
 
