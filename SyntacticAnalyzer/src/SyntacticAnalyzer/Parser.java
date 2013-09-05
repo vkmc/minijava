@@ -10,7 +10,7 @@ public class Parser {
 
     private Tokenizer tokenizer;
     private Token lookAhead, currentToken;
-    
+
     public Parser(String filename) {
         tokenizer = new Tokenizer(filename);
     }
@@ -35,12 +35,20 @@ public class Parser {
     }
 
     // no-terminales
-    
     private void Inicial() throws LexicalException, SyntacticException {
-        
+        Clase();
+        ListaClases();
     }
 
     private void ListaClases() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("class")) {
+            Clase();
+            ListaClases();
+        } else if (lookAhead.equals("EOF")) {
+            System.err.println("El analizador sintáctico termino exitosamente");
+        } else {
+            throw new SyntacticException("Se alcanzo EOF durante el análisis sintáctico.");
+        }
     }
 
     private void Clase() throws LexicalException, SyntacticException {
@@ -57,33 +65,50 @@ public class Parser {
             match("extends");
             match("id");
         } else if (lookAhead.equals("{")) {
-       
+            // Herencia -> lambda
+            // No hay herencia 
         } else {
-            throw new SyntacticException("Se esperaba la palabra reservada extends o {. Se encontro: '"+lookAhead.getToken()+"'\nNumero de linea: " + lookAhead.getLineNumber());
+            throw new SyntacticException("Se esperaba la lista de miembros de la clase.");
         }
     }
 
     private void ListaMiembros() throws LexicalException, SyntacticException {
-        
+        if(lookAhead.equals("}")) {
+            // ListaMiembros -> lambda
+            // No hay mas miembros
+        } else {
+            Miembro();
+            ListaMiembros();
+            // Para no duplicar codigo dejamos que el control lo haga Miembro()
+        }
     }
 
     private void Miembro() throws LexicalException, SyntacticException {
         if (lookAhead.equals("var")) {
             Atributo();
-        } else if(lookAhead.equals("id")) {
-            Ctor();            
-        } else if(lookAhead.equals("static") || lookAhead.equals("dynamic")) {
+        } else if (lookAhead.equals("id")) {
+            Ctor();
+        } else if (lookAhead.equals("static") || lookAhead.equals("dynamic")) {
             Metodo();
         } else {
-            // error
+            throw new LexicalException("Se esperaba la definicion de atributos, constructores o metodos.");
         }
     }
 
     private void Atributo() throws LexicalException, SyntacticException {
-        
+        match("var");
+        Tipo();
+        ListaDecVars();
+        match(";");
     }
 
     private void Metodo() throws LexicalException, SyntacticException {
+        ModMetodo();
+        TipoMetodo();
+        match("id");
+        ArgsFormales();
+        VarsLocales();
+        Bloque();
     }
 
     private void Ctor() throws LexicalException, SyntacticException {
@@ -108,18 +133,57 @@ public class Parser {
     }
 
     private void ModMetodo() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("static")) {
+            match("static");
+        } else if (lookAhead.equals("dynamic")) {
+            match("dynamic");
+        } else {
+            throw new SyntacticException("Se esperaba el modo de ejecucion del metodo (static o dynamic).");
+        }
     }
 
     private void TipoMetodo() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("void")) {
+            match("void");
+        } else {
+            Tipo();
+        }
     }
 
     private void Tipo() throws LexicalException, SyntacticException {
+        if(lookAhead.equals("id")) {
+            match("id");
+        } else {
+            TipoPrimitivo();
+        }
     }
 
     private void TipoPrimitivo() throws LexicalException, SyntacticException {
+        if(lookAhead.equals("boolean")) {
+            match("boolean");
+        } else if (lookAhead.equals("char")) {
+            match("char");
+        } else if (lookAhead.equals("int")) {
+            match("int");
+        } else if (lookAhead.equals("String")) {
+            match("String");
+        } else {
+            throw new LexicalException("Se esperaba un tipo primitivo.");
+        }
     }
 
     private void ListaDecVars() throws LexicalException, SyntacticException {
+        match("id");
+        ListaDecVars_();
+    }
+    
+    private void ListaDecVars_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals(",")) {
+            match(",");
+            ListaDecVars();
+        } else {
+            
+        }
     }
 
     private void Bloque() throws LexicalException, SyntacticException {
