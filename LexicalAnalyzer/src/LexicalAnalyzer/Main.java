@@ -21,7 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
         if (args.length == 0 || args.length > 2) {
-            System.err.println("Cantidad de argumentos invalida.");
+            System.err.println("Cantidad de argumentos inválida.");
             System.err.println("Uso: java -jar LexicalAnalyzer.jar <IN_FILE> [<OUT_FILE>]");
             return;
         }
@@ -30,10 +30,10 @@ public class Main {
 
         if (args.length == 1) {
             printTokens(tokenList);
-            System.out.println("El analizador lexico ha terminado.");
+            System.out.println("El analizador léxico ha terminado.");
         } else if (args.length == 2) {
             writeTokens(tokenList, args[1]);
-            System.out.println("El analizador lexico ha terminado. Resultado volcado en el archivo \"" + args[1] + "\"");
+            System.out.println("El analizador léxico ha terminado. Resultado volcado en el archivo \"" + args[1] + "\"");
         }
     }
 
@@ -64,7 +64,7 @@ public class Main {
      * @param tokenList
      */
     private static void printTokens(LinkedList<Token> tokenList) {
-        System.out.println(String.format("%-8s%-20s%-20s", "No.", "Token", "Lexeme"));
+        System.out.println(String.format("%-8s%-20s%-20s", "No.", "Token", "Lexema"));
         for (Token t : tokenList) {
             System.out.println(t.toString());
         }
@@ -87,7 +87,7 @@ public class Main {
                 file.createNewFile();
             }
             buffer = new BufferedWriter(new FileWriter(file));
-            buffer.write(String.format("%-8s%-20s%-20s\n", "No.", "Token", "Lexeme"));
+            buffer.write(String.format("%-8s%-20s%-20s\n", "No.", "Token", "Lexema"));
             for (Token t : tokenList) {
                 buffer.write(String.format("%-8s%-20s%-20s\n", t.getToken(), t.getLexeme(), t.getLineNumber()));
             }

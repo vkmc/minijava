@@ -60,4 +60,17 @@ public class Token {
     public String toString() {
         return String.format("%-8s%-20s%-20s", lineNumber, token, lexeme);
     }
+
+    /**
+     * Compara el token con una cadena pasada como parametro.
+     *
+     * Requerido por: Analizador sintactico
+     *
+     * @param s
+     * @return true si el token es igual a la cadena pasada como parametro,
+     * false en caso contrario.
+     */
+    public boolean equals(String s) {
+        return token.equals(s);
+    }
 }

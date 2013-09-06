@@ -69,7 +69,7 @@ public class InputReader {
      * Se procesa el archivo línea por linea
      *  - Si la línea a procesar es nula, entonces se alcanzó el fin de archivo
      *  - Si el marcador de lectura (mark) es mayor al tamaño de la línea a procesar,
-     *    se procede a leer una línea nueva y a reiniciar la marca. 
+     *    se procede a leer una línea nueva y a reiniciar la marca.
      *  - Si la marcador de lectura (mark) es menor al tamaño de la línea a procesar,
      *    se procede a leer el caracter que apunta la marca y a incrementar la marca.
      *
