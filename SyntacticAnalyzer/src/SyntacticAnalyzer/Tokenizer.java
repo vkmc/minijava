@@ -184,7 +184,7 @@ public class Tokenizer {
                     if (currentChar == '\'') {
                         lexeme.append(currentChar);
                         String lexemeString = lexeme.toString();
-                        return new Token("char", lexemeString, lineNumber);
+                        return new Token("charLiteral", lexemeString, lineNumber);
                     } else {
                         throw new LexicalException("Linea: " + lineNumber + " - Caracter mal formado.");
                     }
@@ -210,7 +210,7 @@ public class Tokenizer {
                     } else if (currentChar == '"') {
                         lexeme.append(currentChar);
                         String lexemeString = lexeme.toString();
-                        return new Token("String", lexemeString, lineNumber);
+                        return new Token("stringLiteral", lexemeString, lineNumber);
                     } else {
                         throw new LexicalException("Linea: " + lineNumber + " - Cadena mal formada.");
                     }
@@ -224,7 +224,7 @@ public class Tokenizer {
                     } else if (currentChar == '"') {
                         lexeme.append(currentChar);
                         String lexemeString = lexeme.toString();
-                        return new Token("String", lexemeString, lineNumber);
+                        return new Token("stringLiteral", lexemeString, lineNumber);
                     } else {
                         throw new LexicalException("Linea: " + lineNumber + " - Cadena mal formada.");
                     }
@@ -431,6 +431,11 @@ public class Tokenizer {
     /**
      * Controla el incremento de lineas en caso de que se haya cambiado de linea
      * y no llegue a procesarse.
+     *
+     * Si no es '\n' todavia no ocurrio un salto y debe volverse el marcador
+     * hacia atras para procesar el caracter actual. Si es un '\n', ocurrio un
+     * salto y no tiene sentido volver el marcador hacia atras puesto que se
+     * debe procesar siguiente linea (ya actualizada por el reader)
      *
      * @param currentChar
      */

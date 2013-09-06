@@ -60,8 +60,4 @@ public class Token {
     public String toString() {
         return String.format("%-8s%-20s%-20s", lineNumber, token, lexeme);
     }
-
-    public boolean equals(String s) {
-        return token.equals(s);
-    }
 }

@@ -1,22 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package SyntacticAnalyzer;
 
 /**
- *
- * @author vkmc
+ * CLI para el analizador sintáctico.
+ * 
+ * @author Ramiro Agis
+ * @author Victoria Martínez de la Cruz
  */
 public class Main {
     
-       /**
-     * @param args the command line arguments
+    /**
+     * Constructor de la clase Main.
+     * 
+     * @param args
      */
     public static void main(String[] args) {
          if (args.length == 0 || args.length > 1) {
             System.err.println("Cantidad de argumentos invalida.");
-            System.err.println("Uso: java -jar SyntacticAnalyzer <IN_FILE>");
+            System.err.println("Uso: java -jar SyntacticAnalyzer.jar <IN_FILE>");
         } else {
             Parser parser = new Parser(args[0]);
             try {
