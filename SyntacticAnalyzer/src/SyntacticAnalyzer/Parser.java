@@ -301,95 +301,276 @@ public class Parser {
     }
 
     private void Sentencia__() throws LexicalException, SyntacticException {
+        if (lookAhead.equals(";")) {
+            // Sentencia__ -> lambda
+        } else {
+            Expresion();
+        }
     }
 
     private void Asignacion() throws LexicalException, SyntacticException {
+        match("id");
+        match("=");
+        Expresion();
     }
 
     private void SentenciaSimple() throws LexicalException, SyntacticException {
+        match("(");
+        Expresion();
+        match(")");
     }
 
     private void Expresion() throws LexicalException, SyntacticException {
+        Expresion6();
     }
 
     private void Expresion6() throws LexicalException, SyntacticException {
+        Expresion5();
+        Expresion6_();
     }
 
     private void Expresion6_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("||")) {
+            match("||");
+            Expresion5();
+            Expresion6_();
+        } else {
+            // Expresion6_ -> lambda
+        }
     }
 
     private void Expresion5() throws LexicalException, SyntacticException {
+        Expresion4();
+        Expresion5_();
     }
 
     private void Expresion5_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("&&")) {
+            match("&&");
+            Expresion4();
+            Expresion5_();
+        } else {
+            // Expresion5_ -> lambda
+        }
     }
 
     private void Expresion4() throws LexicalException, SyntacticException {
+        Expresion3();
+        Expresion4_();
     }
 
     private void Expresion4_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("==") || lookAhead.equals("!=")) {
+            Operador4();
+            Expresion3();
+            Expresion4_();
+        } else {
+            // Expresion4_ -> lambda
+        }
     }
 
     private void Expresion3() throws LexicalException, SyntacticException {
+        Expresion2();
+        Expresion3_();
     }
 
     private void Expresion3_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("<") || lookAhead.equals(">") || lookAhead.equals(">=") || lookAhead.equals("<=")) {
+            Operador3();
+            Expresion2();
+            Expresion3_();
+        } else {
+            // Expresion3_ -> lambda
+        }
     }
 
     private void Expresion2() throws LexicalException, SyntacticException {
+        Expresion1();
+        Expresion2_();
     }
 
     private void Expresion2_() throws LexicalException, SyntacticException {
+         if (lookAhead.equals("+") || lookAhead.equals(">")) {
+            Operador2();
+            Expresion1();
+            Expresion2_();
+        } else {
+            // Expresion2_ -> lambda
+        }
     }
 
     private void Expresion1() throws LexicalException, SyntacticException {
+        Expresion0();
+        Expresion1_();
     }
 
     private void Expresion1_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("*") || lookAhead.equals("/")) {
+            Operador1();
+            Expresion0();
+            Expresion1_();
+        } else {
+            // Expresion1_ -> lambda
+        }
     }
 
     private void Expresion0() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("!") || lookAhead.equals("+") || lookAhead.equals("-")) {
+            OperadorUnario();
+            Primario();
+        } else {
+            Primario();
+        }
     }
 
     private void Operador4() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("==")) {
+            match("==");
+        } else if (lookAhead.equals("!=")) {
+            match("!=");
+        } else {
+            throw new SyntacticException("Se esperaba == o != .");
+        }
     }
 
     private void Operador3() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("<")) {
+            match("<");
+        } else if (lookAhead.equals(">")) {
+            match(">");
+        } else if (lookAhead.equals(">=")) {
+            match(">=");
+        } else if (lookAhead.equals("<=")) {
+            match("<=");
+        }  else {
+            throw new SyntacticException("Se esperaba <, >, <=, >= .");
+        }
     }
 
     private void Operador2() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("+")) {
+            match("+");
+        } else if (lookAhead.equals("-")) {
+            match("-");
+        } else {
+            throw new SyntacticException("Se esperaba + o - .");
+        }
     }
 
     private void Operador1() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("*")) {
+            match("*");
+        } else if (lookAhead.equals("/")) {
+            match("/");
+        } else {
+            throw new SyntacticException("Se esperaba * o / .");
+        }
     }
 
     private void OperadorUnario() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("!")) {
+            match("!");
+        } else if (lookAhead.equals("+")) {
+            match("+");
+        } else if (lookAhead.equals("-")) {
+            match("-");
+        } else {
+            throw new SyntacticException("Se esperaba !, + o - .");
+        }
     }
 
     private void Primario() throws LexicalException, SyntacticException {
-    }
-
-    private void ListaLlamadas_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("this")) {
+            match("this");
+        } else if (lookAhead.equals("(")) {
+            match("(");
+            Expresion();
+            match(")");
+            ListaLlamadas();
+        } else if (lookAhead.equals("id")) {
+            match("id");
+            ListaLlamadas_();
+        } else if (lookAhead.equals("new")) {
+            match("new");
+            match("id");
+            ArgsActuales();
+            ListaLlamadas();
+        } else if (lookAhead.equals("id")) {
+            match("id");
+            ArgsActuales();
+            ListaLlamadas();
+        } else {
+            Literal();
+        }
     }
 
     private void ListaLlamadas() throws LexicalException, SyntacticException {
+        if (lookAhead.equals(".")) {
+            Llamada();
+            ListaLlamadas();
+        } else {
+            // ListaLlamadas -> lambda
+        }
+    }
+    
+    private void ListaLlamadas_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("(")) {
+            ArgsActuales();
+            ListaLlamadas();
+        } else {
+            ListaLlamadas();
+        }
     }
 
     private void Llamada() throws LexicalException, SyntacticException {
+        match(".");
+        match("id");
+        ArgsActuales();
     }
 
     private void Literal() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("null")) {
+            match("null");
+        } else if (lookAhead.equals("true")) {
+            match("true");
+        } else if (lookAhead.equals("false")) {
+            match("false");
+        } else if (lookAhead.equals("intLiteral")) {
+            match("intLiteral");
+        } else if (lookAhead.equals("charLiteral")) {
+            match("charLiteral");
+        } else if (lookAhead.equals("stringLiteral")) {
+            match("stringLiteral");
+        } else {
+            throw new SyntacticException("Se esperaba un literal.");
+        }
     }
 
     private void ArgsActuales() throws LexicalException, SyntacticException {
+        match("(");
+        ArgsActuales_();
+        match(")");
     }
 
     private void ArgsActuales_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("!") || lookAhead.equals("+") || lookAhead.equals("-") || lookAhead.equals("this") || lookAhead.equals("new") || lookAhead.equals("id") || lookAhead.equals("(") || lookAhead.equals("null") || lookAhead.equals("true") || lookAhead.equals("false") || lookAhead.equals("intLiteral") || lookAhead.equals("charLiteral") || lookAhead.equals("stringLiteral")) {
+            Expresion();
+        } else {
+            // ListaExps -> lambda
+        }
     }
 
     private void ListaExps() throws LexicalException, SyntacticException {
+        Expresion();
+        ListaExps_();
     }
 
     private void ListaExps_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals(",")) {
+            match(",");
+            ListaExps();
+        } else {
+            // ListaExps_ -> lambda
+        }
     }
 }
