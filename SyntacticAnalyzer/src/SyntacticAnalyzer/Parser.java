@@ -16,7 +16,6 @@ public class Parser {
     }
 
     // analizador sintactico
-    
     public void analize() throws SyntacticException, LexicalException {
         lookAhead = tokenizer.getToken();
         currentToken = null;
@@ -75,7 +74,7 @@ public class Parser {
     }
 
     private void ListaMiembros() throws LexicalException, SyntacticException {
-        if(lookAhead.equals("}")) {
+        if (lookAhead.equals("}")) {
             // ListaMiembros -> lambda
             // No hay mas miembros
         } else {
@@ -126,7 +125,7 @@ public class Parser {
         ArgsFormales_();
         match(")");
     }
-    
+
     private void ArgsFormales_() throws LexicalException, SyntacticException {
         if (lookAhead.equals(")")) {
             // ArgsFormales_ -> lambda
@@ -194,7 +193,7 @@ public class Parser {
     }
 
     private void Tipo() throws LexicalException, SyntacticException {
-        if(lookAhead.equals("id")) {
+        if (lookAhead.equals("id")) {
             match("id");
         } else {
             TipoPrimitivo();
@@ -202,7 +201,7 @@ public class Parser {
     }
 
     private void TipoPrimitivo() throws LexicalException, SyntacticException {
-        if(lookAhead.equals("boolean")) {
+        if (lookAhead.equals("boolean")) {
             match("boolean");
         } else if (lookAhead.equals("char")) {
             match("char");
@@ -219,14 +218,14 @@ public class Parser {
         match("id");
         ListaDecVars_();
     }
-    
+
     private void ListaDecVars_() throws LexicalException, SyntacticException {
         if (lookAhead.equals(";")) {
             // ListaDecVars_ -> lambda
             // No hay mas variables declaradas
         } else if (lookAhead.equals(",")) {
             match(",");
-            ListaDecVars();             
+            ListaDecVars();
         } else {
             throw new SyntacticException("Se esperaba una variable.");
         }
@@ -300,9 +299,8 @@ public class Parser {
             // if-then sin else
         }
     }
-    
+
     private void Sentencia__() throws LexicalException, SyntacticException {
-        
     }
 
     private void Asignacion() throws LexicalException, SyntacticException {
@@ -389,7 +387,6 @@ public class Parser {
     private void ArgsActuales_() throws LexicalException, SyntacticException {
     }
 
-    
     private void ListaExps() throws LexicalException, SyntacticException {
     }
 
