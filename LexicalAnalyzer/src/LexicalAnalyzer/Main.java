@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) {
         if (args.length == 0 || args.length > 2) {
             System.err.println("Cantidad de argumentos invalida.");
-            System.err.println("Uso: java -jar tokenizer <IN_FILE> [<OUT_FILE>]");
+            System.err.println("Uso: java -jar LexicalAnalyzer.jar <IN_FILE> [<OUT_FILE>]");
             return;
         }
         Tokenizer tokenizer = new Tokenizer(args[0]);
