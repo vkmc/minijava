@@ -23,7 +23,7 @@ public class Main {
                 parser.analize();
                 System.out.println("El analizador sintactico fue exitoso. El programa no contiene errores sintacticos o lexicos.\n");
             } catch (SyntacticException exc) {
-                System.err.println("Error sintactico: " + exc.getMessage());
+                System.err.println(exc.getMessage());
             } catch (LexicalException exc) {
                 System.err.println("Error lexico: " + exc.getMessage());
             }
