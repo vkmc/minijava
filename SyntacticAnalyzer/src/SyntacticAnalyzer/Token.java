@@ -64,6 +64,8 @@ public class Token {
     /**
      * Compara el token con una cadena pasada como parametro.
      *
+     * Requerido por: Analizador sintactico
+     *
      * @param s
      * @return true si el token es igual a la cadena pasada como parametro,
      * false en caso contrario.
