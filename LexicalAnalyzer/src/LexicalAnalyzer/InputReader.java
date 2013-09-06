@@ -25,7 +25,7 @@ public class InputReader {
 
     /**
      * Constructor de la clase InputReader.
-     * 
+     *
      * @param filename Path del archivo con el código fuente
      */
     public InputReader(String filename) {
@@ -35,7 +35,7 @@ public class InputReader {
 
     /**
      * Apertura del archivo con el código fuente.
-     * 
+     *
      * Inicialización de variables de control para el recorrido del mismo.
      */
     private void open() {
@@ -65,14 +65,14 @@ public class InputReader {
 
     /**
      * Lectura de caracteres.
-     * 
-     * Se procesa el archivo línea por linea
-     *  - Si la línea a procesar es nula, entonces se alcanzó el fin de archivo
-     *  - Si el marcador de lectura (pointer) es mayor al tamaño de la línea a procesar,
-     *    se procede a leer una línea nueva y a reiniciar la marca.
-     *  - Si la marcador de lectura (pointer) es menor al tamaño de la línea a procesar,
-     *    se procede a leer el caracter que apunta la marca y a incrementar la marca.
-     * 
+     *
+     * Se procesa el archivo línea por linea - Si la línea a procesar es nula,
+     * entonces se alcanzó el fin de archivo - Si el marcador de lectura
+     * (pointer) es mayor al tamaño de la línea a procesar, se procede a leer
+     * una línea nueva y a reiniciar la marca. - Si la marcador de lectura
+     * (pointer) es menor al tamaño de la línea a procesar, se procede a leer el
+     * caracter que apunta la marca y a incrementar la marca.
+     *
      * @return c, caracter leído
      */
     public char readChar() {
@@ -100,7 +100,7 @@ public class InputReader {
 
     /**
      * Retorna el valor actual del marcador.
-     * 
+     *
      * @return mark, valor actual del marcador
      */
     public int getMark() {

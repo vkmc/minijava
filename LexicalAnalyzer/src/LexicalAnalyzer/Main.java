@@ -27,13 +27,13 @@ public class Main {
         }
         Tokenizer tokenizer = new Tokenizer(args[0]);
         LinkedList tokenList = createTokenList(tokenizer);
-        
+
         if (args.length == 1) {
             printTokens(tokenList);
-            System.out.println("El analizador lexico ha terminado.\n");
+            System.out.println("El analizador lexico ha terminado.");
         } else if (args.length == 2) {
             writeTokens(tokenList, args[1]);
-            System.out.println("El analizador lexico ha terminado. Resultado volcado en el archivo \""+args[1]+"\"");
+            System.out.println("El analizador lexico ha terminado. Resultado volcado en el archivo \"" + args[1] + "\"");
         }
     }
 
@@ -69,21 +69,21 @@ public class Main {
             System.out.println(t.toString());
         }
     }
-    
-     /**
+
+    /**
      * Escribe en el archivo destino la lista de tokens recibida como parámetro.
-     * Si el archivo existe reemplaza completamente su contenido.
-     * Si el archivo no existe, lo crea.
-     * 
+     * Si el archivo existe reemplaza completamente su contenido. Si el archivo
+     * no existe, lo crea.
+     *
      * @param tokenList
-     * @param path
+     * @param filename
      */
-    private static void writeTokens(LinkedList<Token> tokenList, String path) {
-        File file = new File(path);
+    private static void writeTokens(LinkedList<Token> tokenList, String filename) {
+        File file = new File(filename);
         BufferedWriter buffer;
-        
+
         try {
-            if(!file.exists()){
+            if (!file.exists()) {
                 file.createNewFile();
             }
             buffer = new BufferedWriter(new FileWriter(file));
