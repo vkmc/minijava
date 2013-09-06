@@ -46,9 +46,9 @@ public class Parser {
             Clase();
             ListaClases();
         } else if (lookAhead.equals("EOF")) {
-            System.err.println("El analizador sintáctico termino exitosamente");
+            System.err.println("El analizador sintáctico termino exitosamente" + "\nNumero de linea: " + lookAhead.getLineNumber());
         } else {
-            throw new SyntacticException("Se alcanzo EOF durante el análisis sintáctico.");
+            throw new SyntacticException("Se alcanzo EOF durante el análisis sintáctico." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -69,7 +69,7 @@ public class Parser {
             // Herencia -> lambda
             // No hay herencia 
         } else {
-            throw new SyntacticException("Se esperaba la lista de miembros de la clase.");
+            throw new SyntacticException("Se esperaba la lista de miembros de la clase." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -93,7 +93,7 @@ public class Parser {
         } else if (lookAhead.equals("static") || lookAhead.equals("dynamic")) {
             Metodo();
         } else {
-            throw new SyntacticException("Se esperaba la definicion de atributos, constructores o metodos.");
+            throw new SyntacticException("Se esperaba la definicion de atributos, constructores o metodos." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -148,7 +148,7 @@ public class Parser {
             match(",");
             ListaArgsFormales();
         } else {
-            throw new SyntacticException("Se esperaban argumentos formales.");
+            throw new SyntacticException("Se esperaban argumentos formales." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -170,7 +170,7 @@ public class Parser {
             Atributo();
             ListaAtributos();
         } else {
-            throw new SyntacticException("Se esperaban atributos.");
+            throw new SyntacticException("Se esperaban atributos." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -180,7 +180,7 @@ public class Parser {
         } else if (lookAhead.equals("dynamic")) {
             match("dynamic");
         } else {
-            throw new SyntacticException("Se esperaba el modo de ejecucion del metodo (static o dynamic).");
+            throw new SyntacticException("Se esperaba el modo de ejecucion del metodo (static o dynamic)." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -210,7 +210,7 @@ public class Parser {
         } else if (lookAhead.equals("String")) {
             match("String");
         } else {
-            throw new SyntacticException("Se esperaba un tipo de dato.");
+            throw new SyntacticException("Se esperaba un tipo de dato." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -227,7 +227,7 @@ public class Parser {
             match(",");
             ListaDecVars();
         } else {
-            throw new SyntacticException("Se esperaba una variable.");
+            throw new SyntacticException("Se esperaba una variable." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -287,7 +287,7 @@ public class Parser {
             Sentencia__();
             match(";");
         } else {
-            throw new SyntacticException("Se esperaba una sentencia.");
+            throw new SyntacticException("Se esperaba una sentencia." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -429,7 +429,7 @@ public class Parser {
         } else if (lookAhead.equals("!=")) {
             match("!=");
         } else {
-            throw new SyntacticException("Se esperaba == o != .");
+            throw new SyntacticException("Se esperaba == o != ." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -443,7 +443,7 @@ public class Parser {
         } else if (lookAhead.equals("<=")) {
             match("<=");
         }  else {
-            throw new SyntacticException("Se esperaba <, >, <=, >= .");
+            throw new SyntacticException("Se esperaba <, >, <=, >= ." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -453,7 +453,7 @@ public class Parser {
         } else if (lookAhead.equals("-")) {
             match("-");
         } else {
-            throw new SyntacticException("Se esperaba + o - .");
+            throw new SyntacticException("Se esperaba + o - ." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -463,7 +463,7 @@ public class Parser {
         } else if (lookAhead.equals("/")) {
             match("/");
         } else {
-            throw new SyntacticException("Se esperaba * o / .");
+            throw new SyntacticException("Se esperaba * o / ." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -475,7 +475,7 @@ public class Parser {
         } else if (lookAhead.equals("-")) {
             match("-");
         } else {
-            throw new SyntacticException("Se esperaba !, + o - .");
+            throw new SyntacticException("Se esperaba !, + o - ." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
@@ -542,7 +542,7 @@ public class Parser {
         } else if (lookAhead.equals("stringLiteral")) {
             match("stringLiteral");
         } else {
-            throw new SyntacticException("Se esperaba un literal.");
+            throw new SyntacticException("Se esperaba un literal." + "\nNumero de linea: " + lookAhead.getLineNumber());
         }
     }
 
