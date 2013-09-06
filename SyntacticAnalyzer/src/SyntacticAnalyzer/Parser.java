@@ -15,6 +15,8 @@ public class Parser {
         tokenizer = new Tokenizer(filename);
     }
 
+    // analizador sintactico
+    
     public void analize() throws SyntacticException, LexicalException {
         lookAhead = tokenizer.getToken();
         currentToken = null;
@@ -79,7 +81,8 @@ public class Parser {
         } else {
             Miembro();
             ListaMiembros();
-            // Para no duplicar codigo dejamos que el control lo haga Miembro()
+            // Para no duplicar codigo dejamos que el control
+            // de lo haga Miembro()
         }
     }
 
@@ -91,7 +94,7 @@ public class Parser {
         } else if (lookAhead.equals("static") || lookAhead.equals("dynamic")) {
             Metodo();
         } else {
-            throw new LexicalException("Se esperaba la definicion de atributos, constructores o metodos.");
+            throw new SyntacticException("Se esperaba la definicion de atributos, constructores o metodos.");
         }
     }
 
@@ -112,24 +115,64 @@ public class Parser {
     }
 
     private void Ctor() throws LexicalException, SyntacticException {
+        match("id");
+        ArgsFormales();
+        VarsLocales();
+        Bloque();
     }
 
     private void ArgsFormales() throws LexicalException, SyntacticException {
+        match("(");
+        ArgsFormales_();
+        match(")");
+    }
+    
+    private void ArgsFormales_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals(")")) {
+            // ArgsFormales_ -> lambda
+            // No hay mas argumentos formales
+        } else {
+            ListaArgsFormales();
+        }
     }
 
     private void ListaArgsFormales() throws LexicalException, SyntacticException {
+        ArgFormal();
+        ListaArgsFormales_();
     }
 
     private void ListaArgsFormales_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals(")")) {
+            // ListaArgsFormales_ -> lambda
+            // No hay mas argumentos formales
+        } else if (lookAhead.equals(",")) {
+            match(",");
+            ListaArgsFormales();
+        } else {
+            throw new SyntacticException("Se esperaban argumentos formales.");
+        }
     }
 
     private void ArgFormal() throws LexicalException, SyntacticException {
+        Tipo();
+        match("id");
     }
 
     private void VarsLocales() throws LexicalException, SyntacticException {
+        ListaAtributos();
     }
 
     private void ListaAtributos() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("{")) {
+            // ListaAtributos -> lambda
+            // Bloque
+            // No hay mas atributos
+        } else if (lookAhead.equals("var")) {
+            Atributo();
+            ListaAtributos();
+        } else {
+            throw new SyntacticException("Se esperaban atributos.");
+        }
     }
 
     private void ModMetodo() throws LexicalException, SyntacticException {
@@ -168,7 +211,7 @@ public class Parser {
         } else if (lookAhead.equals("String")) {
             match("String");
         } else {
-            throw new LexicalException("Se esperaba un tipo primitivo.");
+            throw new SyntacticException("Se esperaba un tipo de dato.");
         }
     }
 
@@ -178,24 +221,88 @@ public class Parser {
     }
     
     private void ListaDecVars_() throws LexicalException, SyntacticException {
-        if (lookAhead.equals(",")) {
+        if (lookAhead.equals(";")) {
+            // ListaDecVars_ -> lambda
+            // No hay mas variables declaradas
+        } else if (lookAhead.equals(",")) {
             match(",");
-            ListaDecVars();
+            ListaDecVars();             
         } else {
-            
+            throw new SyntacticException("Se esperaba una variable.");
         }
     }
 
     private void Bloque() throws LexicalException, SyntacticException {
+        match("{");
+        ListaSentencias();
+        match("}");
     }
 
     private void ListaSentencias() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("}")) {
+            // ListaSentencias -> lambda
+            // No hay mas sentencias
+        } else {
+            Sentencia();
+            // Delego el control de terminales o no-terminales a Sentencia()
+            ListaSentencias();
+        }
     }
 
     private void Sentencia() throws LexicalException, SyntacticException {
+        if (lookAhead.equals(";")) {
+            match(";");
+        } else if (lookAhead.equals("id")) {
+            Asignacion();
+            match(";");
+        } else if (lookAhead.equals("(")) {
+            SentenciaSimple();
+            match(";");
+        } else if (lookAhead.equals("if")) {
+            match("if");
+            match("(");
+            Expresion();
+            match(")");
+            Sentencia();
+            Sentencia_();
+        } else if (lookAhead.equals("while")) {
+            match("while");
+            match("(");
+            Expresion();
+            match(")");
+            Sentencia();
+        } else if (lookAhead.equals("for")) {
+            match("for");
+            match("(");
+            Asignacion();
+            match(";");
+            Expresion();
+            match(";");
+            Expresion();
+            match(")");
+            Sentencia();
+        } else if (lookAhead.equals("{")) {
+            Bloque();
+        } else if (lookAhead.equals("return")) {
+            match("return");
+            Sentencia__();
+            match(";");
+        } else {
+            throw new SyntacticException("Se esperaba una sentencia.");
+        }
     }
 
     private void Sentencia_() throws LexicalException, SyntacticException {
+        if (lookAhead.equals("else")) {
+            Sentencia();
+        } else {
+            // Sentencia_ -> lambda
+            // if-then sin else
+        }
+    }
+    
+    private void Sentencia__() throws LexicalException, SyntacticException {
+        
     }
 
     private void Asignacion() throws LexicalException, SyntacticException {
@@ -210,37 +317,37 @@ public class Parser {
     private void Expresion6() throws LexicalException, SyntacticException {
     }
 
-    private void RExpresion6() throws LexicalException, SyntacticException {
+    private void Expresion6_() throws LexicalException, SyntacticException {
     }
 
     private void Expresion5() throws LexicalException, SyntacticException {
     }
 
-    private void RExpresion5() throws LexicalException, SyntacticException {
+    private void Expresion5_() throws LexicalException, SyntacticException {
     }
 
     private void Expresion4() throws LexicalException, SyntacticException {
     }
 
-    private void RExpresion4() throws LexicalException, SyntacticException {
+    private void Expresion4_() throws LexicalException, SyntacticException {
     }
 
     private void Expresion3() throws LexicalException, SyntacticException {
     }
 
-    private void RExpresion3() throws LexicalException, SyntacticException {
+    private void Expresion3_() throws LexicalException, SyntacticException {
     }
 
     private void Expresion2() throws LexicalException, SyntacticException {
     }
 
-    private void RExpresion2() throws LexicalException, SyntacticException {
+    private void Expresion2_() throws LexicalException, SyntacticException {
     }
 
     private void Expresion1() throws LexicalException, SyntacticException {
     }
 
-    private void RExpresion1() throws LexicalException, SyntacticException {
+    private void Expresion1_() throws LexicalException, SyntacticException {
     }
 
     private void Expresion0() throws LexicalException, SyntacticException {
@@ -279,6 +386,10 @@ public class Parser {
     private void ArgsActuales() throws LexicalException, SyntacticException {
     }
 
+    private void ArgsActuales_() throws LexicalException, SyntacticException {
+    }
+
+    
     private void ListaExps() throws LexicalException, SyntacticException {
     }
 
