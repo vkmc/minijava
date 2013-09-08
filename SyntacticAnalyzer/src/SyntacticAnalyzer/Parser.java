@@ -465,6 +465,8 @@ public class Parser {
             match("*");
         } else if (lookAhead.equals("/")) {
             match("/");
+        } else if (lookAhead.equals("%")) {
+            match("%");
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba * o / .");
         }
