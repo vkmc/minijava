@@ -295,6 +295,7 @@ public class Parser {
 
     private void Sentencia_() throws LexicalException, SyntacticException {
         if (lookAhead.equals("else")) {
+            match("else");
             Sentencia();
         } else {
             // Sentencia_ -> lambda
@@ -392,7 +393,7 @@ public class Parser {
     }
 
     private void Expresion2_() throws LexicalException, SyntacticException {
-         if (lookAhead.equals("+") || lookAhead.equals(">")) {
+         if (lookAhead.equals("+") || lookAhead.equals("-")) {
             Operador2();
             Expresion1();
             Expresion2_();
