@@ -124,15 +124,16 @@ public class Parser {
     private void ArgsFormales() throws LexicalException, SyntacticException {
         match("(");
         ArgsFormales_();
-        match(")");
     }
 
     private void ArgsFormales_() throws LexicalException, SyntacticException {
         if (lookAhead.equals(")")) {
-            // ArgsFormales_ -> lambda
+            // ArgsFormales_ -> )
             // No hay mas argumentos formales
+            match(")");
         } else {
             ListaArgsFormales();
+            match(")");
         }
     }
 
@@ -550,14 +551,16 @@ public class Parser {
     private void ArgsActuales() throws LexicalException, SyntacticException {
         match("(");
         ArgsActuales_();
-        match(")");
     }
 
     private void ArgsActuales_() throws LexicalException, SyntacticException {
-        if (lookAhead.equals("!") || lookAhead.equals("+") || lookAhead.equals("-") || lookAhead.equals("this") || lookAhead.equals("new") || lookAhead.equals("id") || lookAhead.equals("(") || lookAhead.equals("null") || lookAhead.equals("true") || lookAhead.equals("false") || lookAhead.equals("intLiteral") || lookAhead.equals("charLiteral") || lookAhead.equals("stringLiteral")) {
-            Expresion();
+        if (lookAhead.equals(")")) {
+            // ArgsActuales_ -> )
+            // No hay mas argumentos actuales
+            match(")");
         } else {
-            // ListaExps -> lambda
+            ListaExps();
+            match(")");
         }
     }
 
