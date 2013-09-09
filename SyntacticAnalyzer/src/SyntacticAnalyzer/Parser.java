@@ -9,7 +9,7 @@ package SyntacticAnalyzer;
 public class Parser {
     
     private Tokenizer tokenizer;
-    private Token lookAhead, currentToken;
+    private Token lookAhead;
     
     public Parser(String filename) {
         tokenizer = new Tokenizer(filename);
@@ -18,7 +18,6 @@ public class Parser {
     // analizador sintactico
     public void analize() throws SyntacticException, LexicalException {
         lookAhead = tokenizer.getToken();
-        currentToken = null;
         Inicial();
     }
     
@@ -26,7 +25,6 @@ public class Parser {
         System.out.println("Token: " + lookAhead.getToken());
         if (lookAhead.getToken().equals(token)) {
             if (!token.equals("EOF")) {
-                currentToken = lookAhead;
                 lookAhead = tokenizer.getToken();
             } else {
                 System.err.println("FIN DE ARCHIVO :O ");
@@ -70,7 +68,7 @@ public class Parser {
             // Herencia -> lambda
             // No hay herencia 
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la lista de miembros de la clase.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de bloque de la clase o la especificacion de herencia.");
         }
     }
     
@@ -150,7 +148,7 @@ public class Parser {
             match(",");
             ListaArgsFormales();
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaban argumentos formales.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un nuevo argumento formal o el cierre de los argumentos formales.");
         }
     }
     
@@ -172,7 +170,7 @@ public class Parser {
             Atributo();
             ListaAtributos();
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cuerpo del metodo o la definición de variables locales.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de bloque del metodo o la definicion de variables locales.");
         }
     }
     
@@ -181,8 +179,6 @@ public class Parser {
             match("static");
         } else if (lookAhead.equals("dynamic")) {
             match("dynamic");
-        } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el modo de ejecucion del metodo (static o dynamic).");
         }
     }
     
@@ -468,7 +464,7 @@ public class Parser {
         } else if (lookAhead.equals("%")) {
             match("%");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba * o / .");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba *, / o % .");
         }
     }
     
@@ -547,7 +543,7 @@ public class Parser {
         } else if (lookAhead.equals("stringLiteral")) {
             match("stringLiteral");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un literal.");
+                throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un literal.");
         }
     }
     
