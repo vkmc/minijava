@@ -22,12 +22,11 @@ public class Parser {
     }
     
     public void match(String token) throws LexicalException, SyntacticException {
-        System.out.println("Token: " + lookAhead.getToken());
         if (lookAhead.getToken().equals(token)) {
             if (!token.equals("EOF")) {
                 lookAhead = tokenizer.getToken();
             } else {
-                System.err.println("FIN DE ARCHIVO :O ");
+                System.err.println("ERROR: FIN DE ARCHIVO.");
             }
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba: '" + token + "'. Se encontro: '" + lookAhead.getToken());
