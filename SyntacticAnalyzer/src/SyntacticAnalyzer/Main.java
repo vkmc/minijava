@@ -24,7 +24,7 @@ public class Main {
             } catch (SyntacticException exc) {
                 System.err.println(exc.getMessage());
             } catch (LexicalException exc) {
-                System.err.println("Error lexico: " + exc.getMessage());
+                System.err.println(exc.getMessage());
             }
 
         }
