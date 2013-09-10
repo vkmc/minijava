@@ -10,9 +10,9 @@ public class Parser {
 
     private Tokenizer tokenizer;
     private Token lookAhead;
-    
-    // analizador sintactico
 
+    // analizador sintactico
+    
     /**
      * Constructor de la clase Parser
      *
@@ -31,23 +31,21 @@ public class Parser {
      * @throws SyntacticException
      * @throws LexicalException
      */
-    
     public void analize() throws SyntacticException, LexicalException {
         lookAhead = tokenizer.getToken();
         Inicial();
     }
 
     /**
-     * Compara el token encontrado con lo que se esperaba de acuerdo a la gramatica.
-     * En caso de encontrar un token no esperado o el fin de linea 
-     * durante el proceso de analisis, se procedera a detenerlo
-     * y a notificar el error.
-     * 
+     * Compara el token encontrado con lo que se esperaba de acuerdo a la
+     * gramatica. En caso de encontrar un token no esperado o el fin de linea
+     * durante el proceso de analisis, se procedera a detenerlo y a notificar el
+     * error.
+     *
      * @param token
      * @throws LexicalException
      * @throws SyntacticException
      */
-    
     public void match(String token) throws LexicalException, SyntacticException {
         if (lookAhead.getToken().equals(token)) {
             if (!token.equals("EOF")) {
@@ -56,7 +54,7 @@ public class Parser {
                 System.err.println("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se alcanzo el fin de archivo durante el analisis sintactico.");
             }
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba: '" + token + "'. Se encontro: '" + lookAhead.getToken()+"'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba: '" + token + "'. Se encontro: '" + lookAhead.getToken() + "'.");
         }
     }
 
@@ -73,7 +71,7 @@ public class Parser {
             Clase();
             ListaClases();
         } else if (lookAhead.equals("EOF")) {
-            System.err.println("El analizador sintactico termino exitosamente" + "\nNumero de linea: " + lookAhead.getLineNumber());
+            System.err.println("El analizador sintactico termino exitosamente.");
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se alcanzo EOF durante el analisis sintactico.");
         }
