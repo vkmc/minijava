@@ -10,6 +10,8 @@ public class Parser {
 
     private Tokenizer tokenizer;
     private Token lookAhead;
+    
+    // analizador sintactico
 
     /**
      * Constructor de la clase Parser
@@ -29,7 +31,7 @@ public class Parser {
      * @throws SyntacticException
      * @throws LexicalException
      */
-    // analizador sintactico
+    
     public void analize() throws SyntacticException, LexicalException {
         lookAhead = tokenizer.getToken();
         Inicial();
@@ -45,6 +47,7 @@ public class Parser {
      * @throws LexicalException
      * @throws SyntacticException
      */
+    
     public void match(String token) throws LexicalException, SyntacticException {
         if (lookAhead.getToken().equals(token)) {
             if (!token.equals("EOF")) {
@@ -59,6 +62,7 @@ public class Parser {
 
     // Todos los metodos que siguen corresponden a las reglas de la gramatica de MiniJava
     // Existe un metodo por no-terminal de la gramatica, y el proceso se lleva adelante siguiendo el flujo de ejecucion normal
+    
     private void Inicial() throws LexicalException, SyntacticException {
         Clase();
         ListaClases();

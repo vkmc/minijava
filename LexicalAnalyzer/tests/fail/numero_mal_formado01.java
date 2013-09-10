@@ -1,5 +1,5 @@
 class Test() {
 	test() {
-		int leInt = 00000777;
+		int n1 = 00000777;
 	}
 }
