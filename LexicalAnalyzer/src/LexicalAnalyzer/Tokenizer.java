@@ -195,7 +195,7 @@ public class Tokenizer {
                         throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter mal formado (" + lexeme + currentChar + ").");
                     }
                 case 32:
-                    if (currentChar != '\n' && currentChar != '\t') {
+                    if (currentChar != '\n' && currentChar != '\t' && currentChar != '\0') {
                         if (!isValidChar(currentChar)) {
                             throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
                         }
