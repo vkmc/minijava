@@ -46,7 +46,6 @@ public class Parser {
      * @throws SyntacticException
      */
     public void match(String token) throws LexicalException, SyntacticException {
-        System.out.println("Token: " + lookAhead.getToken());
         if (lookAhead.getToken().equals(token)) {
             if (!token.equals("EOF")) {
                 lookAhead = tokenizer.getToken();
@@ -70,9 +69,9 @@ public class Parser {
             Clase();
             ListaClases();
         } else if (lookAhead.equals("EOF")) {
-            System.err.println("El analizador sintáctico termino exitosamente" + "\nNumero de linea: " + lookAhead.getLineNumber());
+            System.err.println("El analizador sintactico termino exitosamente" + "\nNumero de linea: " + lookAhead.getLineNumber());
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se alcanzo EOF durante el análisis sintáctico.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se alcanzo EOF durante el analisis sintactico.");
         }
     }
 

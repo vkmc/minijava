@@ -132,7 +132,7 @@ public class Tokenizer {
                                 lineNumber--;
                                 return new Token("EOF", "\\0", lineNumber);
                             default:
-                                throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
+                                throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter no soportado (" + currentChar + ").");
                         }
                     }
                     break;
@@ -156,10 +156,10 @@ public class Tokenizer {
                     break;
                 case 2:
                     if (isASCIILetter(currentChar)) {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Número mal formado (" + lexeme + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Número mal formado (" + lexeme + currentChar + ").");
                     } else if (Character.isDigit(currentChar)) {
                         if (flagZero) {
-                            throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Número mal formado. Un número no puede empezar con 0 (" + lexeme + currentChar + ").");
+                            throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Número mal formado. Un número no puede empezar con 0 (" + lexeme + currentChar + ").");
                         } else {
                             lexeme.append(currentChar);
                         }
@@ -172,7 +172,7 @@ public class Tokenizer {
                 case 3:
                     if (currentChar != '\\' && currentChar != '\'' && currentChar != '\n') {
                         if (!isValidChar(currentChar)) {
-                            throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
+                            throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter no soportado (" + currentChar + ").");
                         }
                         lexeme.append(currentChar);
                         currentState = 31;
@@ -182,9 +182,9 @@ public class Tokenizer {
                         currentState = 32;
                         break;
                     } else if (currentChar == '\'') {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter vacio (" + lexeme + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter vacio (" + lexeme + currentChar + ").");
                     } else {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter mal formado (" + lexeme + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter mal formado (" + lexeme + currentChar + ").");
                     }
                 case 31:
                     if (currentChar == '\'') {
@@ -192,23 +192,23 @@ public class Tokenizer {
                         String lexemeString = lexeme.toString();
                         return new Token("charLiteral", lexemeString, lineNumber);
                     } else {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter mal formado (" + lexeme + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter mal formado (" + lexeme + currentChar + ").");
                     }
                 case 32:
                     if (currentChar != '\n' && currentChar != '\t' && currentChar != '\0') {
                         if (!isValidChar(currentChar)) {
-                            throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
+                            throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter no soportado (" + currentChar + ").");
                         }
                         lexeme.append(currentChar);
                         currentState = 31;
                         break;
                     } else {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter no soportado (" + currentChar + ").");
                     }
                 case 4:
                     if (currentChar != '\n' && currentChar != '"') {
                         if (!isValidChar(currentChar)) {
-                            throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
+                            throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter no soportado (" + currentChar + ").");
                         }
                         lexeme.append(currentChar);
                         currentState = 41;
@@ -218,12 +218,12 @@ public class Tokenizer {
                         String lexemeString = lexeme.toString();
                         return new Token("stringLiteral", lexemeString, lineNumber);
                     } else {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Cadena mal formada (" + lexeme + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Cadena mal formada (" + lexeme + currentChar + ").");
                     }
                 case 41:
                     if (currentChar != '\n' && currentChar != '"') {
                         if (!isValidChar(currentChar)) {
-                            throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
+                            throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter no soportado (" + currentChar + ").");
                         }
                         lexeme.append(currentChar);
                         break;
@@ -232,7 +232,7 @@ public class Tokenizer {
                         String lexemeString = lexeme.toString();
                         return new Token("stringLiteral", lexemeString, lineNumber);
                     } else {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Cadena mal formada (" + lexeme + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Cadena mal formada (" + lexeme + currentChar + ").");
                     }
                 case 5:
                     if (currentChar == '=') {
@@ -270,13 +270,13 @@ public class Tokenizer {
                     if (currentChar == '&') {
                         return new Token("&&", "&&", lineNumber);
                     } else {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Operador no soportado (" + lexeme + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Operador no soportado (" + lexeme + currentChar + ").");
                     }
                 case 10:
                     if (currentChar == '|') {
                         return new Token("||", "||", lineNumber);
                     } else {
-                        throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Operador no soportado (" + lexeme + currentChar + ").");
+                        throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Operador no soportado (" + lexeme + currentChar + ").");
                     }
                 case 11:
                     if (currentChar == '/') {
@@ -341,7 +341,7 @@ public class Tokenizer {
 
         while (currentChar != '\n') {
             if (!isValidChar(currentChar)) {
-                throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
+                throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter no soportado (" + currentChar + ").");
             }
 
             currentChar = (char) reader.readChar();
@@ -369,7 +369,7 @@ public class Tokenizer {
         while (!closeBlockComment && nextChar != '\0') {
 
             if (!isValidChar(currentChar)) {
-                throw new LexicalException("Linea: " + lineNumber + " - Error léxico: Caracter no soportado (" + currentChar + ").");
+                throw new LexicalException("Linea: " + lineNumber + " - Error lexico: Caracter no soportado (" + currentChar + ").");
             }
 
             if (currentChar == '\n') {
@@ -385,7 +385,7 @@ public class Tokenizer {
         }
 
         if (nextChar == '\0') {
-            throw new LexicalException("Linea: " + lineNumber + " - Error léxico: El bloque de comentario no esta cerrado y se alcanzo el fin de archivo.");
+            throw new LexicalException("Linea: " + lineNumber + " - Error lexico: El bloque de comentario no esta cerrado y se alcanzo el fin de archivo.");
         } else {
             checkNL(nextChar);
         }
