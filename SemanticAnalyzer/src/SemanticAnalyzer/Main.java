@@ -1,5 +1,8 @@
 package SemanticAnalyzer;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * CLI para el analizador sintáctico.
  *
@@ -25,6 +28,8 @@ public class Main {
                 System.err.println(exc);
             } catch (LexicalException exc) {
                 System.err.println(exc);
+            } catch (SemanticException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }

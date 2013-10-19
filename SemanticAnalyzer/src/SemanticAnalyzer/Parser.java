@@ -1,5 +1,7 @@
 package SemanticAnalyzer;
 
+import java.util.LinkedList;
+
 /**
  * Analizador sintáctico. Transforma su entrada en un arbol de derivación.
  *
@@ -10,8 +12,10 @@ public class Parser {
 
     private Tokenizer tokenizer;
     private Token lookAhead;
-
+    private Token currentToken;
+    public SymbolTable symbolTable;
     // analizador sintactico
+
     /**
      * Constructor de la clase Parser
      *
@@ -21,6 +25,7 @@ public class Parser {
      */
     public Parser(String filename) {
         tokenizer = new Tokenizer(filename);
+        symbolTable = new SymbolTable();
     }
 
     /**
@@ -30,9 +35,10 @@ public class Parser {
      * @throws SyntacticException
      * @throws LexicalException
      */
-    public void analize() throws SyntacticException, LexicalException {
+    public void analize() throws SyntacticException, LexicalException, SemanticException {
         lookAhead = tokenizer.getToken();
         Inicial();
+
     }
 
     /**
@@ -48,6 +54,7 @@ public class Parser {
     public void match(String token) throws LexicalException, SyntacticException {
         if (lookAhead.getToken().equals(token)) {
             if (!token.equals("EOF")) {
+                currentToken = lookAhead;
                 lookAhead = tokenizer.getToken();
             } else {
                 System.err.println("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se alcanzo el fin de archivo durante el analisis sintactico.");
@@ -59,132 +66,157 @@ public class Parser {
 
     // Todos los metodos que siguen corresponden a las reglas de la gramatica de MiniJava
     // Existe un metodo por no-terminal de la gramatica, y el proceso se lleva adelante siguiendo el flujo de ejecucion normal
-    private void Inicial() throws LexicalException, SyntacticException {
+    private void Inicial() throws LexicalException, SyntacticException, SemanticException {
+        symbolTable.setup();
         Clase();
         ListaClases();
     }
 
-    private void ListaClases() throws LexicalException, SyntacticException {
+    private void ListaClases() throws LexicalException, SyntacticException, SemanticException {
         if (lookAhead.equals("class")) {
             Clase();
             ListaClases();
         } else if (lookAhead.equals("EOF")) {
-            System.out.println("El analizador sintactico termino exitosamente.");
+            System.err.println("El analizador sintactico termino exitosamente.");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la palabra reservada 'class'. Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se alcanzo EOF durante el analisis sintactico.");
         }
     }
 
-    private void Clase() throws LexicalException, SyntacticException {
+    private void Clase() throws LexicalException, SyntacticException, SemanticException {
         match("class");
-        if (!lookAhead.equals("id")) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el nombre de la clase. Se encontro: '" + lookAhead.getToken() + "'.");
-        }
         match("id");
+        String className = currentToken.getLexeme();
+        if (symbolTable.getClassEntry(className) == null) {
+            symbolTable.addClass(className);
+            symbolTable.setCurrentClass(className);
+        } else {
+            throw new SemanticException("Linea: " + currentToken.getLineNumber() + " - Error semantico: Ya existe una clase declarada con el nombre " + className);
+        }
         Herencia();
-        // el control de { lo hace Herencia()
         match("{");
-        ListaMiembros();
-        // el control de } lo hace ListaMiembros()
+        ListaMiembros("class");
+        symbolTable.getClassEntry(className).controlDefaultConstructor();
         match("}");
     }
 
-    private void Herencia() throws LexicalException, SyntacticException {
+    private void Herencia() throws LexicalException, SyntacticException, SemanticException {
+        String className = symbolTable.getCurrentClass();
+        ClassEntry classEntry = symbolTable.getClassEntry(className);
         if (lookAhead.equals("extends")) {
             match("extends");
             match("id");
+            String parentClass = currentToken.getLexeme();
+            classEntry.addParent(parentClass);
+            classEntry.setParent(parentClass);
+            if (symbolTable.controlInheritance(className)) {
+                throw new SemanticException("Linea: " + currentToken.getLineNumber() + " - Error semantico: Herencia circular.");
+            }
         } else if (lookAhead.equals("{")) {
             // Herencia -> lambda
             // No hay herencia 
+            classEntry.addParent("Object");
+            classEntry.setParent("Object");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de la clase '{' o la especificacion de herencia. Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de bloque de la clase o la especificacion de herencia.");
         }
     }
 
-    private void ListaMiembros() throws LexicalException, SyntacticException {
+    private void ListaMiembros(String from) throws LexicalException, SyntacticException, SemanticException {
         if (lookAhead.equals("}")) {
             // ListaMiembros -> lambda
             // No hay mas miembros
         } else {
-            Miembro();
-            ListaMiembros();
+            Miembro(from);
+            ListaMiembros(from);
             // Para no duplicar codigo dejamos que el control
             // de lo haga Miembro()
         }
     }
 
-    private void Miembro() throws LexicalException, SyntacticException {
+    private void Miembro(String from) throws LexicalException, SyntacticException, SemanticException {
         if (lookAhead.equals("var")) {
-            Atributo();
+            Atributo(from);
         } else if (lookAhead.equals("id")) {
-            Ctor();
+            Ctor(from);
         } else if (lookAhead.equals("static") || lookAhead.equals("dynamic")) {
-            Metodo();
-        } else if (isType(lookAhead)) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: No se encontro el modificador del metodo.");
-        } else if (lookAhead.equals("EOF")) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de la clase '}'. Se encontro: '" + lookAhead.getToken() + "'.");
+            Metodo(from);
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la definicion de atributos, constructores o metodos. Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la definicion de atributos, constructores o metodos.");
         }
     }
 
-    private void Atributo() throws LexicalException, SyntacticException {
+    private void Atributo(String from) throws LexicalException, SyntacticException {
         match("var");
-        Tipo();
-        ListaDecVars();
-        if (!lookAhead.equals(";")) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el terminador de la lista de variables ';'. Se encontro: '" + lookAhead.getToken() + "'.");
-        }
+        String type = Tipo();
+        ListaDecVars(from, type);
         match(";");
     }
 
-    private void Metodo() throws LexicalException, SyntacticException {
-        ModMetodo();
-        TipoMetodo();
+    private void Metodo(String from) throws LexicalException, SyntacticException, SemanticException {
+        String modificator = ModMetodo();
+        String type = TipoMetodo();
         match("id");
-        ArgsFormales();
-        VarsLocales();
-        Bloque();
-    }
-
-    private void Ctor() throws LexicalException, SyntacticException {
-        match("id");
-        ArgsFormales();
-        VarsLocales();
-        Bloque();
-    }
-
-    private void ArgsFormales() throws LexicalException, SyntacticException {
-        if (lookAhead.equals("(")) {
-            match("(");
-            ArgsFormales_();
+        String methodName = currentToken.getLexeme();
+        symbolTable.setCurrentMethod(methodName);
+        String currentClass = symbolTable.getCurrentClass();
+        ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
+        if (methodName.equals(currentClass)) {
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El metodo no puede tener el mismo nombre que la clase.");
+        } else if (classEntry.getMethodEntry(methodName) != null) {
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un metodo " + methodName + " declarado en la clase " + currentClass);
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la apertura de una lista de argumentos formales '('. Se encontro: '" + lookAhead.getToken() + "'.");
+            classEntry.addMethodEntry(methodName, type, modificator);
         }
+
+        ArgsFormales();
+        VarsLocales("method");
+        BlockNode body = Bloque();
+        classEntry.getMethodEntry(methodName).setBody(body);
     }
 
-    private void ArgsFormales_() throws LexicalException, SyntacticException {
+    private void Ctor(String from) throws LexicalException, SyntacticException, SemanticException {
+        match("id");
+        String constructorName = currentToken.getLexeme();
+        symbolTable.setCurrentMethod(constructorName);
+        String currentClass = symbolTable.getCurrentClass();
+        ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
+        if (!currentClass.equals(constructorName)) {
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El nombre del constructor no corresponde al nombre de la clase.");
+        } else if (classEntry.getConstructorEntry() != null) {
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un constructor en la clase " + currentClass + ".");
+        } else {
+            classEntry.setConstructorEntry(constructorName);
+        }
+        ArgsFormales();
+        VarsLocales("method");
+        Bloque();
+        BlockNode body = Bloque();
+        classEntry.getConstructorEntry().setBody(body);
+    }
+
+    private void ArgsFormales() throws LexicalException, SyntacticException, SemanticException {
+        match("(");
+        ArgsFormales_();
+    }
+
+    private void ArgsFormales_() throws LexicalException, SyntacticException, SemanticException {
         if (lookAhead.equals(")")) {
             // ArgsFormales_ -> )
             // No hay mas argumentos formales
             match(")");
         } else {
             ListaArgsFormales();
-            if (lookAhead.equals(")")) {
-                match(")");
-            } else {
-                throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de la lista de argumentos formales ')'. Se encontro: '" + lookAhead.getToken() + "'.");
-            }
+            match(")");
         }
     }
 
-    private void ListaArgsFormales() throws LexicalException, SyntacticException {
+    private void ListaArgsFormales() throws LexicalException, SyntacticException, SemanticException {
         ArgFormal();
         ListaArgsFormales_();
     }
 
-    private void ListaArgsFormales_() throws LexicalException, SyntacticException {
+    private void ListaArgsFormales_() throws LexicalException, SyntacticException, SemanticException {
         if (lookAhead.equals(")")) {
             // ListaArgsFormales_ -> lambda
             // No hay mas argumentos formales
@@ -192,106 +224,125 @@ public class Parser {
             match(",");
             ListaArgsFormales();
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un nuevo argumento formal o el cierre de la lista de argumentos formales ')'. Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un nuevo argumento formal o el cierre de los argumentos formales.");
         }
     }
 
-    private void ArgFormal() throws LexicalException, SyntacticException {
-        Tipo();
+    private void ArgFormal() throws LexicalException, SyntacticException, SemanticException {
+        String type = Tipo();
         match("id");
+        String parameterName = currentToken.getLexeme();
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+        ServiceEntry serviceEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod);
+        if (serviceEntry.getParameterEntry(parameterName) != null) {
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en la clase " + currentClass);
+        } else {
+            serviceEntry.addParameterEntry(parameterName, type);
+        }
     }
 
-    private void VarsLocales() throws LexicalException, SyntacticException {
-        ListaAtributos();
+    private void VarsLocales(String from) throws LexicalException, SyntacticException {
+        ListaAtributos(from);
     }
 
-    private void ListaAtributos() throws LexicalException, SyntacticException {
+    private void ListaAtributos(String from) throws LexicalException, SyntacticException {
         if (lookAhead.equals("{")) {
             // ListaAtributos -> lambda
             // Bloque
             // No hay mas atributos
         } else if (lookAhead.equals("var")) {
-            Atributo();
-            ListaAtributos();
+            Atributo(from);
+            ListaAtributos(from);
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de bloque del metodo '{' o la definicion de variables locales. Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de bloque del metodo o la definicion de variables locales.");
         }
     }
 
-    private void ModMetodo() throws LexicalException, SyntacticException {
+    private String ModMetodo() throws LexicalException, SyntacticException {
         if (lookAhead.equals("static")) {
             match("static");
-        } else if (lookAhead.equals("dynamic")) {
+            return "static";
+        } else {
             match("dynamic");
+            return "dynamic";
         }
     }
 
-    private void TipoMetodo() throws LexicalException, SyntacticException {
+    private String TipoMetodo() throws LexicalException, SyntacticException {
+        String type;
         if (lookAhead.equals("void")) {
             match("void");
+            type = "void";
         } else {
-            Tipo();
+            type = Tipo();
         }
+        return type;
     }
 
-    private void Tipo() throws LexicalException, SyntacticException {
+    private String Tipo() throws LexicalException, SyntacticException {
+        String type;
         if (lookAhead.equals("id")) {
             match("id");
+            type = currentToken.getLexeme();
         } else {
-            TipoPrimitivo();
+            type = TipoPrimitivo();
         }
+        return type;
     }
 
-    private void TipoPrimitivo() throws LexicalException, SyntacticException {
+    private String TipoPrimitivo() throws LexicalException, SyntacticException {
+        String type;
         if (lookAhead.equals("boolean")) {
             match("boolean");
+            type = "boolean";
         } else if (lookAhead.equals("char")) {
             match("char");
+            type = "char";
         } else if (lookAhead.equals("int")) {
             match("int");
+            type = "int";
         } else if (lookAhead.equals("String")) {
             match("String");
+            type = "String";
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el tipo de la variable. Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un tipo de dato.");
         }
+        return type;
     }
 
-    private void ListaDecVars() throws LexicalException, SyntacticException {
-        if (lookAhead.equals("id")) {
-            match("id");
-            ListaDecVars_();
-        } else if (lookAhead.equals(",")) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Falta especificar el tipo de las variables declaradas."); // caso: var v1, v2;                                                                                                                                                 // v1 se toma como tipo  
+    private void ListaDecVars(String from, String type) throws LexicalException, SyntacticException {
+        match("id");
+        if (from.equals("clase")) {
+            //////////////////////////////
+            ////////////////////////////
+            ///////////////////////////////
+            ////FALTA IMPLEMENTAR
         }
+        ListaDecVars_(from, type);
     }
 
-    private void ListaDecVars_() throws LexicalException, SyntacticException {
+    private void ListaDecVars_(String from, String type) throws LexicalException, SyntacticException {
         if (lookAhead.equals(";")) {
             // ListaDecVars_ -> lambda
             // No hay mas variables declaradas
         } else if (lookAhead.equals(",")) {
             match(",");
-            ListaDecVars();
+            ListaDecVars(from, type);
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba una variable. Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba una variable.");
         }
     }
 
-    private void Bloque() throws LexicalException, SyntacticException {
-        if (lookAhead.equals("{")) {
-            match("{");
-        } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la apertura de un bloque '}'. Se encontro: '" + lookAhead.getToken() + "'.");
-        }
-        ListaSentencias();
-        if (lookAhead.equals("}")) {
-            match("}");
-        } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de un bloque '{'. Se encontro: '" + lookAhead.getToken() + "'.");
-        }
+    private BlockNode Bloque() throws LexicalException, SyntacticException {
+        match("{");
+        LinkedList<SentenceNode> sentenceList = ListaSentencias();
+        match("}");
+        BlockNode block = new BlockNode(sentenceList);
+        return block;
     }
 
-    private void ListaSentencias() throws LexicalException, SyntacticException {
+    private LinkedList<SentenceNode> ListaSentencias() throws LexicalException, SyntacticException {
         if (lookAhead.equals("}")) {
             // ListaSentencias -> lambda
             // No hay mas sentencias
@@ -300,6 +351,7 @@ public class Parser {
             // Delego el control de terminales o no-terminales a Sentencia()
             ListaSentencias();
         }
+        return null;
     }
 
     private void Sentencia() throws LexicalException, SyntacticException {
@@ -340,12 +392,8 @@ public class Parser {
             match("return");
             Sentencia__();
             match(";");
-        } else if (lookAhead.equals("var")) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: No pueden declararse variables dentro de un bloque.");
-        } else if (lookAhead.equals("=")) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Falta el lado izquierdo de la asignacion.");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba una sentencia o el cierre de bloque.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba una sentencia.");
         }
     }
 
@@ -374,14 +422,8 @@ public class Parser {
     }
 
     private void SentenciaSimple() throws LexicalException, SyntacticException {
-        if (!lookAhead.equals("(")) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la apertura de una expresion parentizada '('. Se encontro: '" + lookAhead.getToken() + "'.");
-        }
         match("(");
         Expresion();
-        if (!lookAhead.equals(")")) {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de una expresion parentizada ')'. Se encontro: '" + lookAhead.getToken() + "'.");
-        }
         match(")");
     }
 
@@ -482,7 +524,7 @@ public class Parser {
     private void Expresion0() throws LexicalException, SyntacticException {
         if (lookAhead.equals("!") || lookAhead.equals("+") || lookAhead.equals("-")) {
             OperadorUnario();
-            Expresion0();
+            Primario();
         } else {
             Primario();
         }
@@ -494,7 +536,7 @@ public class Parser {
         } else if (lookAhead.equals("!=")) {
             match("!=");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba == o != . Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba == o != .");
         }
     }
 
@@ -508,7 +550,7 @@ public class Parser {
         } else if (lookAhead.equals("<=")) {
             match("<=");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba <, >, <=, >= . Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba <, >, <=, >= .");
         }
     }
 
@@ -518,7 +560,7 @@ public class Parser {
         } else if (lookAhead.equals("-")) {
             match("-");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba + o - . Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba + o - .");
         }
     }
 
@@ -530,7 +572,7 @@ public class Parser {
         } else if (lookAhead.equals("%")) {
             match("%");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba *, / o % . Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba *, / o % .");
         }
     }
 
@@ -542,7 +584,7 @@ public class Parser {
         } else if (lookAhead.equals("-")) {
             match("-");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba !, + o - . Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba !, + o - .");
         }
     }
 
@@ -609,17 +651,13 @@ public class Parser {
         } else if (lookAhead.equals("stringLiteral")) {
             match("stringLiteral");
         } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un literal. Se encontro: '" + lookAhead.getToken() + "'.");
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un literal.");
         }
     }
 
     private void ArgsActuales() throws LexicalException, SyntacticException {
-        if (lookAhead.equals("(")) {
-            match("(");
-            ArgsActuales_();
-        } else {
-            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la apertura de una lista de argumentos actuales '('. Se encontro: '" + lookAhead.getToken() + "'.");
-        }
+        match("(");
+        ArgsActuales_();
     }
 
     private void ArgsActuales_() throws LexicalException, SyntacticException {
@@ -629,11 +667,7 @@ public class Parser {
             match(")");
         } else {
             ListaExps();
-            if (lookAhead.equals(")")) {
-                match(")");
-            } else {
-                throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de la lista de argumentos actuales ')'. Se encontro: '" + lookAhead.getToken() + "'.");
-            }
+            match(")");
         }
     }
 
@@ -649,15 +683,5 @@ public class Parser {
         } else {
             // ListaExps_ -> lambda
         }
-    }
-
-    /**
-     * Control de declaracion de metodos
-     *
-     * @param lookAhead
-     * @return true si se trata de un tipo, false en caso contrario
-     */
-    private boolean isType(Token lookAhead) {
-        return lookAhead.equals("void") || lookAhead.equals("boolean") || lookAhead.equals("char") || lookAhead.equals("int") || lookAhead.equals("String") || lookAhead.equals("id");
     }
 }
