@@ -1,0 +1,5 @@
+class ok {
+	int met() {
+
+	}
+}
