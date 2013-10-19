@@ -28,8 +28,6 @@ public class Main {
                 System.err.println(exc);
             } catch (LexicalException exc) {
                 System.err.println(exc);
-            } catch (SemanticException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
