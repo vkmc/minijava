@@ -65,7 +65,7 @@ public class Parser {
     // Todos los metodos que siguen corresponden a las reglas de la gramatica de MiniJava
     // Existe un metodo por no-terminal de la gramatica, y el proceso se lleva adelante siguiendo el flujo de ejecucion normal
     private void Inicial() throws LexicalException, SyntacticException, SemanticException {
-        symbolTable.setup();
+        symbolTable.initSymbolTable();
         Clase();
         ListaClases();
     }
@@ -89,7 +89,7 @@ public class Parser {
         match("id");
         String className = currentToken.getLexeme();
         if (symbolTable.getClassEntry(className) == null) {
-            symbolTable.addClass(className);
+            symbolTable.addClassEntry(className);
             symbolTable.setCurrentClass(className);
         } else {
             throw new SemanticException("Linea: " + currentToken.getLineNumber() + " - Error semantico: Ya existe una clase declarada con el nombre " + className);
@@ -176,7 +176,7 @@ public class Parser {
         } else if (classEntry.getMethodEntry(methodName) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un metodo " + methodName + " declarado en la clase " + currentClass);
         } else {
-            classEntry.addMethodEntry(methodName, type, modificator);
+            classEntry.addMethodEntry(methodName, type, modificator, lookAhead.getLineNumber());
         }
         ArgsFormales();
         VarsLocales("method");
@@ -195,7 +195,7 @@ public class Parser {
         } else if (classEntry.getConstructorEntry() != null ) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un constructor en la clase " + currentClass + ".");
         } else {
-           classEntry.setConstructorEntry(constructorName);
+           classEntry.setConstructorEntry(constructorName, lookAhead.getLineNumber());
         }
         ArgsFormales();
         VarsLocales("method");

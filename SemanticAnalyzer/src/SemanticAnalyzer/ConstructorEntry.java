@@ -1,17 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package SemanticAnalyzer;
 
 /**
+ * Representacion de la entrada de constructor
  *
- * @author Rama
+ * @author Ramiro Agis
+ * @author Victoria Martinez de la Cruz
  */
-class ConstructorEntry {
-
-    void setBody(BlockNode body) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+public class ConstructorEntry extends ServiceEntry {
+    
+    public ConstructorEntry(String constructorName, int lineNumber) {
+        super(constructorName, lineNumber);
     }
     
 }
