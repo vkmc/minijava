@@ -7,29 +7,30 @@ import java.util.LinkedList;
  * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
  */
-public class IdExpressionNode extends PrimaryNode {
+public class IdExpressionCallNode extends PrimaryNode {
     
     protected Token id;
-    protected LinkedList<CallNode> callList;
     protected LinkedList<ExpressionNode> expressionList;
+    protected LinkedList<CallNode> callList;
     
-    public IdExpressionNode(SymbolTable st, Token id) {
+    public IdExpressionCallNode(SymbolTable st, Token id) {
         super(st);
         this.id = id;
         
     }
 
-    
-    public IdExpressionNode(SymbolTable st, LinkedList<CallNode> calls) {
+   
+    public IdExpressionCallNode(SymbolTable st, Token id, LinkedList<CallNode> calls) {
         super(st);
+        this.id = id;
         callList = calls;
     }
-    
-        
-    public IdExpressionNode(SymbolTable st, LinkedList<CallNode> calls, LinkedList<ExpressionNode> expressions) {
+
+    public IdExpressionCallNode(SymbolTable st, Token id, LinkedList<ExpressionNode> expressions, LinkedList<CallNode> calls) {
         super(st);
-        callList = calls;
+        this.id = id;
         expressionList = expressions;
+        callList = calls;
     }
     
     public void checkNode() {

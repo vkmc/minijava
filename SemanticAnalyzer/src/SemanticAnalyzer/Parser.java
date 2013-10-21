@@ -385,43 +385,61 @@ public class Parser {
     private SentenceNode Sentencia() throws LexicalException, SyntacticException {
         if (lookAhead.equals(";")) {
             match(";");
-            return new SeparatorNode();
-            
+            return new SeparatorNode(symbolTable);
         } else if (lookAhead.equals("id")) {
-            Asignacion();
+            AssignNode assign = Asignacion();
             match(";");
+            return assign;
         } else if (lookAhead.equals("(")) {
-            SentenciaSimple();
+            SimpleSentenceNode simpleSentence = SentenciaSimple();
             match(";");
+            return simpleSentence;
         } else if (lookAhead.equals("if")) {
             match("if");
             match("(");
-            Expresion();
+            ExpressionNode condition = Expresion();
             match(")");
-            Sentencia();
-            Sentencia_();
+            SentenceNode sentenceIf = Sentencia();
+            SentenceNode sentenceElse = Sentencia_();
+            if (sentenceElse == null) {
+                // If-Then
+                return new IfThenNode(symbolTable, condition, sentenceIf);
+            } else {
+                // If-Then-Else
+                return new IfThenElseNode(symbolTable, condition, sentenceIf, sentenceElse);
+            }
         } else if (lookAhead.equals("while")) {
             match("while");
             match("(");
-            Expresion();
+            ExpressionNode condition = Expresion();
             match(")");
-            Sentencia();
+            SentenceNode sentence = Sentencia();
+            return new WhileNode(symbolTable, condition, sentence);
         } else if (lookAhead.equals("for")) {
             match("for");
             match("(");
-            Asignacion();
+            AssignNode init = Asignacion();
             match(";");
-            Expresion();
+            ExpressionNode condition = Expresion();
             match(";");
-            Expresion();
+            ExpressionNode increment = Expresion();
             match(")");
-            Sentencia();
+            SentenceNode sentence = Sentencia();
+            return new ForNode(symbolTable, init, condition, increment, sentence);
         } else if (lookAhead.equals("{")) {
-            Bloque();
+            return Bloque();
         } else if (lookAhead.equals("return")) {
             match("return");
-            Sentencia__();
+            Token returnToken = currentToken;
+            ExpressionNode expression = Sentencia__();
             match(";");
+            if (expression == null) {
+                // return;
+                    return new ReturnNode(symbolTable, currentToken);
+            } else {
+                // return <Expresion>;
+                return new ReturnExpNode(symbolTable, currentToken, expression);
+            }
         } else if (lookAhead.equals("var")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: No pueden declararse variables dentro de un bloque.");
         } else if (lookAhead.equals("=")) {
@@ -431,7 +449,7 @@ public class Parser {
         }
     }
 
-    private void Sentencia_() throws LexicalException, SyntacticException {
+    private SentenceNode Sentencia_() throws LexicalException, SyntacticException {
         if (lookAhead.equals("else")) {
             match("else");
             Sentencia();
@@ -439,44 +457,50 @@ public class Parser {
             // Sentencia_ -> lambda
             // if-then sin else
         }
+        return null;
     }
 
-    private void Sentencia__() throws LexicalException, SyntacticException {
+    private ExpressionNode Sentencia__() throws LexicalException, SyntacticException {
         if (lookAhead.equals(";")) {
             // Sentencia__ -> lambda
+            return null;
         } else {
-            Expresion();
+            return Expresion();
         }
     }
 
-    private void Asignacion() throws LexicalException, SyntacticException {
+    private AssignNode Asignacion() throws LexicalException, SyntacticException {
         match("id");
+        IdNode id = new IdNode(symbolTable, currentToken);
         match("=");
-        Expresion();
+        ExpressionNode expression = Expresion();
+        return new AssignNode(symbolTable, id, expression);
     }
 
-    private void SentenciaSimple() throws LexicalException, SyntacticException {
+    private SimpleSentenceNode SentenciaSimple() throws LexicalException, SyntacticException {
         if (!lookAhead.equals("(")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la apertura de una expresion parentizada '('. Se encontro: '" + lookAhead.getToken() + "'.");
         }
         match("(");
-        Expresion();
+        ExpressionNode expression = Expresion();
         if (!lookAhead.equals(")")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de una expresion parentizada ')'. Se encontro: '" + lookAhead.getToken() + "'.");
         }
         match(")");
+        return new SimpleSentenceNode(symbolTable, expression);
     }
 
-    private void Expresion() throws LexicalException, SyntacticException {
-        Expresion6();
+    private ExpressionNode Expresion() throws LexicalException, SyntacticException {
+        return Expresion6(); 
     }
 
-    private void Expresion6() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion6() throws LexicalException, SyntacticException {
         Expresion5();
         Expresion6_();
+        
     }
 
-    private void Expresion6_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion6_() throws LexicalException, SyntacticException {
         if (lookAhead.equals("||")) {
             match("||");
             Expresion5();
@@ -486,12 +510,12 @@ public class Parser {
         }
     }
 
-    private void Expresion5() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion5() throws LexicalException, SyntacticException {
         Expresion4();
         Expresion5_();
     }
 
-    private void Expresion5_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion5_() throws LexicalException, SyntacticException {
         if (lookAhead.equals("&&")) {
             match("&&");
             Expresion4();
@@ -501,12 +525,12 @@ public class Parser {
         }
     }
 
-    private void Expresion4() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion4() throws LexicalException, SyntacticException {
         Expresion3();
         Expresion4_();
     }
 
-    private void Expresion4_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion4_() throws LexicalException, SyntacticException {
         if (lookAhead.equals("==") || lookAhead.equals("!=")) {
             Operador4();
             Expresion3();
@@ -516,12 +540,12 @@ public class Parser {
         }
     }
 
-    private void Expresion3() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion3() throws LexicalException, SyntacticException {
         Expresion2();
         Expresion3_();
     }
 
-    private void Expresion3_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion3_() throws LexicalException, SyntacticException {
         if (lookAhead.equals("<") || lookAhead.equals(">") || lookAhead.equals(">=") || lookAhead.equals("<=")) {
             Operador3();
             Expresion2();
@@ -531,12 +555,12 @@ public class Parser {
         }
     }
 
-    private void Expresion2() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion2() throws LexicalException, SyntacticException {
         Expresion1();
         Expresion2_();
     }
 
-    private void Expresion2_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion2_() throws LexicalException, SyntacticException {
         if (lookAhead.equals("+") || lookAhead.equals("-")) {
             Operador2();
             Expresion1();
@@ -546,31 +570,31 @@ public class Parser {
         }
     }
 
-    private void Expresion1() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion1() throws LexicalException, SyntacticException {
         Expresion0();
         Expresion1_();
     }
 
-    private void Expresion1_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion1_() throws LexicalException, SyntacticException {
         if (lookAhead.equals("*") || lookAhead.equals("/") || lookAhead.equals("%")) {
             Operador1();
             Expresion0();
             Expresion1_();
+            return new BinaryExpressionNode(symbolTable,)
         } else {
             // Expresion1_ -> lambda
         }
     }
 
-    private void Expresion0() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion0() throws LexicalException, SyntacticException {
         if (lookAhead.equals("!") || lookAhead.equals("+") || lookAhead.equals("-")) {
-            OperadorUnario();
-            Expresion0();
+            return new UnaryExpressionNode(symbolTable, OperadorUnario(), Expresion0());
         } else {
-            Primario();
+            return Primario();
         }
     }
 
-    private void Operador4() throws LexicalException, SyntacticException {
+    private Token Operador4() throws LexicalException, SyntacticException {
         if (lookAhead.equals("==")) {
             match("==");
         } else if (lookAhead.equals("!=")) {
@@ -580,7 +604,7 @@ public class Parser {
         }
     }
 
-    private void Operador3() throws LexicalException, SyntacticException {
+    private Token Operador3() throws LexicalException, SyntacticException {
         if (lookAhead.equals("<")) {
             match("<");
         } else if (lookAhead.equals(">")) {
@@ -594,7 +618,7 @@ public class Parser {
         }
     }
 
-    private void Operador2() throws LexicalException, SyntacticException {
+    private Token Operador2() throws LexicalException, SyntacticException {
         if (lookAhead.equals("+")) {
             match("+");
         } else if (lookAhead.equals("-")) {
@@ -602,9 +626,10 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba + o - . Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        return currentToken;
     }
 
-    private void Operador1() throws LexicalException, SyntacticException {
+    private Token Operador1() throws LexicalException, SyntacticException {
         if (lookAhead.equals("*")) {
             match("*");
         } else if (lookAhead.equals("/")) {
@@ -614,9 +639,10 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba *, / o % . Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        return currentToken;
     }
 
-    private void OperadorUnario() throws LexicalException, SyntacticException {
+    private Token OperadorUnario() throws LexicalException, SyntacticException {
         if (lookAhead.equals("!")) {
             match("!");
         } else if (lookAhead.equals("+")) {
@@ -626,58 +652,65 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba !, + o - . Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        return currentToken;
     }
 
-    private void Primario() throws LexicalException, SyntacticException {
+    private ExpressionNode Primario() throws LexicalException, SyntacticException {
         if (lookAhead.equals("this")) {
             match("this");
+            return new ThisNode(symbolTable, currentToken);
         } else if (lookAhead.equals("(")) {
             match("(");
-            Expresion();
+            ExpressionNode expression = Expresion();
             match(")");
-            ListaLlamadas();
+            LinkedList<CallNode> callList = ListaLlamadas();
+            return new ExpressionCallNode(symbolTable, expression, callList);
         } else if (lookAhead.equals("id")) {
             match("id");
-            ListaLlamadas_();
+            return ListaLlamadas_(currentToken);
         } else if (lookAhead.equals("new")) {
             match("new");
             match("id");
-            ArgsActuales();
-            ListaLlamadas();
-        } else if (lookAhead.equals("id")) {
-            match("id");
-            ArgsActuales();
-            ListaLlamadas();
+            IdNode id = new IdNode(symbolTable, currentToken);
+            LinkedList<ExpressionNode> args = ArgsActuales(); 
+            LinkedList<CallNode> callList = ListaLlamadas();
+            return new NewNode(symbolTable, id, args, callList);
         } else {
-            Literal();
+            return Literal();
         }
     }
 
-    private void ListaLlamadas() throws LexicalException, SyntacticException {
+    private LinkedList<CallNode> ListaLlamadas() throws LexicalException, SyntacticException {
+        
         if (lookAhead.equals(".")) {
-            Llamada();
-            ListaLlamadas();
+            CallNode call = Llamada();
+            LinkedList<CallNode> callList = ListaLlamadas();
+            callList.addFirst(call);
+            return callList;
+            
         } else {
             // ListaLlamadas -> lambda
+            return new LinkedList<CallNode>();  
         }
     }
 
-    private void ListaLlamadas_() throws LexicalException, SyntacticException {
+    private IdExpressionCallNode ListaLlamadas_(Token id) throws LexicalException, SyntacticException {
         if (lookAhead.equals("(")) {
-            ArgsActuales();
-            ListaLlamadas();
+            LinkedList<ExpressionNode> args = ArgsActuales();
+            return new IdExpressionCallNode(symbolTable, id, args, ListaLlamadas());
         } else {
-            ListaLlamadas();
+            return new IdExpressionCallNode(symbolTable, id, ListaLlamadas());
         }
     }
 
-    private void Llamada() throws LexicalException, SyntacticException {
+    private CallNode Llamada() throws LexicalException, SyntacticException {
         match(".");
         match("id");
-        ArgsActuales();
+        return new CallNode(symbolTable, currentToken, ArgsActuales());
+        
     }
 
-    private void Literal() throws LexicalException, SyntacticException {
+    private LiteralNode Literal() throws LexicalException, SyntacticException {
         if (lookAhead.equals("null")) {
             match("null");
         } else if (lookAhead.equals("true")) {
@@ -693,41 +726,48 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un literal. Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        return new LiteralNode(symbolTable, currentToken);
     }
 
-    private void ArgsActuales() throws LexicalException, SyntacticException {
+    private LinkedList<ExpressionNode> ArgsActuales() throws LexicalException, SyntacticException {
         if (lookAhead.equals("(")) {
             match("(");
-            ArgsActuales_();
+            return ArgsActuales_();
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la apertura de una lista de argumentos actuales '('. Se encontro: '" + lookAhead.getToken() + "'.");
         }
     }
 
-    private void ArgsActuales_() throws LexicalException, SyntacticException {
+    private LinkedList<ExpressionNode> ArgsActuales_() throws LexicalException, SyntacticException {
         if (lookAhead.equals(")")) {
             // ArgsActuales_ -> )
             // No hay mas argumentos actuales
             match(")");
+            return new LinkedList<ExpressionNode>();
         } else {
-            ListaExps();
+            
+            // Usamos el argumento para guardar las expresiones porque es una recursión usada complicada y es más cómodo crear la lista desde afuera.
+            LinkedList<ExpressionNode> args = new LinkedList<ExpressionNode>();
+            ListaExps(args);
             if (lookAhead.equals(")")) {
                 match(")");
+                return args;
             } else {
                 throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de la lista de argumentos actuales ')'. Se encontro: '" + lookAhead.getToken() + "'.");
             }
         }
     }
 
-    private void ListaExps() throws LexicalException, SyntacticException {
-        Expresion();
-        ListaExps_();
+    private void ListaExps(LinkedList<ExpressionNode> expressionList) throws LexicalException, SyntacticException {
+        ExpressionNode e = Expresion();
+        expressionList.addLast(e); 
+        ListaExps_(expressionList);
     }
 
-    private void ListaExps_() throws LexicalException, SyntacticException {
+    private void ListaExps_(LinkedList<ExpressionNode> expressionList) throws LexicalException, SyntacticException {
         if (lookAhead.equals(",")) {
             match(",");
-            ListaExps();
+            ListaExps(expressionList);
         } else {
             // ListaExps_ -> lambda
         }

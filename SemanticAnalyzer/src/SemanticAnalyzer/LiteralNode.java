@@ -9,9 +9,10 @@ public class LiteralNode extends PrimaryNode {
 
     protected Token literal;
  
-    public LiteralNode(SymbolTable st, Token lit, String type) {
+    public LiteralNode(SymbolTable st, Token lit) {
         super(st);
         literal = lit;
+        expressionType = literal.getLexeme();
     }
     
     public void checkNode() {
