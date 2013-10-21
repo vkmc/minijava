@@ -251,7 +251,7 @@ public class Parser {
         String currentClass = symbolTable.getCurrentClass();
         String currentMethod = symbolTable.getCurrentMethod();
         ServiceEntry serviceEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod);
-        if (serviceEntry.getParameterEntry(parameterName) != null) {
+        if (serviceEntry.getParameterEntry(parameterName, currentToken.getLineNumber()) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en la clase " + currentClass);
         } else {
             serviceEntry.addParameterEntry(parameterName, type);
@@ -382,9 +382,11 @@ public class Parser {
         return null;
     }
 
-    private void Sentencia() throws LexicalException, SyntacticException {
+    private SentenceNode Sentencia() throws LexicalException, SyntacticException {
         if (lookAhead.equals(";")) {
             match(";");
+            return new SeparatorNode();
+            
         } else if (lookAhead.equals("id")) {
             Asignacion();
             match(";");

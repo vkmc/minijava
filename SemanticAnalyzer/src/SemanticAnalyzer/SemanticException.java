@@ -1,4 +1,4 @@
-package SyntacticAnalyzer;
+package SemanticAnalyzer;
 
 /*
  * Excepción lanzada al ocurrir un error semántico.

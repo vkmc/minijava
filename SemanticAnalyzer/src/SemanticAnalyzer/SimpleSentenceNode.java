@@ -1,19 +1,17 @@
 
 package SemanticAnalyzer;
 
-import java.util.LinkedList;
-
 /**
  * @author Ramiro Agis
  * @author Victoria Martinez de la Cruz
  */
-public class BlockNode extends SentenceNode {
+public class SimpleSentenceNode extends SentenceNode {
 
-    protected LinkedList<SentenceNode> sentenceList;
+    protected ExpressionNode expression;
     
-    public BlockNode(SymbolTable st, LinkedList<SentenceNode> sentences) {
+    public SimpleSentenceNode(SymbolTable st, ExpressionNode expr) {
         super(st);
-        sentenceList = sentences;
+        expression = expr;
     }
 
     @Override
