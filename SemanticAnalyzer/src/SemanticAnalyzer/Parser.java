@@ -1,5 +1,29 @@
 package SemanticAnalyzer;
 
+import SemanticAnalyzer.SymbolTable.ServiceEntry;
+import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.SymbolTable.ClassEntry;
+import SemanticAnalyzer.AST.ExpressionNode;
+import SemanticAnalyzer.AST.IdExpressionCallNode;
+import SemanticAnalyzer.AST.ReturnNode;
+import SemanticAnalyzer.AST.ForNode;
+import SemanticAnalyzer.AST.IfThenNode;
+import SemanticAnalyzer.AST.BinaryExpressionNode;
+import SemanticAnalyzer.AST.BlockNode;
+import SemanticAnalyzer.AST.LiteralNode;
+import SemanticAnalyzer.AST.SentenceNode;
+import SemanticAnalyzer.AST.AssignNode;
+import SemanticAnalyzer.AST.UnaryExpressionNode;
+import SemanticAnalyzer.AST.NewNode;
+import SemanticAnalyzer.AST.IdNode;
+import SemanticAnalyzer.AST.SeparatorNode;
+import SemanticAnalyzer.AST.WhileNode;
+import SemanticAnalyzer.AST.SimpleSentenceNode;
+import SemanticAnalyzer.AST.ReturnExpNode;
+import SemanticAnalyzer.AST.CallNode;
+import SemanticAnalyzer.AST.ThisNode;
+import SemanticAnalyzer.AST.IfThenElseNode;
+import SemanticAnalyzer.AST.ExpressionCallNode;
 import java.util.LinkedList;
 
 /**
@@ -254,7 +278,7 @@ public class Parser {
         if (serviceEntry.getParameterEntry(parameterName, currentToken.getLineNumber()) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en la clase " + currentClass);
         } else {
-            serviceEntry.addParameterEntry(parameterName, type);
+            serviceEntry.addParameterEntry(parameterName, type, currentToken.getLineNumber());
         }
     }
 

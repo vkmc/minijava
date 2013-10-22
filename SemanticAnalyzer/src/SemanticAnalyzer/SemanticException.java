@@ -6,7 +6,7 @@ package SemanticAnalyzer;
  * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
  */
-class SemanticException extends Exception {
+public class SemanticException extends Exception {
 
     /**
      * Constructor de la clase SemanticException.
