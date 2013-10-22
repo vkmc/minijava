@@ -542,88 +542,102 @@ public class Parser {
             match("||");
             Token operator = currentToken;
             ExpressionNode right = Expresion5();
-            ExpressionNode george = new BinaryExpressionNode(symbolTable, operator, left, right);
-            
-            Expresion6_();
-            
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            return Expresion6_(binaryExpression);
         } else {
             // Expresion6_ -> lambda
+            return left;
         }
     }
 
     private ExpressionNode Expresion5() throws LexicalException, SyntacticException {
-        Expresion4();
-        Expresion5_();
+        ExpressionNode left = Expresion4();
+        ExpressionNode right = Expresion5_(left);
+        return right;
     }
 
-    private ExpressionNode Expresion5_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion5_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("&&")) {
             match("&&");
-            Expresion4();
-            Expresion5_();
+            Token operator = currentToken;
+            ExpressionNode right = Expresion4();
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            return Expresion5_(binaryExpression);
         } else {
             // Expresion5_ -> lambda
+            return left;
         }
     }
 
     private ExpressionNode Expresion4() throws LexicalException, SyntacticException {
-        Expresion3();
-        Expresion4_();
+        ExpressionNode left = Expresion3();
+        ExpressionNode right = Expresion4_(left);
+        return right;
     }
 
-    private ExpressionNode Expresion4_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion4_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("==") || lookAhead.equals("!=")) {
-            Operador4();
-            Expresion3();
-            Expresion4_();
+            Token operator = Operador4();
+            ExpressionNode right = Expresion3();
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            return Expresion4_(binaryExpression);
         } else {
             // Expresion4_ -> lambda
+            return left;
         }
     }
 
     private ExpressionNode Expresion3() throws LexicalException, SyntacticException {
-        Expresion2();
-        Expresion3_();
+        ExpressionNode left = Expresion2();
+        ExpressionNode right = Expresion3_(left);
+        return right;
     }
 
-    private ExpressionNode Expresion3_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion3_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("<") || lookAhead.equals(">") || lookAhead.equals(">=") || lookAhead.equals("<=")) {
-            Operador3();
-            Expresion2();
-            Expresion3_();
+            Token operator = Operador3();
+            ExpressionNode right = Expresion2();
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            return Expresion3_(binaryExpression);
         } else {
             // Expresion3_ -> lambda
+            return left;
         }
     }
 
     private ExpressionNode Expresion2() throws LexicalException, SyntacticException {
-        Expresion1();
-        Expresion2_();
+        ExpressionNode left = Expresion1();
+        ExpressionNode right = Expresion2_(left);
+        return right;
     }
 
-    private ExpressionNode Expresion2_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion2_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("+") || lookAhead.equals("-")) {
-            Operador2();
-            Expresion1();
-            Expresion2_();
+            Token operator = Operador2();
+            ExpressionNode right = Expresion1();
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            return Expresion2_(binaryExpression);
         } else {
             // Expresion2_ -> lambda
+            return left;
         }
     }
 
     private ExpressionNode Expresion1() throws LexicalException, SyntacticException {
-        Expresion0();
-        Expresion1_();
+        ExpressionNode left = Expresion0();
+        ExpressionNode right = Expresion1_(left);
+        return right;
     }
 
-    private ExpressionNode Expresion1_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion1_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("*") || lookAhead.equals("/") || lookAhead.equals("%")) {
-            Operador1();
-            Expresion0();
-            Expresion1_();
-            return new BinaryExpressionNode(symbolTable,)
+            Token operator = Operador1();
+            ExpressionNode right = Expresion0();
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            return Expresion1_(binaryExpression);
         } else {
             // Expresion1_ -> lambda
+            return left;
         }
     }
 
