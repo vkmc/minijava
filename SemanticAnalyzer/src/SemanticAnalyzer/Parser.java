@@ -763,7 +763,8 @@ public class Parser {
     private CallNode Llamada() throws LexicalException, SyntacticException {
         match(".");
         match("id");
-        return new CallNode(symbolTable, currentToken, ArgsActuales());
+        IdNode id = new IdNode(symbolTable, currentToken);
+        return new CallNode(symbolTable, id, ArgsActuales());
         
     }
 

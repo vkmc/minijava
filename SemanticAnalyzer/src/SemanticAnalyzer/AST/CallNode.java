@@ -1,9 +1,11 @@
 
 package SemanticAnalyzer.AST;
 
+import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.ParameterEntry;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
-import java.util.LinkedHashMap;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -22,18 +24,26 @@ public class CallNode extends PrimaryNode {
     }
     
     @Override
-    public void checkNode() {
+    public void checkNode() throws SemanticException {
         id.checkNode();
         
         String currentClass = symbolTable.getCurrentClass();
-        LinkedHashMap<String, ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getId().getLexeme()).getParameters();
-        
+        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getId().getLexeme()).getParameters().values();
+        Iterator<ParameterEntry> formalArgsIterator = formalArgs.iterator();
         int counter = 0;
-        boolean match = true;
         
-        while (match && counter < formalArgs.size()) {
-            
+        if (formalArgs.size() != actualArgs.size()) {
+            throw new SemanticException("Linea: " + id.getId().getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getId().getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
+        
+        while (formalArgsIterator.hasNext()) {
+            ParameterEntry formalArg = formalArgsIterator.next();
+            if (formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType())) {
+                throw new SemanticException("Linea: " + id.getId().getLineNumber() + " - Error semantico: El tipo del argumento actual no conforma con el tipo del argumento formal."
+                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType() + " y el tipo del argumento formal es " + formalArg.getType() + ".");
+            }
+        }
+       
         
     }
     
