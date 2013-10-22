@@ -16,7 +16,7 @@ public class Main {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SemanticException {
         if (args.length == 0 || args.length > 1) {
             System.err.println("Cantidad de argumentos invalida.");
             System.err.println("Uso: java -jar SyntacticAnalyzer.jar <IN_FILE>");

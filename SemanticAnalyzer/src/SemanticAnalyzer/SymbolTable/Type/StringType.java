@@ -7,8 +7,8 @@ package SemanticAnalyzer.SymbolTable.Type;
  */
 public class StringType extends PrimitiveType {
     
-    public StringType(String typeName) {
-        super(typeName);
+    public StringType() {
+        super("String");
     }
 
     @Override

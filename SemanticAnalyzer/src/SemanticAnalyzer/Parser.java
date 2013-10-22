@@ -165,7 +165,7 @@ public class Parser {
 
     private void Atributo(String from) throws LexicalException, SyntacticException, SemanticException {
         match("var");
-        String type = Tipo();
+        Type type = Tipo();
         ListaDecVars(from, type);
         if (!lookAhead.equals(";")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el terminador de la lista de variables ';'. Se encontro: '" + lookAhead.getToken() + "'.");
@@ -175,7 +175,7 @@ public class Parser {
 
     private void Metodo() throws LexicalException, SyntacticException, SemanticException {
         String modificator = ModMetodo();
-        String type = TipoMetodo();
+        Type type = TipoMetodo();
         
         match("id");
         
@@ -190,8 +190,7 @@ public class Parser {
         } else if (classEntry.getMethodEntry(methodName) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un metodo " + methodName + " declarado en la clase " + currentClass);
         } else {
-            Type methodType = createType(type);
-            classEntry.addMethodEntry(methodName, methodType, modificator, lookAhead.getLineNumber());
+            classEntry.addMethodEntry(methodName, type, modificator, lookAhead.getLineNumber());
         }
         ArgsFormales();
         VarsLocales("method");
@@ -260,7 +259,7 @@ public class Parser {
     }
 
     private void ArgFormal() throws LexicalException, SyntacticException, SemanticException {
-        String type = Tipo();
+        Type type = Tipo();
         match("id");
         String parameterName = currentToken.getLexeme();
         String currentClass = symbolTable.getCurrentClass();
@@ -269,8 +268,7 @@ public class Parser {
         if (serviceEntry.getParameterEntry(parameterName, currentToken.getLineNumber()) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en la clase " + currentClass);
         } else {
-            Type parameterType = createType(type);
-            serviceEntry.addParameterEntry(parameterName, parameterType, currentToken.getLineNumber());
+            serviceEntry.addParameterEntry(parameterName, type, currentToken.getLineNumber());
         }
     }
 
@@ -301,49 +299,49 @@ public class Parser {
         }
     }
 
-    private String TipoMetodo() throws LexicalException, SyntacticException {
-        String type;
+    private Type TipoMetodo() throws LexicalException, SyntacticException {
+        Type type;
         if (lookAhead.equals("void")) {
             match("void");
-            type = "void";
+            type = createType("void");
         } else {
             type =  Tipo();
         }
         return type;
     }
 
-    private String Tipo() throws LexicalException, SyntacticException {
-        String type;
+    private Type Tipo() throws LexicalException, SyntacticException {
+        Type type;
         if (lookAhead.equals("id")) {
             match("id");
-            type = currentToken.getLexeme();
+            type = new ClassType(currentToken.getLexeme());
         } else {
             type = TipoPrimitivo();
         }
         return type;
     }
 
-    private String TipoPrimitivo() throws LexicalException, SyntacticException {
-        String type;
+    private Type TipoPrimitivo() throws LexicalException, SyntacticException {
+        Type type;
         if (lookAhead.equals("boolean")) {
             match("boolean");
-            type = "boolean";
+            type = createType("boolean");
         } else if (lookAhead.equals("char")) {
             match("char");
-            type = "char";
+            type = createType("char");
         } else if (lookAhead.equals("int")) {
             match("int");
-            type = "int";
+            type = createType("int");
         } else if (lookAhead.equals("String")) {
             match("String");
-            type = "String";
+            type = createType("String");
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el tipo de la variable. Se encontro: '" + lookAhead.getToken() + "'.");
         }
         return type;
     }
 
-    private void ListaDecVars(String from, String type) throws LexicalException, SyntacticException, SemanticException {
+    private void ListaDecVars(String from, Type type) throws LexicalException, SyntacticException, SemanticException {
         String currentClass = symbolTable.getCurrentClass();
         ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
                 
@@ -381,7 +379,7 @@ public class Parser {
         }
     }
 
-    private void ListaDecVars_(String from, String type) throws LexicalException, SyntacticException, SemanticException {
+    private void ListaDecVars_(String from, Type type) throws LexicalException, SyntacticException, SemanticException {
         if (lookAhead.equals(";")) {
             // ListaDecVars_ -> lambda
             // No hay mas variables declaradas
@@ -536,16 +534,20 @@ public class Parser {
     }
 
     private ExpressionNode Expresion6() throws LexicalException, SyntacticException {
-        Expresion5();
-        Expresion6_();
-        
+        ExpressionNode left = Expresion5();
+        ExpressionNode right = Expresion6_(left);
+        return right;
     }
 
-    private ExpressionNode Expresion6_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion6_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("||")) {
             match("||");
-            Expresion5();
+            Token operator = currentToken;
+            ExpressionNode right = Expresion5();
+            ExpressionNode george = new BinaryExpressionNode(symbolTable, operator, left, right);
+            
             Expresion6_();
+            
         } else {
             // Expresion6_ -> lambda
         }
@@ -643,6 +645,7 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba == o != . Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        return currentToken;
     }
 
     private Token Operador3() throws LexicalException, SyntacticException {
@@ -657,6 +660,7 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba <, >, <=, >= . Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        return currentToken;
     }
 
     private Token Operador2() throws LexicalException, SyntacticException {
@@ -752,23 +756,29 @@ public class Parser {
     }
 
     private LiteralNode Literal() throws LexicalException, SyntacticException {
-        
+        Type type;
         if (lookAhead.equals("null")) {
             match("null");
-            
+            type = null;
         } else if (lookAhead.equals("true")) {
             match("true");
+            type = createType("boolean");
         } else if (lookAhead.equals("false")) {
             match("false");
+            type = createType("boolean");
         } else if (lookAhead.equals("intLiteral")) {
             match("intLiteral");
+            type = createType("int");
         } else if (lookAhead.equals("charLiteral")) {
             match("charLiteral");
+            type = createType("char");
         } else if (lookAhead.equals("stringLiteral")) {
             match("stringLiteral");
+            type = createType("String");
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un literal. Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        
         return new LiteralNode(symbolTable, currentToken, type);
     }
 
@@ -830,15 +840,15 @@ public class Parser {
         Type aType;
         
         if (type.equals("int")) {
-            aType = new IntegerType(type);
+            aType = new IntegerType();
         } else if (type.equals("char")) {
-            aType = new CharType(type);
+            aType = new CharType();
         } else if (type.equals("boolean")) {
-            aType = new BooleanType(type);
+            aType = new BooleanType();
         } else if (type.equals("String")) {
-            aType = new StringType(type);
+            aType = new StringType();
         } else if (type.equals("void")) {
-            aType = new VoidType(type);
+            aType = new VoidType();
         } else {
             aType = new ClassType(type);
         }
