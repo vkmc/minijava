@@ -1,7 +1,8 @@
 package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SemanticException;
-import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.SymbolTable.*;
+import SemanticAnalyzer.SymbolTable.Type.*;
 import SemanticAnalyzer.Token;
 
 /**
@@ -27,7 +28,8 @@ public class ThisNode extends PrimaryNode {
         if (symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getModifier().equals("static")) {
             throw new SemanticException("Linea: " + thisToken.getLineNumber() + " - Error semantico: No puede usarse la palabra reservada 'this' en el contexto de un metodo estatico");
         } else {
-            this.setExpressionType(currentClass);
+            Type classType = new ClassType(currentClass);
+            this.setExpressionType(classType);
         }
     }
 }

@@ -1,5 +1,6 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.AST.BlockNode;
 import java.util.HashMap;
 
@@ -31,8 +32,8 @@ public abstract class ServiceEntry {
      * @param type tipo del parametro a insertar
      * @param lineNumber numero de linea
      */
-    public void addParameterEntry(String parameterName, String type, int lineNumber) {
-        ParameterEntry parameter = new ParameterEntry(parameterName, type, lineNumber);
+    public void addParameterEntry(String parameterName, Type parameterType, int lineNumber) {
+        ParameterEntry parameter = new ParameterEntry(parameterName, parameterType, lineNumber);
         parametersTable.put(parameterName, parameter);
     }
     
@@ -52,8 +53,8 @@ public abstract class ServiceEntry {
      * @param type tipo del parametro a insertar
      * @param lineNumber numero de linea
      */
-    public void addLocalVariableEntry(String localVariableName, String type, int lineNumber) {
-        LocalVariableEntry localVariable = new LocalVariableEntry(localVariableName, type, lineNumber);
+    public void addLocalVariableEntry(String localVariableName, Type localVariableType, int lineNumber) {
+        LocalVariableEntry localVariable = new LocalVariableEntry(localVariableName, localVariableType, lineNumber);
         localVariablesTable.put(localVariableName, localVariable);
     }
     

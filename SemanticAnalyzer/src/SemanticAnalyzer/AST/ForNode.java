@@ -26,6 +26,12 @@ public class ForNode extends SentenceNode {
     @Override
     public void checkNode() throws SemanticException {
         init.checkNode();
-        condition.checkNode();           
+        condition.checkNode();
+        
+        
+        
+        if (!condition.getExpressionType().equals("booleanLiteral")) {
+            throw new SemanticException("Linea: " + operator.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + left.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
+        }
     }
 }
