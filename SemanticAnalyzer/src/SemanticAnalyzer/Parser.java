@@ -177,7 +177,7 @@ public class Parser {
         }
     }
 
-    private void Atributo(String from) throws LexicalException, SyntacticException {
+    private void Atributo(String from) throws LexicalException, SyntacticException, SemanticException {
         match("var");
         String type = Tipo();
         ListaDecVars(from, type);
@@ -282,11 +282,11 @@ public class Parser {
         }
     }
 
-    private void VarsLocales(String from) throws LexicalException, SyntacticException {
+    private void VarsLocales(String from) throws LexicalException, SyntacticException, SemanticException {
         ListaAtributos(from);
     }
 
-    private void ListaAtributos(String from) throws LexicalException, SyntacticException {
+    private void ListaAtributos(String from) throws LexicalException, SyntacticException, SemanticException {
         if (lookAhead.equals("{")) {
             // ListaAtributos -> lambda
             // Bloque
@@ -351,22 +351,43 @@ public class Parser {
         return type;
     }
 
-    private void ListaDecVars(String from, String type) throws LexicalException, SyntacticException {
+    private void ListaDecVars(String from, String type) throws LexicalException, SyntacticException, SemanticException {
+        String currentClass = symbolTable.getCurrentClass();
+        ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
+                
         if (lookAhead.equals("id")) {
             match("id");
-            if (from.equals("clase")) {
-            //////////////////////////////
-            ////////////////////////////
-            ///////////////////////////////
-            ////FALTA IMPLEMENTAR
-            }
+            String variableName = currentToken.getLexeme();
+            int lineNumber = currentToken.getLineNumber();
             ListaDecVars_(from, type);
+            if (from.equals("class")) {
+                // Declaración de variable de instancia.
+                if (classEntry.getInstanceVariableEntry(variableName, lineNumber) == null) {
+                    // La variable de instancia no existe. Se crea.
+                    classEntry.addInstanceVariableEntry(variableName, type, lineNumber);
+                } else {
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de una variable de instancia con el nombre " + variableName + " en la clase " + currentClass);
+                }
+            } else if (from.equals("method")) {
+                // Declaración de variable local.
+                String currentMethod = symbolTable.getCurrentMethod();
+                ServiceEntry serviceEntry = classEntry.getMethodEntry(currentMethod);
+                if (serviceEntry.getParameterEntry(variableName, lineNumber) != null) {
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de un parametro con el nombre " + variableName + " en el metodo " + currentMethod + " de la clase " + currentClass);
+                } else if (serviceEntry.getLocalVariableEntry(variableName, lineNumber) != null) {
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de una variable local con el nombre " + variableName + " en el metodo " + currentMethod + " de la clase " + currentClass);
+                } else {
+                    // La variable local no existe. Se crea.
+                    serviceEntry.addLocalVariableEntry(variableName, type, lineNumber);
+                }
+                
+            }
         } else if (lookAhead.equals(",")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Falta especificar el tipo de las variables declaradas."); // caso: var v1, v2;                                                                                                                                                 // v1 se toma como tipo  
         }
     }
 
-    private void ListaDecVars_(String from, String type) throws LexicalException, SyntacticException {
+    private void ListaDecVars_(String from, String type) throws LexicalException, SyntacticException, SemanticException {
         if (lookAhead.equals(";")) {
             // ListaDecVars_ -> lambda
             // No hay mas variables declaradas
@@ -390,7 +411,7 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de un bloque '{'. Se encontro: '" + lookAhead.getToken() + "'.");
         }
-        BlockNode block = new BlockNode(sentenceList);
+        BlockNode block = new BlockNode(symbolTable, sentenceList);
         return block;
     }
 
@@ -398,12 +419,14 @@ public class Parser {
         if (lookAhead.equals("}")) {
             // ListaSentencias -> lambda
             // No hay mas sentencias
+            return new LinkedList<SentenceNode>();
         } else {
-            Sentencia();
+            SentenceNode sentence = Sentencia();
             // Delego el control de terminales o no-terminales a Sentencia()
-            ListaSentencias();
+            LinkedList<SentenceNode> sentenceList = ListaSentencias();
+            sentenceList.addFirst(sentence);
+            return sentenceList;
         }
-        return null;
     }
 
     private SentenceNode Sentencia() throws LexicalException, SyntacticException {
@@ -735,8 +758,10 @@ public class Parser {
     }
 
     private LiteralNode Literal() throws LexicalException, SyntacticException {
+        
         if (lookAhead.equals("null")) {
             match("null");
+            
         } else if (lookAhead.equals("true")) {
             match("true");
         } else if (lookAhead.equals("false")) {
@@ -750,7 +775,7 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un literal. Se encontro: '" + lookAhead.getToken() + "'.");
         }
-        return new LiteralNode(symbolTable, currentToken);
+        return new LiteralNode(symbolTable, currentToken, type);
     }
 
     private LinkedList<ExpressionNode> ArgsActuales() throws LexicalException, SyntacticException {
