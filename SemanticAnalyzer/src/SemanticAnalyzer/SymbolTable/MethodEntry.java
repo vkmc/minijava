@@ -1,6 +1,7 @@
 package SemanticAnalyzer.SymbolTable;
 
 import SemanticAnalyzer.SymbolTable.Type.Type;
+import java.util.LinkedList;
 
 /**
  * Representacion de la entrada de metodo
@@ -80,4 +81,5 @@ public class MethodEntry extends ServiceEntry {
      */
     public void compareParameters(MethodEntry methodEntry) {
     }
+   
 }

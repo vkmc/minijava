@@ -3,6 +3,7 @@ package SemanticAnalyzer.SymbolTable;
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.AST.BlockNode;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Representacion de la entrada de servicio
@@ -14,15 +15,15 @@ public abstract class ServiceEntry {
     
     private String serviceName;
     private int lineNumber;
-    private HashMap<String, ParameterEntry> parametersTable;
-    private HashMap<String, LocalVariableEntry> localVariablesTable;
+    private LinkedHashMap<String, ParameterEntry> parametersTable;
+    private LinkedHashMap<String, LocalVariableEntry> localVariablesTable;
     private BlockNode body;
     
     public ServiceEntry(String serviceName, int lineNumber) {
         this.serviceName = serviceName;
         this.lineNumber = lineNumber;
-        parametersTable = new HashMap<>();
-        localVariablesTable = new HashMap<>();
+        parametersTable = new LinkedHashMap<>();
+        localVariablesTable = new LinkedHashMap<>();
         body = null;
     }
 
@@ -35,6 +36,14 @@ public abstract class ServiceEntry {
     public void addParameterEntry(String parameterName, Type parameterType, int lineNumber) {
         ParameterEntry parameter = new ParameterEntry(parameterName, parameterType, lineNumber);
         parametersTable.put(parameterName, parameter);
+    }
+    
+    /**
+     * Retorna el conjunto de parametros del metodo
+     * @return parametersTable
+     */
+    public LinkedHashMap<String, ParameterEntry> getParameters() {
+        return parametersTable;
     }
     
     /**
@@ -56,6 +65,14 @@ public abstract class ServiceEntry {
     public void addLocalVariableEntry(String localVariableName, Type localVariableType, int lineNumber) {
         LocalVariableEntry localVariable = new LocalVariableEntry(localVariableName, localVariableType, lineNumber);
         localVariablesTable.put(localVariableName, localVariable);
+    }
+    
+    /**
+     * Retorna el conjunto de variables locales del metodo
+     * @return parametersTable
+     */
+    public LinkedHashMap<String, LocalVariableEntry> getLocalVariables() {
+        return localVariablesTable;
     }
     
     /**
