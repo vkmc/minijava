@@ -7,8 +7,8 @@ package SemanticAnalyzer.SymbolTable.Type;
  */
 public class IntegerType extends PrimitiveType {
     
-    public IntegerType(String typeName) {
-        super(typeName);
+    public IntegerType() {
+        super("int");
     }
 
     @Override

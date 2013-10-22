@@ -532,16 +532,20 @@ public class Parser {
     }
 
     private ExpressionNode Expresion6() throws LexicalException, SyntacticException {
-        Expresion5();
-        Expresion6_();
-        
+        ExpressionNode left = Expresion5();
+        ExpressionNode right = Expresion6_(left);
+        return right;
     }
 
-    private ExpressionNode Expresion6_() throws LexicalException, SyntacticException {
+    private ExpressionNode Expresion6_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("||")) {
             match("||");
-            Expresion5();
+            Token operator = currentToken;
+            ExpressionNode right = Expresion5();
+            ExpressionNode george = new BinaryExpressionNode(symbolTable, operator, left, right);
+            
             Expresion6_();
+            
         } else {
             // Expresion6_ -> lambda
         }
@@ -639,6 +643,7 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba == o != . Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        return currentToken;
     }
 
     private Token Operador3() throws LexicalException, SyntacticException {
@@ -653,6 +658,7 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba <, >, <=, >= . Se encontro: '" + lookAhead.getToken() + "'.");
         }
+        return currentToken;
     }
 
     private Token Operador2() throws LexicalException, SyntacticException {
@@ -832,15 +838,15 @@ public class Parser {
         Type aType;
         
         if (type.equals("int")) {
-            aType = new IntegerType(type);
+            aType = new IntegerType();
         } else if (type.equals("char")) {
-            aType = new CharType(type);
+            aType = new CharType();
         } else if (type.equals("boolean")) {
-            aType = new BooleanType(type);
+            aType = new BooleanType();
         } else if (type.equals("String")) {
-            aType = new StringType(type);
+            aType = new StringType();
         } else if (type.equals("void")) {
-            aType = new VoidType(type);
+            aType = new VoidType();
         } else {
             aType = new ClassType(type);
         }

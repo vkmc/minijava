@@ -7,8 +7,8 @@ package SemanticAnalyzer.SymbolTable.Type;
  */
 public class BooleanType extends PrimitiveType {
     
-    public BooleanType(String typeName) {
-        super(typeName);
+    public BooleanType() {
+        super("boolean");
     }
 
     @Override

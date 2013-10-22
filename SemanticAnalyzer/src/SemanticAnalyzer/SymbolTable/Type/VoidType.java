@@ -7,8 +7,8 @@ package SemanticAnalyzer.SymbolTable.Type;
  */
 public class VoidType extends PrimitiveType {
     
-    public VoidType(String typeName) {
-        super(typeName);
+    public VoidType() {
+        super("void");
     }
 
     @Override

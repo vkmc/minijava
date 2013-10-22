@@ -7,8 +7,8 @@ package SemanticAnalyzer.SymbolTable.Type;
  */
 public class CharType extends PrimitiveType {
     
-    public CharType(String typeName) {
-        super(typeName);
+    public CharType() {
+        super("char");
     }
 
     @Override
