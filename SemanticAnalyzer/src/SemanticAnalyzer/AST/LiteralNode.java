@@ -3,6 +3,7 @@ package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SymbolTable.SymbolTable;
 import SemanticAnalyzer.Token;
+import SemanticAnalyzer.SymbolTable.Type.Type;
 
 /**
  * @author Ramiro Agis
@@ -11,11 +12,11 @@ import SemanticAnalyzer.Token;
 public class LiteralNode extends PrimaryNode {
 
     protected Token literal;
- 
-    public LiteralNode(SymbolTable st, Token lit) {
+    
+    public LiteralNode(SymbolTable st, Token lit, Type type) {
         super(st);
         literal = lit;
-        expressionType = new literal.getLexeme();
+        expressionType = type;
     }
     
     public void checkNode() {
