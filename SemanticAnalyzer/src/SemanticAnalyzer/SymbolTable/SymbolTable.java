@@ -1,5 +1,6 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SymbolTable.Type.Type;
 import java.util.HashMap;
 
 /**
@@ -33,12 +34,12 @@ public class SymbolTable {
     }
 
     private void addClassObject() {
-        ClassEntry Object = new ClassEntry("Object");
+        ClassEntry Object = new ClassEntry("Object", 0);
         classTable.put("Object", Object);
     }
 
     private void addClassSystem() {
-        ClassEntry System = new ClassEntry("System");
+        ClassEntry System = new ClassEntry("System", 0);
         classTable.put("System", System);
     }
 
@@ -58,8 +59,8 @@ public class SymbolTable {
      *
      * @param className nombre de la entrada de clase a agregar
      */
-    public void addClassEntry(String className) {
-        ClassEntry aClass = new ClassEntry(className);
+    public void addClassEntry(String className, int lineNumber) {
+        ClassEntry aClass = new ClassEntry(className, lineNumber);
         classTable.put(className, aClass);
     }
 

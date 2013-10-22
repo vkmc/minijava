@@ -1,5 +1,7 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SymbolTable.Type.Type;
+
 /**
  * Representacion de la entrada de metodo
  *

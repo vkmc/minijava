@@ -1,29 +1,14 @@
 package SemanticAnalyzer;
 
-import SemanticAnalyzer.SymbolTable.ServiceEntry;
-import SemanticAnalyzer.SymbolTable.SymbolTable;
-import SemanticAnalyzer.SymbolTable.ClassEntry;
-import SemanticAnalyzer.AST.ExpressionNode;
-import SemanticAnalyzer.AST.IdExpressionCallNode;
-import SemanticAnalyzer.AST.ReturnNode;
-import SemanticAnalyzer.AST.ForNode;
-import SemanticAnalyzer.AST.IfThenNode;
-import SemanticAnalyzer.AST.BinaryExpressionNode;
-import SemanticAnalyzer.AST.BlockNode;
-import SemanticAnalyzer.AST.LiteralNode;
-import SemanticAnalyzer.AST.SentenceNode;
-import SemanticAnalyzer.AST.AssignNode;
-import SemanticAnalyzer.AST.UnaryExpressionNode;
-import SemanticAnalyzer.AST.NewNode;
-import SemanticAnalyzer.AST.IdNode;
-import SemanticAnalyzer.AST.SeparatorNode;
-import SemanticAnalyzer.AST.WhileNode;
-import SemanticAnalyzer.AST.SimpleSentenceNode;
-import SemanticAnalyzer.AST.ReturnExpNode;
-import SemanticAnalyzer.AST.CallNode;
-import SemanticAnalyzer.AST.ThisNode;
-import SemanticAnalyzer.AST.IfThenElseNode;
-import SemanticAnalyzer.AST.ExpressionCallNode;
+import SemanticAnalyzer.SymbolTable.Type.ClassType;
+import SemanticAnalyzer.SymbolTable.Type.VoidType;
+import SemanticAnalyzer.SymbolTable.Type.CharType;
+import SemanticAnalyzer.SymbolTable.Type.Type;
+import SemanticAnalyzer.SymbolTable.Type.StringType;
+import SemanticAnalyzer.SymbolTable.Type.IntegerType;
+import SemanticAnalyzer.SymbolTable.Type.BooleanType;
+import SemanticAnalyzer.AST.*;
+import SemanticAnalyzer.SymbolTable.*;
 import java.util.LinkedList;
 
 /**
@@ -112,8 +97,9 @@ public class Parser {
         }
         match("id");
         String className = currentToken.getLexeme();
+        int lineNumber = currentToken.getLineNumber();
         if (symbolTable.getClassEntry(className) == null) {
-            symbolTable.addClassEntry(className);
+            symbolTable.addClassEntry(className, lineNumber);
             symbolTable.setCurrentClass(className);
         } else {
             throw new SemanticException("Linea: " + currentToken.getLineNumber() + " - Error semantico: Ya existe una clase declarada con el nombre " + className);
@@ -190,17 +176,22 @@ public class Parser {
     private void Metodo() throws LexicalException, SyntacticException, SemanticException {
         String modificator = ModMetodo();
         String type = TipoMetodo();
+        
         match("id");
+        
         String methodName = currentToken.getLexeme();
         symbolTable.setCurrentMethod(methodName);
         String currentClass = symbolTable.getCurrentClass();
-        ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
+        ClassEntry classEntry = symbolTable.getClassEntry(currentClass);     
+        
+        
         if (methodName.equals(currentClass)) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El metodo no puede tener el mismo nombre que la clase.");
         } else if (classEntry.getMethodEntry(methodName) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un metodo " + methodName + " declarado en la clase " + currentClass);
         } else {
-            classEntry.addMethodEntry(methodName, type, modificator, lookAhead.getLineNumber());
+            Type methodType = createType(type);
+            classEntry.addMethodEntry(methodName, methodType, modificator, lookAhead.getLineNumber());
         }
         ArgsFormales();
         VarsLocales("method");
@@ -278,6 +269,7 @@ public class Parser {
         if (serviceEntry.getParameterEntry(parameterName, currentToken.getLineNumber()) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en la clase " + currentClass);
         } else {
+            Type parameterType = createType(type);
             serviceEntry.addParameterEntry(parameterName, type, currentToken.getLineNumber());
         }
     }
@@ -830,5 +822,25 @@ public class Parser {
      */
     private boolean isType(Token lookAhead) {
         return lookAhead.equals("void") || lookAhead.equals("boolean") || lookAhead.equals("char") || lookAhead.equals("int") || lookAhead.equals("String") || lookAhead.equals("id");
+    }
+
+    private Type createType(String type) {
+        Type aType;
+        
+        if (type.equals("int")) {
+            aType = new IntegerType(type);
+        } else if (type.equals("char")) {
+            aType = new CharType(type);
+        } else if (type.equals("boolean")) {
+            aType = new BooleanType(type);
+        } else if (type.equals("String")) {
+            aType = new StringType(type);
+        } else if (type.equals("void")) {
+            aType = new VoidType(type);
+        } else {
+            aType = new ClassType(type);
+        }
+        
+        return aType;
     }
 }

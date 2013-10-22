@@ -3,6 +3,7 @@ package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.SymbolTable.Type.Type;
 
 /**
  * Representacion de un nodo expresion
@@ -12,18 +13,18 @@ import SemanticAnalyzer.SymbolTable.SymbolTable;
 public abstract class ExpressionNode {
     
     protected SymbolTable symbolTable;
-    protected String expressionType;
+    protected Type expressionType;
     
     public ExpressionNode(SymbolTable st) {
         symbolTable = st;
     }
     
-    public String getExpressionType() {
+    public Type getExpressionType() {
         return expressionType;
     }
     
-    public void setExpressionType(String type) {
-        expressionType = type;
+    public void setExpressionType(Type expressionType) {
+        this.expressionType = expressionType;
     }
     
     public SymbolTable getSymbolTable() {

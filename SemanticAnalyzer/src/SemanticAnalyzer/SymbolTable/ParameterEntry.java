@@ -1,5 +1,7 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SymbolTable.Type.Type;
+
 /**
  * Representacion de la entrada de un parametro
  *
@@ -8,7 +10,7 @@ package SemanticAnalyzer.SymbolTable;
  */
 public class ParameterEntry extends VariableEntry {
 
-    public ParameterEntry(String parameterName, String type, int lineNumber) {
-        super(parameterName, type, lineNumber);
+    public ParameterEntry(String parameterName, Type parameterType, int lineNumber) {
+        super(parameterName, parameterType, lineNumber);
     }
 }

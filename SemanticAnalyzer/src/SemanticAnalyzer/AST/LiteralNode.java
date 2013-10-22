@@ -15,7 +15,7 @@ public class LiteralNode extends PrimaryNode {
     public LiteralNode(SymbolTable st, Token lit) {
         super(st);
         literal = lit;
-        expressionType = literal.getLexeme();
+        expressionType = new literal.getLexeme();
     }
     
     public void checkNode() {

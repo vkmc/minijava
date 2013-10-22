@@ -30,7 +30,7 @@ public class AssignNode extends SentenceNode {
         if (symbolTable.getClassEntry(currentClass).getInstanceVariableEntry(id,0) != null || 
             symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariableEntry(id, 0) != null ||
             symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameterEntry(id, 0) != null) {            
-            if (!symbolTable.checkConformity(left.getExpressionType(), right.getExpressionType())) {
+            if (left.getExpressionType().checkConformity(right.getExpressionType())) {
             } 
         } else {
             throw new SemanticException("Linea: " + left.getId().getLineNumber() + " - Error semantico: La variable " + left.getId().getLexeme() + " no esta declarada.");

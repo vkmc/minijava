@@ -1,5 +1,7 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SymbolTable.Type.Type;
+
 /**
  * Representacion de la entrada de una variable de instancia
  *
@@ -8,7 +10,7 @@ package SemanticAnalyzer.SymbolTable;
  */
 public class InstanceVariableEntry extends VariableEntry {
 
-    public InstanceVariableEntry(String instanceVariableName, String type, int lineNumber) {
-        super(instanceVariableName, type, lineNumber);
+    public InstanceVariableEntry(String instanceVariableName, Type instanceVariableType, int lineNumber) {
+        super(instanceVariableName, instanceVariableType, lineNumber);
     }
 }

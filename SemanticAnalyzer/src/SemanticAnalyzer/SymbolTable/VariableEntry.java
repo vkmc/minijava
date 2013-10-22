@@ -1,5 +1,7 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SymbolTable.Type.Type;
+
 /**
  * Representacion de la entrada de una variable
  *
@@ -9,13 +11,14 @@ package SemanticAnalyzer.SymbolTable;
 
 public abstract class VariableEntry {
     
+    // guardar token del tipo y de la variable
     private String variableName;
-    private String type;
+    private Type variableType;
     private int lineNumber, offset;
     
-    public VariableEntry(String variableName, String type, int lineNumber) {
+    public VariableEntry(String variableName, Type variableType, int lineNumber) {
         this.variableName = variableName;
-        this.type = type;
+        this.variableType = variableType;
         this.lineNumber = lineNumber;
         offset = 0;               
     }
@@ -28,12 +31,12 @@ public abstract class VariableEntry {
         this.variableName = variableName;
     }
 
-    public String getType() {
-        return type;
+    public Type getType() {
+        return variableType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(Type variableType) {
+        this.variableType = variableType;
     }
 
     public int getLineNumber() {

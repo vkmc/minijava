@@ -1,5 +1,6 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SymbolTable.Type.Type;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -12,15 +13,17 @@ import java.util.LinkedList;
  */
 public class ClassEntry {
     
-    private String name;
+    private String className;
+    private int lineNumber;
     private String parent;
     private LinkedList<String> parentList;
     private ConstructorEntry constructor;
     private HashMap<String, InstanceVariableEntry> instanceVariablesTable;
     private HashMap<String, MethodEntry> methodsTable;    
 
-    public ClassEntry(String className) {
-        name = className;
+    public ClassEntry(String className, int lineNumber) {
+        this.className = className;
+        this.lineNumber = lineNumber;
         instanceVariablesTable = new HashMap<>();
         methodsTable = new HashMap<>();
     }
@@ -30,15 +33,7 @@ public class ClassEntry {
      * @return name
      */
     public String getName() {
-        return name;
-    }
-    
-    /**
-     * Establece el nombre pasado por parametro a la entrada de clase
-     * @param name nuevo nombre de la entrada de clase
-     */
-    public void setName(String name) {
-        this.name = name;
+        return className;
     }
     
     /**
@@ -103,11 +98,9 @@ public class ClassEntry {
      * @param type tipo del metodo a insertar
      * @param modificator modificador del metodo a insertar
      */
-    public void addMethodEntry(String methodName, String typeName, String modificator, int lineNumber) {
-        // falta hacer contro del tipo
-        // dType type = new Type(typeName);
-        // MethodEntry method = new MethodEntry(methodName, modificator, type, lineNumber);
-        // methodsTable.put(methodName, method);
+    public void addMethodEntry(String methodName, Type returnType, String modificator, int lineNumber) {
+        MethodEntry method = new MethodEntry(methodName, modificator, returnType, lineNumber);
+        methodsTable.put(methodName, method);
     }
     
     /**
@@ -132,8 +125,8 @@ public class ClassEntry {
      * @param type tipo de la variable de instancia a insertar
      * @param lineNumber numero de linea
      */
-    public void addInstanceVariableEntry(String instanceVariableName, String type, int lineNumber) {
-        InstanceVariableEntry instanceVariable = new InstanceVariableEntry(instanceVariableName, type, lineNumber);
+    public void addInstanceVariableEntry(String instanceVariableName, Type instanceVariableType, int lineNumber) {
+        InstanceVariableEntry instanceVariable = new InstanceVariableEntry(instanceVariableName, instanceVariableType, lineNumber);
         instanceVariablesTable.put(instanceVariableName, instanceVariable);
     }
     

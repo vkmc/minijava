@@ -1,5 +1,7 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SymbolTable.Type.Type;
+
 /**
  * Representacion de la entrada de una variable local
  *
@@ -8,8 +10,8 @@ package SemanticAnalyzer.SymbolTable;
  */
 public class LocalVariableEntry extends VariableEntry {
     
-    public LocalVariableEntry(String localVariableName, String type, int lineNumber) {
-        super(localVariableName, type, lineNumber);
+    public LocalVariableEntry(String localVariableName, Type localVariableType, int lineNumber) {
+        super(localVariableName, localVariableType, lineNumber);
     }
     
 }
