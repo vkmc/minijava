@@ -270,7 +270,7 @@ public class Parser {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en la clase " + currentClass);
         } else {
             Type parameterType = createType(type);
-            serviceEntry.addParameterEntry(parameterName, type, currentToken.getLineNumber());
+            serviceEntry.addParameterEntry(parameterName, parameterType, currentToken.getLineNumber());
         }
     }
 
@@ -356,7 +356,8 @@ public class Parser {
                 // Declaración de variable de instancia.
                 if (classEntry.getInstanceVariableEntry(variableName, lineNumber) == null) {
                     // La variable de instancia no existe. Se crea.
-                    classEntry.addInstanceVariableEntry(variableName, type, lineNumber);
+                    Type instanceVariableType = createType(type);
+                    classEntry.addInstanceVariableEntry(variableName, instanceVariableType, lineNumber);
                 } else {
                     throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de una variable de instancia con el nombre " + variableName + " en la clase " + currentClass);
                 }
@@ -370,7 +371,8 @@ public class Parser {
                     throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de una variable local con el nombre " + variableName + " en el metodo " + currentMethod + " de la clase " + currentClass);
                 } else {
                     // La variable local no existe. Se crea.
-                    serviceEntry.addLocalVariableEntry(variableName, type, lineNumber);
+                    Type localVariableType = createType(type);
+                    serviceEntry.addLocalVariableEntry(variableName, localVariableType, lineNumber);
                 }
                 
             }
