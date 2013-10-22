@@ -117,19 +117,4 @@ public class SymbolTable {
     public void controlMain() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    /**
-     * Controla que haya conformidad de tipos entre los tipos type1 y type2
-     *
-     * @param type1
-     * @param type2
-     * @return true si hay conformidad de tipos, false en caso contrario
-     */
-    public boolean checkConformity(Type type1, Type type2) {
-        return false;
-    }
-
-    public boolean checkConformity(String expressionType, String expressionType0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
