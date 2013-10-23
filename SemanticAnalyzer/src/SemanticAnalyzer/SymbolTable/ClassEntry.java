@@ -98,7 +98,9 @@ public class ClassEntry {
      * constructor default
      */
     public void controlDefaultConstructor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (getConstructorEntry() == null) {
+            constructor = new ConstructorEntry(className, -1);
+        }
     }
 
     /**
@@ -182,7 +184,13 @@ public class ClassEntry {
         return false;
     }
 
-    public void controlInstanceVariables(String instanceVariableName) {
+    public void controlInstanceVariables(String instanceVariableName) throws SemanticException {
+        if (instanceVariableName.equals(className)) {
+            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia con su mismo nombre.");
+        }
+        if (methodsTable.get(instanceVariableName) != null) {
+            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia " + instanceVariableName + " con el mismo nombre que uno de sus metodos.");
+        }
     }
 
     /**
