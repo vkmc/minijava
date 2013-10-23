@@ -1,7 +1,6 @@
 package SemanticAnalyzer.SymbolTable;
 
-import SemanticAnalyzer.SymbolTable.Type.Type;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Representacion de la tabla de simbolos para la generacion de codigo
@@ -12,19 +11,19 @@ import java.util.HashMap;
  */
 public class SymbolTable {
 
-    private HashMap<String, ClassEntry> classTable;
+    private LinkedHashMap<String, ClassEntry> classTable;
     private String currentClass, currentMethod;
 
     /**
-     * Constructor de la tabla de simbolos
-     * Crea las estructuras e inicializa los atributos
+     * Constructor de la tabla de simbolos Crea las estructuras e inicializa los
+     * atributos
      */
     public SymbolTable() {
-        classTable = new HashMap<>();
+        classTable = new LinkedHashMap<>();
         currentClass = null;
         currentMethod = null;
     }
-    
+
     /**
      * Inicializa la tabla de simbolos
      */
@@ -52,6 +51,15 @@ public class SymbolTable {
      */
     public ClassEntry getClassEntry(String className) {
         return classTable.get(className);
+    }
+
+    /**
+     * Retorna el conjunto de clases presentes en la tabla de simbolos
+     *
+     * @return classTable
+     */
+    public LinkedHashMap getClasses() {
+        return classTable;
     }
 
     /**

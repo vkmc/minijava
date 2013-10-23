@@ -45,7 +45,9 @@ public class CallNode extends PrimaryNode {
                         + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType() + " y el tipo del argumento formal es " + formalArg.getType() + ".");
             }
         }
-
-
+    }
+    
+    public IdNode getIdNode() {
+        return id;
     }
 }
