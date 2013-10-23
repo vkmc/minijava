@@ -1,5 +1,6 @@
 package SemanticAnalyzer.AST;
 
+import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
 import SemanticAnalyzer.Token;
 
@@ -21,7 +22,12 @@ public class WhileNode extends SentenceNode {
     }
 
     @Override
-    public void checkNode() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void checkNode() throws SemanticException {
+        condition.checkNode();
+        String foundType = condition.getExpressionType().getTypeName();
+        if (!foundType.equals("boolean")) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo de la condición para la sentencia While no es valido. Se esperaba un tipo boolean, se encontrun tipo " + foundType);
+        }
+        sentence.checkNode();
     }
 }
