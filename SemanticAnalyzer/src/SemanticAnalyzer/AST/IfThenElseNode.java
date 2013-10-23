@@ -1,19 +1,21 @@
-
 package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.Token;
 
 /**
+ * Representacion de un nodo If-Then-Else
+ *
  * @author Ramiro Agis
  * @author Victoria Martinez de la Cruz
  */
 public class IfThenElseNode extends IfThenNode {
 
     protected SentenceNode sentenceElse;
-    
-    public IfThenElseNode(SymbolTable st, ExpressionNode cond, SentenceNode sentIf, SentenceNode sentElse) {
-        super(st, cond, sentIf);
-        sentenceElse = sentElse;
+
+    public IfThenElseNode(SymbolTable symbolTable, ExpressionNode condition, SentenceNode sentenceIf, SentenceNode sentenceElse, Token token) {
+        super(symbolTable, condition, sentenceIf, token);
+        this.sentenceElse = sentenceElse;
     }
 
     @Override

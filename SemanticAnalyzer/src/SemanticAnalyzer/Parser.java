@@ -115,7 +115,7 @@ public class Parser {
 
     private void Herencia() throws LexicalException, SyntacticException, SemanticException {
         String className = symbolTable.getCurrentClass();
-        ClassEntry classEntry = symbolTable.getClassEntry(className); 
+        ClassEntry classEntry = symbolTable.getClassEntry(className);
         if (lookAhead.equals("extends")) {
             match("extends");
             match("id");
@@ -176,15 +176,15 @@ public class Parser {
     private void Metodo() throws LexicalException, SyntacticException, SemanticException {
         String modificator = ModMetodo();
         Type type = TipoMetodo();
-        
+
         match("id");
-        
+
         String methodName = currentToken.getLexeme();
         symbolTable.setCurrentMethod(methodName);
         String currentClass = symbolTable.getCurrentClass();
-        ClassEntry classEntry = symbolTable.getClassEntry(currentClass);     
-        
-        
+        ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
+
+
         if (methodName.equals(currentClass)) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El metodo no puede tener el mismo nombre que la clase.");
         } else if (classEntry.getMethodEntry(methodName) != null) {
@@ -206,10 +206,10 @@ public class Parser {
         ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
         if (!currentClass.equals(constructorName)) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El nombre del constructor no corresponde al nombre de la clase.");
-        } else if (classEntry.getConstructorEntry() != null ) {
+        } else if (classEntry.getConstructorEntry() != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un constructor en la clase " + currentClass + ".");
         } else {
-           classEntry.setConstructorEntry(constructorName, lookAhead.getLineNumber());
+            classEntry.setConstructorEntry(constructorName, lookAhead.getLineNumber());
         }
         ArgsFormales();
         VarsLocales("method");
@@ -305,7 +305,7 @@ public class Parser {
             match("void");
             type = createType("void");
         } else {
-            type =  Tipo();
+            type = Tipo();
         }
         return type;
     }
@@ -344,7 +344,7 @@ public class Parser {
     private void ListaDecVars(String from, Type type) throws LexicalException, SyntacticException, SemanticException {
         String currentClass = symbolTable.getCurrentClass();
         ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
-                
+
         if (lookAhead.equals("id")) {
             match("id");
             String variableName = currentToken.getLexeme();
@@ -370,7 +370,7 @@ public class Parser {
                     // La variable local no existe. Se crea.
                     serviceEntry.addLocalVariableEntry(variableName, type, lineNumber);
                 }
-                
+
             }
         } else if (lookAhead.equals(",")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Falta especificar el tipo de las variables declaradas."); // caso: var v1, v2;                                                                                                                                                 // v1 se toma como tipo  
@@ -401,7 +401,7 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de un bloque '{'. Se encontro: '" + lookAhead.getToken() + "'.");
         }
-        BlockNode block = new BlockNode(symbolTable, sentenceList);
+        BlockNode block = new BlockNode(symbolTable, sentenceList, currentToken);
         return block;
     }
 
@@ -409,7 +409,7 @@ public class Parser {
         if (lookAhead.equals("}")) {
             // ListaSentencias -> lambda
             // No hay mas sentencias
-            return new LinkedList<SentenceNode>();
+            return new LinkedList<>();
         } else {
             SentenceNode sentence = Sentencia();
             // Delego el control de terminales o no-terminales a Sentencia()
@@ -421,8 +421,9 @@ public class Parser {
 
     private SentenceNode Sentencia() throws LexicalException, SyntacticException {
         if (lookAhead.equals(";")) {
+            Token current = currentToken;
             match(";");
-            return new SeparatorNode(symbolTable);
+            return new SeparatorNode(symbolTable, current);
         } else if (lookAhead.equals("id")) {
             AssignNode assign = Asignacion();
             match(";");
@@ -440,19 +441,21 @@ public class Parser {
             SentenceNode sentenceElse = Sentencia_();
             if (sentenceElse == null) {
                 // If-Then
-                return new IfThenNode(symbolTable, condition, sentenceIf);
+                return new IfThenNode(symbolTable, condition, sentenceIf, currentToken);
             } else {
                 // If-Then-Else
-                return new IfThenElseNode(symbolTable, condition, sentenceIf, sentenceElse);
+                return new IfThenElseNode(symbolTable, condition, sentenceIf, sentenceElse, currentToken);
             }
         } else if (lookAhead.equals("while")) {
+            Token current = currentToken;
             match("while");
             match("(");
             ExpressionNode condition = Expresion();
             match(")");
             SentenceNode sentence = Sentencia();
-            return new WhileNode(symbolTable, condition, sentence);
+            return new WhileNode(symbolTable, condition, sentence, current);
         } else if (lookAhead.equals("for")) {
+            Token current = currentToken;
             match("for");
             match("(");
             AssignNode init = Asignacion();
@@ -462,20 +465,21 @@ public class Parser {
             ExpressionNode increment = Expresion();
             match(")");
             SentenceNode sentence = Sentencia();
-            return new ForNode(symbolTable, init, condition, increment, sentence);
+            return new ForNode(symbolTable, init, condition, increment, sentence, current);
         } else if (lookAhead.equals("{")) {
             return Bloque();
         } else if (lookAhead.equals("return")) {
+            Token current = currentToken;
             match("return");
             Token returnToken = currentToken;
             ExpressionNode expression = Sentencia__();
             match(";");
             if (expression == null) {
                 // return;
-                    return new ReturnNode(symbolTable, currentToken);
+                return new ReturnNode(symbolTable, current);
             } else {
                 // return <Expresion>;
-                return new ReturnExpNode(symbolTable, currentToken, expression);
+                return new ReturnExpNode(symbolTable, expression, current);
             }
         } else if (lookAhead.equals("var")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: No pueden declararse variables dentro de un bloque.");
@@ -507,14 +511,16 @@ public class Parser {
     }
 
     private AssignNode Asignacion() throws LexicalException, SyntacticException {
+        Token current = currentToken;
         match("id");
         IdNode id = new IdNode(symbolTable, currentToken);
         match("=");
         ExpressionNode expression = Expresion();
-        return new AssignNode(symbolTable, id, expression);
+        return new AssignNode(symbolTable, id, expression, current);
     }
 
     private SimpleSentenceNode SentenciaSimple() throws LexicalException, SyntacticException {
+        Token current = currentToken;
         if (!lookAhead.equals("(")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la apertura de una expresion parentizada '('. Se encontro: '" + lookAhead.getToken() + "'.");
         }
@@ -524,11 +530,11 @@ public class Parser {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el cierre de una expresion parentizada ')'. Se encontro: '" + lookAhead.getToken() + "'.");
         }
         match(")");
-        return new SimpleSentenceNode(symbolTable, expression);
+        return new SimpleSentenceNode(symbolTable, expression, current);
     }
 
     private ExpressionNode Expresion() throws LexicalException, SyntacticException {
-        return Expresion6(); 
+        return Expresion6();
     }
 
     private ExpressionNode Expresion6() throws LexicalException, SyntacticException {
@@ -539,10 +545,11 @@ public class Parser {
 
     private ExpressionNode Expresion6_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("||")) {
+            Token current = currentToken;
             match("||");
             Token operator = currentToken;
             ExpressionNode right = Expresion5();
-            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right, current);
             return Expresion6_(binaryExpression);
         } else {
             // Expresion6_ -> lambda
@@ -558,10 +565,11 @@ public class Parser {
 
     private ExpressionNode Expresion5_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("&&")) {
+            Token current = currentToken;
             match("&&");
             Token operator = currentToken;
             ExpressionNode right = Expresion4();
-            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right, current);
             return Expresion5_(binaryExpression);
         } else {
             // Expresion5_ -> lambda
@@ -577,9 +585,10 @@ public class Parser {
 
     private ExpressionNode Expresion4_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("==") || lookAhead.equals("!=")) {
+            Token current = currentToken;
             Token operator = Operador4();
             ExpressionNode right = Expresion3();
-            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right, current);
             return Expresion4_(binaryExpression);
         } else {
             // Expresion4_ -> lambda
@@ -595,9 +604,10 @@ public class Parser {
 
     private ExpressionNode Expresion3_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("<") || lookAhead.equals(">") || lookAhead.equals(">=") || lookAhead.equals("<=")) {
+            Token current = currentToken;
             Token operator = Operador3();
             ExpressionNode right = Expresion2();
-            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right, current);
             return Expresion3_(binaryExpression);
         } else {
             // Expresion3_ -> lambda
@@ -613,9 +623,10 @@ public class Parser {
 
     private ExpressionNode Expresion2_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("+") || lookAhead.equals("-")) {
+            Token current = currentToken;
             Token operator = Operador2();
             ExpressionNode right = Expresion1();
-            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right, current);
             return Expresion2_(binaryExpression);
         } else {
             // Expresion2_ -> lambda
@@ -631,9 +642,10 @@ public class Parser {
 
     private ExpressionNode Expresion1_(ExpressionNode left) throws LexicalException, SyntacticException {
         if (lookAhead.equals("*") || lookAhead.equals("/") || lookAhead.equals("%")) {
+            Token current = currentToken;
             Token operator = Operador1();
             ExpressionNode right = Expresion0();
-            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right);
+            ExpressionNode binaryExpression = new BinaryExpressionNode(symbolTable, operator, left, right, current);
             return Expresion1_(binaryExpression);
         } else {
             // Expresion1_ -> lambda
@@ -643,7 +655,8 @@ public class Parser {
 
     private ExpressionNode Expresion0() throws LexicalException, SyntacticException {
         if (lookAhead.equals("!") || lookAhead.equals("+") || lookAhead.equals("-")) {
-            return new UnaryExpressionNode(symbolTable, OperadorUnario(), Expresion0());
+            Token current = currentToken;
+            return new UnaryExpressionNode(symbolTable, OperadorUnario(), Expresion0(), current);
         } else {
             return Primario();
         }
@@ -717,55 +730,61 @@ public class Parser {
             match("this");
             return new ThisNode(symbolTable, currentToken);
         } else if (lookAhead.equals("(")) {
+            Token current = currentToken;
             match("(");
             ExpressionNode expression = Expresion();
             match(")");
             LinkedList<CallNode> callList = ListaLlamadas();
-            return new ExpressionCallNode(symbolTable, expression, callList);
+            return new ExpressionCallNode(symbolTable, expression, callList, current);
         } else if (lookAhead.equals("id")) {
             match("id");
             return ListaLlamadas_(currentToken);
         } else if (lookAhead.equals("new")) {
+            Token current = currentToken;
             match("new");
             match("id");
             IdNode id = new IdNode(symbolTable, currentToken);
-            LinkedList<ExpressionNode> args = ArgsActuales(); 
+            LinkedList<ExpressionNode> actualArgs = ArgsActuales();
             LinkedList<CallNode> callList = ListaLlamadas();
-            return new NewNode(symbolTable, id, args, callList);
+            return new NewNode(symbolTable, id, actualArgs, callList, current);
         } else {
             return Literal();
         }
     }
 
     private LinkedList<CallNode> ListaLlamadas() throws LexicalException, SyntacticException {
-        
+
         if (lookAhead.equals(".")) {
             CallNode call = Llamada();
             LinkedList<CallNode> callList = ListaLlamadas();
             callList.addFirst(call);
             return callList;
-            
+
         } else {
             // ListaLlamadas -> lambda
-            return new LinkedList<CallNode>();  
+            return new LinkedList<>();
         }
     }
 
     private IdExpressionCallNode ListaLlamadas_(Token id) throws LexicalException, SyntacticException {
+        Token current = currentToken;
+        IdNode idNode = new IdNode(symbolTable, id);
+
         if (lookAhead.equals("(")) {
-            LinkedList<ExpressionNode> args = ArgsActuales();
-            return new IdExpressionCallNode(symbolTable, id, args, ListaLlamadas());
+            LinkedList<ExpressionNode> actualArgs = ArgsActuales();
+            return new IdExpressionCallNode(symbolTable, idNode, actualArgs, ListaLlamadas(), current);
         } else {
-            return new IdExpressionCallNode(symbolTable, id, ListaLlamadas());
+            return new IdExpressionCallNode(symbolTable, idNode, ListaLlamadas(), current);
         }
     }
 
     private CallNode Llamada() throws LexicalException, SyntacticException {
+        Token current = currentToken;
         match(".");
         match("id");
         IdNode id = new IdNode(symbolTable, currentToken);
-        return new CallNode(symbolTable, id, ArgsActuales());
-        
+        return new CallNode(symbolTable, id, ArgsActuales(), current);
+
     }
 
     private LiteralNode Literal() throws LexicalException, SyntacticException {
@@ -791,7 +810,7 @@ public class Parser {
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba un literal. Se encontro: '" + lookAhead.getToken() + "'.");
         }
-        
+
         return new LiteralNode(symbolTable, currentToken, type);
     }
 
@@ -809,11 +828,11 @@ public class Parser {
             // ArgsActuales_ -> )
             // No hay mas argumentos actuales
             match(")");
-            return new LinkedList<ExpressionNode>();
+            return new LinkedList<>();
         } else {
-            
+
             // Usamos el argumento para guardar las expresiones porque es una recursión usada complicada y es más cómodo crear la lista desde afuera.
-            LinkedList<ExpressionNode> args = new LinkedList<ExpressionNode>();
+            LinkedList<ExpressionNode> args = new LinkedList<>();
             ListaExps(args);
             if (lookAhead.equals(")")) {
                 match(")");
@@ -826,7 +845,7 @@ public class Parser {
 
     private void ListaExps(LinkedList<ExpressionNode> expressionList) throws LexicalException, SyntacticException {
         ExpressionNode e = Expresion();
-        expressionList.addLast(e); 
+        expressionList.addLast(e);
         ListaExps_(expressionList);
     }
 
@@ -851,7 +870,7 @@ public class Parser {
 
     private Type createType(String type) {
         Type aType;
-        
+
         if (type.equals("int")) {
             aType = new IntegerType();
         } else if (type.equals("char")) {
@@ -865,7 +884,7 @@ public class Parser {
         } else {
             aType = new ClassType(type);
         }
-        
+
         return aType;
     }
 }

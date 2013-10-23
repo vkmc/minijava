@@ -17,8 +17,8 @@ public class BinaryExpressionNode extends ExpressionNode {
     protected ExpressionNode left;
     protected ExpressionNode right;
 
-    public BinaryExpressionNode(SymbolTable st, Token op, ExpressionNode exp1, ExpressionNode exp2) {
-        super(st);
+    public BinaryExpressionNode(SymbolTable symbolTable, Token op, ExpressionNode exp1, ExpressionNode exp2, Token token) {
+        super(symbolTable, token);
         operator = op;
         left = exp1;
         right = exp2;
@@ -29,34 +29,34 @@ public class BinaryExpressionNode extends ExpressionNode {
         String operatorLexeme = operator.getLexeme();
         if (operatorLexeme.equals("+") || operatorLexeme.equals("-") || operatorLexeme.equals("*") || operatorLexeme.equals("/") || operatorLexeme.equals("%")) {
             if (!left.getExpressionType().getTypeName().equals("int")) {
-                throw new SemanticException("Linea: " + operator.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + left.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + left.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
             } else if (!right.getExpressionType().getTypeName().equals("int")) {
-                throw new SemanticException("Linea: " + operator.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + right.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + right.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
             } else {
                 Type type = new IntegerType();
                 this.setExpressionType(type);
             }
         } else if (operatorLexeme.equals("&&") || operatorLexeme.equals("||")) {
             if (!left.getExpressionType().getTypeName().equals("boolean")) {
-                throw new SemanticException("Linea: " + operator.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + left.getExpressionType() + ". Se esperaba una subexpresion de tipo boolean.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + left.getExpressionType() + ". Se esperaba una subexpresion de tipo boolean.");
             } else if (!right.getExpressionType().getTypeName().equals("boolean")) {
-                throw new SemanticException("Linea: " + operator.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + right.getExpressionType() + ". Se esperaba una subexpresion de tipo boolean.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + right.getExpressionType() + ". Se esperaba una subexpresion de tipo boolean.");
             } else {
                 Type type = new BooleanType();
                 this.setExpressionType(type);
             }
         } else if (operatorLexeme.equals("==") || operatorLexeme.equals("!=")) {
             if (left.getExpressionType().checkConformity(right.getExpressionType()) && right.getExpressionType().checkConformity(left.getExpressionType())) {
-                throw new SemanticException("Linea: " + operator.getLineNumber() + " - Error semantico: Los tipos de las subexpresiones no son conformantes. La subexpresion a la izquierda es de tipo " + left.getExpressionType() + " y la subexpresion a la derecha es de tipo " + right.getExpressionType());
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Los tipos de las subexpresiones no son conformantes. La subexpresion a la izquierda es de tipo " + left.getExpressionType() + " y la subexpresion a la derecha es de tipo " + right.getExpressionType());
             } else {
                 Type type = new BooleanType();
                 this.setExpressionType(type);
             }
         } else if (operatorLexeme.equals(">") || operatorLexeme.equals(">=") || operatorLexeme.equals("<=") || operatorLexeme.equals("<")) {
             if (!left.getExpressionType().getTypeName().equals("int")) {
-                throw new SemanticException("Linea: " + operator.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + left.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + left.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
             } else if (!right.getExpressionType().getTypeName().equals("int")) {
-                throw new SemanticException("Linea: " + operator.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + right.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario " + operatorLexeme + " no puede aplicarse a la subexpresion de tipo " + right.getExpressionType() + ". Se esperaba una subexpresion de tipo entero.");
             } else {
                 Type type = new BooleanType();
                 this.setExpressionType(type);

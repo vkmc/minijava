@@ -1,9 +1,11 @@
-
 package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.Token;
 
 /**
+ * Representacion de un nodo If-Then
+ *
  * @author Ramiro Agis
  * @author Victoria Martinez de la Cruz
  */
@@ -11,11 +13,11 @@ public class IfThenNode extends SentenceNode {
 
     protected ExpressionNode condition;
     protected SentenceNode sentenceIf;
-    
-    public IfThenNode(SymbolTable st, ExpressionNode cond, SentenceNode sent) {
-        super(st);
-        condition = cond;
-        sentenceIf = sent;
+
+    public IfThenNode(SymbolTable symbolTable, ExpressionNode condition, SentenceNode sentenceIf, Token token) {
+        super(symbolTable, token);
+        this.condition = condition;
+        this.sentenceIf = sentenceIf;
     }
 
     @Override
