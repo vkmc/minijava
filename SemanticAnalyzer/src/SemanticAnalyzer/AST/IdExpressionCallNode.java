@@ -250,9 +250,6 @@ public class IdExpressionCallNode extends PrimaryNode {
      * clase C tal que exista un metodo M en C.
      */
     private void controlReturnType() {
-        Token currentId = id.getId();
-        Token nextId;
-
         Type currentType = getExpressionType();
         Type nextType;
 
@@ -261,12 +258,9 @@ public class IdExpressionCallNode extends PrimaryNode {
         while (iteratorCallList.hasNext()) {
             CallNode nextCall = iteratorCallList.next();
 
-            nextId = nextCall.getIdNode().getId();
             nextType = nextCall.getExpressionType();
-
             nextType.checkConformity(currentType);
 
-            currentId = nextId;
             currentType = nextType;
         }
 
