@@ -118,12 +118,14 @@ public class SymbolTable {
      * @return
      */
     public void controlInheritance(String className) throws SemanticException {
-           ClassEntry aClassEntry = getClassEntry(className);
-           LinkedList<String> parents = aClassEntry.getParents();
-           if (parents.contains(className)) {
-               // Una clase se tiene a si misma en la lista de ancestros.
-               throw new SemanticException("Error semantico: Herencia circular. La clase " + className + " no puede heredar de si misma.");
-           }
+        
+        // TENER EN CUENTA LO QUE DIJO LA DOC
+        ClassEntry aClassEntry = getClassEntry(className);
+        LinkedList<String> parents = aClassEntry.getParents();
+        if (parents.contains(className)) {
+            // Una clase se tiene a si misma en la lista de ancestros.
+            throw new SemanticException("Error semantico: Herencia circular. La clase " + className + " no puede heredar de si misma.");
+        }
     }
     
     /**

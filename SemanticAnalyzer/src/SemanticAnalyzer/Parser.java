@@ -108,6 +108,8 @@ public class Parser {
         // el control de { lo hace Herencia()
         match("{");
         ListaMiembros("class");
+        
+        // Si la clase fue declarade sin constructor el compilador le asignará un constructor sin argumentos y con cuerpo vacío.
         symbolTable.getClassEntry(className).controlDefaultConstructor();
         // el control de } lo hace ListaMiembros()
         match("}");
