@@ -46,7 +46,7 @@ public class CallNode extends PrimaryNode {
             }
         }
     }
-    
+
     public IdNode getIdNode() {
         return id;
     }

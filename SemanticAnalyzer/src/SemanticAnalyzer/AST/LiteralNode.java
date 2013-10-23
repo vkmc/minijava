@@ -20,7 +20,6 @@ public class LiteralNode extends PrimaryNode {
         expressionType = type;
     }
 
-    public void checkNode() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    @Override
+    public void checkNode() {}
 }

@@ -2,6 +2,7 @@ package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.SymbolTable.Type.*;
 import SemanticAnalyzer.Token;
 
 /**
@@ -13,7 +14,7 @@ import SemanticAnalyzer.Token;
 public abstract class SentenceNode {
 
     protected SymbolTable symbolTable;
-    protected String sentenceType;
+    protected Type sentenceType;
     protected Token token;
 
     public SentenceNode(SymbolTable systemTable, Token token) {
@@ -21,12 +22,12 @@ public abstract class SentenceNode {
         this.token = token;
     }
 
-    public String getSentenceType() {
+    public Type getSentenceType() {
         return sentenceType;
     }
 
-    public void setSentenceType(String type) {
-        sentenceType = type;
+    public void setSentenceType(Type sentenceType) {
+        this.sentenceType = sentenceType;
     }
 
     public SymbolTable getSymbolTable() {
