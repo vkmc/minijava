@@ -1,5 +1,6 @@
 package SemanticAnalyzer.AST;
 
+import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
 import SemanticAnalyzer.Token;
 
@@ -19,7 +20,8 @@ public class SimpleSentenceNode extends SentenceNode {
     }
 
     @Override
-    public void checkNode() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void checkNode() throws SemanticException {
+        expression.checkNode();
+        sentenceType = expression.getExpressionType();
     }
 }
