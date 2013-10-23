@@ -1,8 +1,10 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Representacion de la entrada de clase
@@ -171,6 +173,12 @@ public class ClassEntry {
      * caso contrario
      */
     public boolean hasMain() {
+        MethodEntry main = methodsTable.get("main");
+        if (main != null) {
+            if (main.getModifier().equals("static") && main.getParameters().isEmpty()) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -180,6 +188,34 @@ public class ClassEntry {
     /**
      * Realiza un control de herencia y copia los metodos heredados
      */
-    public void controlInheritedMethods() {
+    public void controlInheritedMethods(SymbolTable st) throws SemanticException {
+        Set<String> parentMethods = st.getClassEntry(parent).getMethods().keySet();
+        
+        for (String parentMethod: parentMethods) {
+            // Buscamos el método en la clase hijo.
+            MethodEntry childMethodEntry = getMethodEntry(parentMethod);
+            MethodEntry parentMethodEntry = st.getClassEntry(parent).getMethodEntry(parentMethod);
+            if (childMethodEntry != null) {
+                // El método del padre se encuentra en la clase hijo.
+                
+                /*if (childMethodEntry.compareModifier(parentMethodEntry) &&
+                    childMethodEntry.compareParameters(parentMethodEntry) &&
+                    childMethodEntry.compareReturn(parentMethodEntry)) {
+                    // Es una redefinición válida.     
+                    
+                } else {
+                    throw new SemanticException("Error semantico: El metodo " + parentMethod + " de la clase " + parent + " es sobrecargado en la clase " + parent + ".");
+                }*/
+            } else {
+                // El método del padre no se encuentra en la clase hijo. Se copia en la subclase (herencia por copia).
+                if (className.equals(parentMethod)) {
+                    throw new SemanticException("Error semantico: El metodo " + parentMethod + " de la clase " + parent + " tiene el mismo nombre que la clase " + className + " que lo hereda.");
+                }
+                if (instanceVariablesTable.get(parentMethod) != null) {
+                    throw new SemanticException("Error semantico: El metodo " + parentMethod + " de la clase " + parent + " heredado por la clase " + className + " tiene el mismo nombre que una de sus variables de instancia");
+                }
+                methodsTable.put(parentMethod, parentMethodEntry);
+            }
+        }
     }
 }

@@ -62,7 +62,8 @@ public class MethodEntry extends ServiceEntry {
      *
      * @param methodEntry
      */
-    public void compareModifier(MethodEntry methodEntry) {
+    public boolean compareModifier(MethodEntry methodEntry) {
+        return true;
     }
 
     /**
@@ -70,7 +71,8 @@ public class MethodEntry extends ServiceEntry {
      *
      * @param methodEntry
      */
-    public void compareReturn(MethodEntry methodEntry) {
+    public boolean compareReturn(MethodEntry methodEntry) {
+        return true;
     }
 
     /**
@@ -79,7 +81,8 @@ public class MethodEntry extends ServiceEntry {
      *
      * @param methodEntry
      */
-    public void compareParameters(MethodEntry methodEntry) {
+    public boolean compareParameters(MethodEntry methodEntry) {
+        return true;
     }
    
 }

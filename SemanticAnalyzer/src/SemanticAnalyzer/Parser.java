@@ -122,9 +122,7 @@ public class Parser {
             String parentClass = currentToken.getLexeme();
             classEntry.addParent(parentClass);
             classEntry.setParent(parentClass);
-            if (symbolTable.controlInheritance(className)) {
-                throw new SemanticException("Linea: " + currentToken.getLineNumber() + " - Error semantico: Herencia circular.");
-            }
+            symbolTable.controlInheritance(className);
         } else if (lookAhead.equals("{")) {
             // Herencia -> lambda
             // No hay herencia

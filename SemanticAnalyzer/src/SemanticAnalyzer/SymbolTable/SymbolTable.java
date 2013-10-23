@@ -1,6 +1,9 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SemanticException;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Representacion de la tabla de simbolos para la generacion de codigo
@@ -114,15 +117,28 @@ public class SymbolTable {
      * @param className
      * @return
      */
-    public boolean controlInheritance(String className) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void controlInheritance(String className) throws SemanticException {
+           ClassEntry aClassEntry = getClassEntry(className);
+           LinkedList<String> parents = aClassEntry.getParents();
+           if (parents.contains(className)) {
+               // Una clase se tiene a si misma en la lista de ancestros.
+               throw new SemanticException("Error semantico: Herencia circular. La clase " + className + " no puede heredar de si misma.");
+           }
     }
-
+    
     /**
      * Controla que exista un metodo principal sin retorno (void) y estatico
      * (static) en alguna de las clases presentes en el conjunto de clases
      */
-    public void controlMain() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void controlMain() throws SemanticException {
+            Set<String> classes = classTable.keySet();
+            for (String aClass: classes) {
+                if (getClassEntry(aClass).hasMain()) {
+                    // Si se encuentra una clase con el método main el control tiene éxito.
+                    return;
+                }
+            }
+            // No se encontró una clase con método main.
+            throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
     }
 }
