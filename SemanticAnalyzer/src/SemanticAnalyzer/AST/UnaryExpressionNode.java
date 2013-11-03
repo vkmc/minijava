@@ -23,6 +23,8 @@ public class UnaryExpressionNode extends ExpressionNode {
 
     @Override
     public void checkNode() throws SemanticException {
+        right.checkNode();
+
         if (operator.getLexeme().equals("+") || operator.getLexeme().equals("-")) {
             if (!right.getExpressionType().equals("intLiteral")) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador unario " + token.getLexeme() + " no puede aplicarse a la expresion de tipo " + right.getExpressionType() + ". Se esperaba una expresion de tipo entero.");

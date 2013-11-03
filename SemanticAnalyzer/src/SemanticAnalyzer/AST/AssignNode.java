@@ -1,8 +1,13 @@
 package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SemanticException;
+import SemanticAnalyzer.SymbolTable.InstanceVariableEntry;
+import SemanticAnalyzer.SymbolTable.LocalVariableEntry;
+import SemanticAnalyzer.SymbolTable.ParameterEntry;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.Token;
+import java.util.LinkedHashMap;
 
 /**
  * Representacion de la asignacion
@@ -12,32 +17,68 @@ import SemanticAnalyzer.Token;
  */
 public class AssignNode extends SentenceNode {
 
-    protected IdNode left;
-    protected ExpressionNode right;
+    protected Token id;
+    private Type idType;
+    protected ExpressionNode expression;
 
-    public AssignNode(SymbolTable symbolTable, IdNode id, ExpressionNode expr, Token token) {
+    public AssignNode(SymbolTable symbolTable, Token id, ExpressionNode expression, Token token) {
         super(symbolTable, token);
-        left = id;
-        right = expr;
+        this.id = id;
+        this.expression = expression;
     }
 
     @Override
     public void checkNode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
         String currentMethod = symbolTable.getCurrentMethod();
-        String id = left.getId().getToken();
 
-        left.checkNode();
+        checkId();
 
-        if (symbolTable.getClassEntry(currentClass).getInstanceVariableEntry(id, 0) != null
-                || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariableEntry(id, 0) != null
-                || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameterEntry(id, 0) != null) {
-            if (!left.getExpressionType().checkConformity(right.getExpressionType())) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede asignarse una expresion de tipo " + left.getExpressionType().getTypeName() + " a una variable de tipo " + right.getExpressionType().getTypeName() + ".");
+        if (symbolTable.getClassEntry(currentClass).getInstanceVariableEntry(id.getLexeme()) != null
+                || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariableEntry(id.getLexeme()) != null
+                || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameterEntry(id.getLexeme()) != null) {
+            if (!idType.checkConformity(expression.getExpressionType())) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede asignarse una expresion de tipo " + idType.getTypeName() + " a una variable de tipo " + expression.getExpressionType().getTypeName() + ".");
             }
         } else {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La variable " + left.getId().getLexeme() + " no esta declarada.");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La variable " + id.getLexeme() + " no esta declarada.");
         }
 
+        setSentenceType(idType);
+
+    }
+
+    private void checkId() throws SemanticException {
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+        String idName = id.getLexeme();
+
+        LinkedHashMap<String, ParameterEntry> currentMethodParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameters();
+        LinkedHashMap<String, LocalVariableEntry> currentMethodLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariables();
+
+        if (currentMethodParameters.containsKey(idName)) {
+            // es un parametro del metodo actual
+            idType = currentMethodParameters.get(idName).getType();
+            return;
+        } else if (currentMethodLocalVariables.containsKey(idName)) {
+            // es una variable local del metodo actual
+            idType = currentMethodLocalVariables.get(idName).getType();
+            return;
+        }
+
+        LinkedHashMap<String, InstanceVariableEntry> currentClassInstanceVariables = symbolTable.getClassEntry(currentClass).getInstanceVariables();
+
+        if (currentClassInstanceVariables.containsKey(idName)) {
+            // es una variable de instancia de la clase actual
+
+            if (symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getModifier().equals("static")) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede usarse una variable de instancia en un metodo estatico.");
+            }
+
+            idType = currentClassInstanceVariables.get(idName).getType();
+            return;
+        }
+
+        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre en la tabla de simbolos.");
     }
 }

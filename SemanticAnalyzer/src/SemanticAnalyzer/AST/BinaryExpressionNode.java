@@ -26,6 +26,9 @@ public class BinaryExpressionNode extends ExpressionNode {
 
     @Override
     public void checkNode() throws SemanticException {
+        left.checkNode();
+        right.checkNode();
+        
         String operatorLexeme = operator.getLexeme();
         if (operatorLexeme.equals("+") || operatorLexeme.equals("-") || operatorLexeme.equals("*") || operatorLexeme.equals("/") || operatorLexeme.equals("%")) {
             if (!left.getExpressionType().getTypeName().equals("int")) {

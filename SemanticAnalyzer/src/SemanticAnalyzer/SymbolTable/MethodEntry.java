@@ -14,8 +14,8 @@ public class MethodEntry extends ServiceEntry {
     private String modifier;
     private Type returnType;
 
-    public MethodEntry(String methodName, String modifier, Type returnType, int lineNumber) {
-        super(methodName, lineNumber);
+    public MethodEntry(String methodName, String className, String modifier, Type returnType, int lineNumber) {
+        super(methodName, className, lineNumber);
         this.modifier = modifier;
         this.returnType = returnType;
     }

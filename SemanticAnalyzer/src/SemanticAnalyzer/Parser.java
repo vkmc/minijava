@@ -108,7 +108,7 @@ public class Parser {
         // el control de { lo hace Herencia()
         match("{");
         ListaMiembros("class");
-        
+
         // Si la clase fue declarade sin constructor el compilador le asignará un constructor sin argumentos y con cuerpo vacío.
         symbolTable.getClassEntry(className).controlDefaultConstructor();
         // el control de } lo hace ListaMiembros()
@@ -265,7 +265,7 @@ public class Parser {
         String currentClass = symbolTable.getCurrentClass();
         String currentMethod = symbolTable.getCurrentMethod();
         ServiceEntry serviceEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod);
-        if (serviceEntry.getParameterEntry(parameterName, currentToken.getLineNumber()) != null) {
+        if (serviceEntry.getParameterEntry(parameterName) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en la clase " + currentClass);
         } else {
             serviceEntry.addParameterEntry(parameterName, type, currentToken.getLineNumber());
@@ -352,7 +352,7 @@ public class Parser {
             ListaDecVars_(from, type);
             if (from.equals("class")) {
                 // Declaración de variable de instancia.
-                if (classEntry.getInstanceVariableEntry(variableName, lineNumber) == null) {
+                if (classEntry.getInstanceVariableEntry(variableName) == null) {
                     // La variable de instancia no existe. Se crea.
                     classEntry.addInstanceVariableEntry(variableName, type, lineNumber);
                 } else {
@@ -362,9 +362,9 @@ public class Parser {
                 // Declaración de variable local.
                 String currentMethod = symbolTable.getCurrentMethod();
                 ServiceEntry serviceEntry = classEntry.getMethodEntry(currentMethod);
-                if (serviceEntry.getParameterEntry(variableName, lineNumber) != null) {
+                if (serviceEntry.getParameterEntry(variableName) != null) {
                     throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de un parametro con el nombre " + variableName + " en el metodo " + currentMethod + " de la clase " + currentClass);
-                } else if (serviceEntry.getLocalVariableEntry(variableName, lineNumber) != null) {
+                } else if (serviceEntry.getLocalVariableEntry(variableName) != null) {
                     throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de una variable local con el nombre " + variableName + " en el metodo " + currentMethod + " de la clase " + currentClass);
                 } else {
                     // La variable local no existe. Se crea.
@@ -513,7 +513,7 @@ public class Parser {
     private AssignNode Asignacion() throws LexicalException, SyntacticException {
         Token current = currentToken;
         match("id");
-        IdNode id = new IdNode(symbolTable, currentToken);
+        Token id = currentToken;
         match("=");
         ExpressionNode expression = Expresion();
         return new AssignNode(symbolTable, id, expression, current);
@@ -743,10 +743,9 @@ public class Parser {
             Token current = currentToken;
             match("new");
             match("id");
-            IdNode id = new IdNode(symbolTable, currentToken);
             LinkedList<ExpressionNode> actualArgs = ArgsActuales();
             LinkedList<CallNode> callList = ListaLlamadas();
-            return new NewNode(symbolTable, id, actualArgs, callList, current);
+            return new NewNode(symbolTable, currentToken, actualArgs, callList, current);
         } else {
             return Literal();
         }
@@ -766,15 +765,14 @@ public class Parser {
         }
     }
 
-    private IdExpressionCallNode ListaLlamadas_(Token id) throws LexicalException, SyntacticException {
+    private PrimaryNode ListaLlamadas_(Token id) throws LexicalException, SyntacticException {
         Token current = currentToken;
-        IdNode idNode = new IdNode(symbolTable, id);
 
         if (lookAhead.equals("(")) {
             LinkedList<ExpressionNode> actualArgs = ArgsActuales();
-            return new IdExpressionCallNode(symbolTable, idNode, actualArgs, ListaLlamadas(), current);
+            return new MethodCallNode(symbolTable, current, actualArgs, ListaLlamadas(), current);
         } else {
-            return new IdExpressionCallNode(symbolTable, idNode, ListaLlamadas(), current);
+            return new IdMethodCallNode(symbolTable, current, ListaLlamadas(), current);
         }
     }
 
@@ -782,8 +780,7 @@ public class Parser {
         Token current = currentToken;
         match(".");
         match("id");
-        IdNode id = new IdNode(symbolTable, currentToken);
-        return new CallNode(symbolTable, id, ArgsActuales(), current);
+        return new CallNode(symbolTable, currentToken, ArgsActuales(), current);
 
     }
 

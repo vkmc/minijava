@@ -22,11 +22,14 @@ public class BlockNode extends SentenceNode {
 
     @Override
     public void checkNode() throws SemanticException {
-        int count = 0;
-
-        while (count < sentenceList.size()) {
-            sentenceList.get(count).checkNode();
-            count++;
+        // controlar si este bloque tiene return
+        // controlar cada sentencia de este nodo
+        for (SentenceNode sentence : sentenceList) {
+            sentence.checkNode();
         }
+    }
+
+    public LinkedList<SentenceNode> getSentenceList() {
+        return sentenceList;
     }
 }

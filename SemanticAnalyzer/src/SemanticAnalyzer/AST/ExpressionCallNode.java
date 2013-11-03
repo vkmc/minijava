@@ -4,7 +4,6 @@ import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.Token;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -21,6 +20,7 @@ public class ExpressionCallNode extends PrimaryNode {
     public ExpressionCallNode(SymbolTable symbolTable, ExpressionNode expression, Token token) {
         super(symbolTable, token);
         this.expression = expression;
+        // deberia crear una lista vacia para que no falle el foreach?
         this.callList = null;
     }
 
@@ -53,11 +53,7 @@ public class ExpressionCallNode extends PrimaryNode {
         Type currentType = getExpressionType();
         Type nextType;
 
-        Iterator<CallNode> iteratorCallList = callList.iterator();
-
-        while (iteratorCallList.hasNext()) {
-            CallNode nextCall = iteratorCallList.next();
-
+        for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
             nextType.checkConformity(currentType);
 

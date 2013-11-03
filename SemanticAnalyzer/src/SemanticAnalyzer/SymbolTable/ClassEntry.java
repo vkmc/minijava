@@ -89,7 +89,7 @@ public class ClassEntry {
      * @param constructor
      */
     public void setConstructorEntry(String constructorName, int lineNumber) {
-        ConstructorEntry constructorEntry = new ConstructorEntry(constructorName, lineNumber);
+        ConstructorEntry constructorEntry = new ConstructorEntry(constructorName, className, lineNumber);
         this.constructor = constructorEntry;
     }
 
@@ -99,7 +99,7 @@ public class ClassEntry {
      */
     public void controlDefaultConstructor() {
         if (getConstructorEntry() == null) {
-            constructor = new ConstructorEntry(className, -1);
+            constructor = new ConstructorEntry(className, className,-1);
         }
     }
 
@@ -111,7 +111,7 @@ public class ClassEntry {
      * @param modificator modificador del metodo a insertar
      */
     public void addMethodEntry(String methodName, Type returnType, String modificator, int lineNumber) {
-        MethodEntry method = new MethodEntry(methodName, modificator, returnType, lineNumber);
+        MethodEntry method = new MethodEntry(methodName, className, modificator, returnType, lineNumber);
         methodsTable.put(methodName, method);
     }
 
@@ -163,7 +163,7 @@ public class ClassEntry {
      * @param lineNumber
      * @return instanceVariable
      */
-    public InstanceVariableEntry getInstanceVariableEntry(String instanceVariableName, int lineNumber) {
+    public InstanceVariableEntry getInstanceVariableEntry(String instanceVariableName) {
         return instanceVariablesTable.get(instanceVariableName);
     }
 

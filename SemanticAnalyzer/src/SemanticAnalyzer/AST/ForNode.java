@@ -35,6 +35,11 @@ public class ForNode extends SentenceNode {
         }
 
         increment.checkNode();
+
+        if (increment.getExpressionType().checkConformity(init.getSentenceType())) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La operacion aplicada en el incremento no esta definida para el tipo del contador.");
+        }
+
         sentence.checkNode();
     }
 }

@@ -1,19 +1,29 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package SemanticAnalyzer;
 
+import SemanticAnalyzer.SymbolTable.SymbolTable;
+
 /**
- *
- * @author vkmc
+ * Analizador semantico. Agrega información semantica al parse tree y crea la tabla de simbolos.
+ * 
+ * @author Ramiro Agis
+ * @author Victoria Martínez de la Cruz
  */
 public class SemanticAnalyzer {
+    private SymbolTable symbolTable;
+    
+    public SemanticAnalyzer() {
+        symbolTable = new SymbolTable();
+    }
+    
+    public void checkSemantics() {
+        declarationCheck();
+        sentencesCheck();
+    }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    private void declarationCheck() {
+    }
+
+    private void sentencesCheck() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -1,6 +1,7 @@
 package SemanticAnalyzer.SymbolTable;
 
 import SemanticAnalyzer.SemanticException;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Set;
@@ -118,7 +119,7 @@ public class SymbolTable {
      * @return
      */
     public void controlInheritance(String className) throws SemanticException {
-        
+
         // TENER EN CUENTA LO QUE DIJO LA DOC
         ClassEntry aClassEntry = getClassEntry(className);
         LinkedList<String> parents = aClassEntry.getParents();
@@ -127,20 +128,48 @@ public class SymbolTable {
             throw new SemanticException("Error semantico: Herencia circular. La clase " + className + " no puede heredar de si misma.");
         }
     }
-    
+
     /**
      * Controla que exista un metodo principal sin retorno (void) y estatico
      * (static) en alguna de las clases presentes en el conjunto de clases
      */
     public void controlMain() throws SemanticException {
-            Set<String> classes = classTable.keySet();
-            for (String aClass: classes) {
-                if (getClassEntry(aClass).hasMain()) {
-                    // Si se encuentra una clase con el método main el control tiene éxito.
-                    return;
-                }
+        Set<String> classes = classTable.keySet();
+        for (String aClass : classes) {
+            if (getClassEntry(aClass).hasMain()) {
+                // Si se encuentra una clase con el método main el control tiene éxito.
+                return;
             }
-            // No se encontró una clase con método main.
-            throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
+        }
+        // No se encontró una clase con método main.
+        throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
+    }
+
+    public String isConstructor(String id) {
+        Iterator<String> classes = getClasses().keySet().iterator();
+
+        while (classes.hasNext()) {
+            String aClass = classes.next();
+            if (aClass.equals(id)) {
+                return aClass;
+            }
+        }
+
+        return null;
+    }
+
+    public String isMethod(String id) {
+        Iterator<String> classes = getClasses().keySet().iterator();
+
+        while (classes.hasNext()) {
+            String aClass = classes.next();
+            Set<String> methods = getClassEntry(aClass).getMethods().keySet();
+
+            if (methods.contains(id)) {
+                return aClass;
+            }
+        }
+
+        return null;
     }
 }

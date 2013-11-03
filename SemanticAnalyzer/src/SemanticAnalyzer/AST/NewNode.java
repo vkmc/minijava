@@ -1,15 +1,12 @@
 package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SemanticException;
-import SemanticAnalyzer.SymbolTable.ClassEntry;
 import SemanticAnalyzer.SymbolTable.ParameterEntry;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
 import SemanticAnalyzer.SymbolTable.Type.ClassType;
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.Token;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 /**
@@ -20,22 +17,22 @@ import java.util.LinkedList;
  */
 public class NewNode extends PrimaryNode {
 
-    protected IdNode id;
-    protected LinkedList<ExpressionNode> expressionList;
+    protected Token id;
+    protected LinkedList<ExpressionNode> actualArgs;
     protected LinkedList<CallNode> callList;
 
-    public NewNode(SymbolTable symbolTable, IdNode id, LinkedList<ExpressionNode> actualArgs, LinkedList<CallNode> callList, Token token) {
+    public NewNode(SymbolTable symbolTable, Token id, LinkedList<ExpressionNode> actualArgs, LinkedList<CallNode> callList, Token token) {
         super(symbolTable, token);
         this.id = id;
-        expressionList = actualArgs;
+        this.actualArgs = actualArgs;
         this.callList = callList;
     }
 
     @Override
     public void checkNode() throws SemanticException {
-        checkConstructor(); // controlo la existencia del constructor
+        checkId(); // controlo la existencia del constructor
 
-        for (ExpressionNode actualArg : expressionList) {
+        for (ExpressionNode actualArg : actualArgs) {
             actualArg.checkNode();
         }
 
@@ -59,17 +56,15 @@ public class NewNode extends PrimaryNode {
      *
      * @throws SemanticException
      */
-    private void checkConstructor() throws SemanticException {
+    private void checkId() throws SemanticException {
+        // debe ser un constructor
 
-        LinkedHashMap<String, ClassEntry> classes = symbolTable.getClasses();
-        String idName = id.getId().getLexeme();
-
-        if (!classes.containsKey(idName)) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El constructor invocado no se encuentra en la tabla de simbolos.");
+        if (symbolTable.isConstructor(id.getLexeme()) == null) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El constructor invocado no esta declarado.");
         }
 
-        Type aType = new ClassType(idName);
-        this.setExpressionType(aType);
+        Type aType = new ClassType(id.getLexeme());
+        setExpressionType(aType);
     }
 
     /**
@@ -80,20 +75,19 @@ public class NewNode extends PrimaryNode {
      */
     private void controlFormalArgs() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getId().getLexeme()).getParameters().values();
-        Iterator<ParameterEntry> formalArgsIterator = formalArgs.iterator();
+        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
         int counter = 0;
 
-        if (formalArgs.size() != expressionList.size()) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getId().getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
+        if (formalArgs.size() != actualArgs.size()) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
 
-        while (formalArgsIterator.hasNext()) {
-            ParameterEntry formalArg = formalArgsIterator.next();
-            if (formalArg.getType().checkConformity(expressionList.get(counter).getExpressionType())) {
+        for (ParameterEntry formalArg : formalArgs) {
+            if (formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType())) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo del argumento actual no conforma con el tipo del argumento formal."
-                        + " El tipo del argumento actual es " + expressionList.get(counter).getExpressionType() + " y el tipo del argumento formal es " + formalArg.getType() + ".");
+                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType() + " y el tipo del argumento formal es " + formalArg.getType() + ".");
             }
+            counter++;
         }
     }
 
@@ -107,11 +101,7 @@ public class NewNode extends PrimaryNode {
         Type currentType = getExpressionType();
         Type nextType;
 
-        Iterator<CallNode> iteratorCallList = callList.iterator();
-
-        while (iteratorCallList.hasNext()) {
-            CallNode nextCall = iteratorCallList.next();
-
+        for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
             nextType.checkConformity(currentType);
 

@@ -14,13 +14,15 @@ import java.util.LinkedHashMap;
 public abstract class ServiceEntry {
     
     private String serviceName;
+    private String className;
     private int lineNumber;
-    private LinkedHashMap<String, ParameterEntry> parametersTable;
-    private LinkedHashMap<String, LocalVariableEntry> localVariablesTable;
-    private BlockNode body;
+    protected LinkedHashMap<String, ParameterEntry> parametersTable;
+    protected LinkedHashMap<String, LocalVariableEntry> localVariablesTable;
+    protected BlockNode body;
     
-    public ServiceEntry(String serviceName, int lineNumber) {
+    public ServiceEntry(String serviceName, String className, int lineNumber) {
         this.serviceName = serviceName;
+        this.className = className;
         this.lineNumber = lineNumber;
         parametersTable = new LinkedHashMap<>();
         localVariablesTable = new LinkedHashMap<>();
@@ -52,7 +54,7 @@ public abstract class ServiceEntry {
      * @param lineNumber
      * @return entrada del parametro deseado si este existe, null en caso contrario
      */
-    public ParameterEntry getParameterEntry(String parameterName, int lineNumber) {
+    public ParameterEntry getParameterEntry(String parameterName) {
         return parametersTable.get(parameterName);
     }
     
@@ -80,7 +82,7 @@ public abstract class ServiceEntry {
      * @param localVariableName
      * @return entrada de la variable local deseada si este existe, null en caso contrario
      */
-    public LocalVariableEntry getLocalVariableEntry(String localVariableName, int lineNumber) {
+    public LocalVariableEntry getLocalVariableEntry(String localVariableName) {
         return localVariablesTable.get(localVariableName);
     }
     
