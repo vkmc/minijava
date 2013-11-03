@@ -438,14 +438,7 @@ public class Parser {
             ExpressionNode condition = Expresion();
             match(")");
             SentenceNode sentenceIf = Sentencia();
-            SentenceNode sentenceElse = Sentencia_();
-            if (sentenceElse == null) {
-                // If-Then
-                return new IfThenNode(symbolTable, condition, sentenceIf, currentToken);
-            } else {
-                // If-Then-Else
-                return new IfThenElseNode(symbolTable, condition, sentenceIf, sentenceElse, currentToken);
-            }
+            return Sentencia_(condition, sentenceIf);
         } else if (lookAhead.equals("while")) {
             Token current = currentToken;
             match("while");
@@ -490,15 +483,17 @@ public class Parser {
         }
     }
 
-    private SentenceNode Sentencia_() throws LexicalException, SyntacticException {
+    private SentenceNode Sentencia_(ExpressionNode condition, SentenceNode sentenceIf) throws LexicalException, SyntacticException {
         if (lookAhead.equals("else")) {
             match("else");
-            Sentencia();
+            SentenceNode sentenceElse = Sentencia();
+            return new IfThenElseNode(symbolTable, condition, sentenceIf, sentenceElse, currentToken);
         } else {
             // Sentencia_ -> lambda
             // if-then sin else
+            return new IfThenNode(symbolTable, condition, sentenceIf, currentToken);
+            
         }
-        return null;
     }
 
     private ExpressionNode Sentencia__() throws LexicalException, SyntacticException {
