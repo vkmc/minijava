@@ -122,15 +122,15 @@ public class Parser {
         if (lookAhead.equals("extends")) {
             match("extends");
             match("id");
-            String parentClass = currentToken.getLexeme();
-            classEntry.addParent(parentClass);
-            classEntry.setParent(parentClass);
+            ClassEntry parentEntry = new ClassEntry(currentToken.getLexeme(), currentToken.getLineNumber());
+            classEntry.addParent(parentEntry);
+            classEntry.setParent(parentEntry);
             //symbolTable.controlInheritance(className);
         } else if (lookAhead.equals("{")) {
             // Herencia -> lambda
             // No hay herencia
-            classEntry.addParent("Object");
-            classEntry.setParent("Object");
+            classEntry.addParent(symbolTable.getClassEntry("Object"));
+            classEntry.setParent(symbolTable.getClassEntry("Object"));
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de la clase '{' o la especificacion de herencia. Se encontro: '" + lookAhead.getToken() + "'.");
         }

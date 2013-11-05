@@ -2,7 +2,6 @@ package SemanticAnalyzer.SymbolTable;
 
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.AST.BlockNode;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -13,9 +12,9 @@ import java.util.LinkedHashMap;
  */
 public abstract class ServiceEntry {
     
-    private String serviceName;
-    private String className;
-    private int lineNumber;
+    protected String serviceName;
+    protected String className;
+    protected int lineNumber;
     protected LinkedHashMap<String, ParameterEntry> parametersTable;
     protected LinkedHashMap<String, LocalVariableEntry> localVariablesTable;
     protected BlockNode body;

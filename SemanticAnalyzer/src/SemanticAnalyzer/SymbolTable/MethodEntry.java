@@ -1,6 +1,9 @@
 package SemanticAnalyzer.SymbolTable;
 
+import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.Type.Type;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -18,6 +21,15 @@ public class MethodEntry extends ServiceEntry {
         super(methodName, className, lineNumber);
         this.modifier = modifier;
         this.returnType = returnType;
+    }
+    
+    /**
+     * Retorna el nombre del metodo
+     * 
+     * @return serviceName
+     */
+    public String getName() {
+        return serviceName;
     }
 
     /**
@@ -62,8 +74,10 @@ public class MethodEntry extends ServiceEntry {
      *
      * @param methodEntry
      */
-    public boolean compareModifier(MethodEntry methodEntry) {
-        return true;
+    public void compareModifier(MethodEntry aMethod) throws SemanticException {
+        if (!modifier.equals(aMethod.getModifier())) {
+            throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: El metodo de la clase padre tiene diferente modificador.");
+        }
     }
 
     /**
@@ -71,8 +85,13 @@ public class MethodEntry extends ServiceEntry {
      *
      * @param methodEntry
      */
-    public boolean compareReturn(MethodEntry methodEntry) {
-        return true;
+    public void compareReturnType(MethodEntry aMethod) throws SemanticException {
+        String thisMethodReturn = returnType.getTypeName();
+        String aMethodReturn = aMethod.getReturnType().getTypeName();
+        
+        if (!thisMethodReturn.equals(aMethodReturn)) {
+            throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: El metodo de la clase padre tiene diferente tipo de retorno.");
+        }
     }
 
     /**
@@ -81,8 +100,35 @@ public class MethodEntry extends ServiceEntry {
      *
      * @param methodEntry
      */
-    public boolean compareParameters(MethodEntry methodEntry) {
-        return true;
+    public void compareParameters(MethodEntry aMethod) throws SemanticException {
+        Collection<ParameterEntry> inheritedParameters = aMethod.getParameters().values();
+        Iterator<ParameterEntry> parameters = parametersTable.values().iterator();
+        int counter = 0;
+        
+        if (inheritedParameters.size() != parametersTable.size()) {
+            throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La cantidad de parametros del metodo de la clase padre es distinta a la cantidad de parametros del metodo de la clase actual.");
+        }
+        
+        for (ParameterEntry inheritedParameter : inheritedParameters) {
+            ParameterEntry currentParameter = parameters.next();
+            
+            // Controlo nombre
+            if (!inheritedParameter.getVariableName().equals(currentParameter.getVariableName())) {
+               throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: Los parametros del metodo de la clase actual tienen diferente nombre a los parametros del metodo de la clase padre."); 
+            }
+
+            // Controlo tipo
+            String inheritedParameterType = inheritedParameter.getType().getTypeName();
+            String currentParameterType = currentParameter.getType().getTypeName();
+
+            if (!inheritedParameterType.equals(currentParameterType)) {
+                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: El tipo de los parametros del metodo de la clase actual es diferente a el tipo de los parametros del metodo de la clase padre.");    
+            }
+        }
+    }
+
+    void checkMethod() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
    
 }

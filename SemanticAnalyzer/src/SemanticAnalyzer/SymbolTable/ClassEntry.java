@@ -2,9 +2,8 @@ package SemanticAnalyzer.SymbolTable;
 
 import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.Type.Type;
+import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Set;
 
 /**
  * Representacion de la entrada de clase
@@ -16,8 +15,9 @@ public class ClassEntry {
 
     private String className;
     private int lineNumber;
-    private String parent;
-    private LinkedList<String> parentList;
+    private boolean inheritanceControl;
+    private ClassEntry parent;
+    private LinkedHashMap<String, ClassEntry> parentList;
     private ConstructorEntry constructor;
     private LinkedHashMap<String, InstanceVariableEntry> instanceVariablesTable;
     private LinkedHashMap<String, MethodEntry> methodsTable;
@@ -25,6 +25,10 @@ public class ClassEntry {
     public ClassEntry(String className, int lineNumber) {
         this.className = className;
         this.lineNumber = lineNumber;
+        inheritanceControl = false;
+        parent = null;
+        parentList = new LinkedHashMap<>();
+        constructor = null;
         instanceVariablesTable = new LinkedHashMap<>();
         methodsTable = new LinkedHashMap<>();
     }
@@ -39,18 +43,27 @@ public class ClassEntry {
     }
 
     /**
+     * Retorna el numero de linea donde se declaro la clase
+     *
+     * @return lineNumber
+     */
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    /**
      * Establece el ancestro directo de la entrada de clase
      *
      * @param parent
      */
-    public void setParent(String parent) {
+    public void setParent(ClassEntry parent) {
         this.parent = parent;
     }
 
     /**
      * Retorna el ancestro directo de la entrada de clase
      */
-    public String getParent() {
+    public ClassEntry getParent() {
         return parent;
     }
 
@@ -60,8 +73,8 @@ public class ClassEntry {
      *
      * @param parent nombre del ancestro a agregar a la lista de ancestros
      */
-    public void addParent(String parent) {
-        parentList.addLast(parent);
+    public void addParent(ClassEntry parent) {
+        parentList.put(parent.getName(), parent);
     }
 
     /**
@@ -69,7 +82,7 @@ public class ClassEntry {
      *
      * @return lista con los ancestros de la clase
      */
-    public LinkedList<String> getParents() {
+    public LinkedHashMap<String, ClassEntry> getParents() {
         return parentList;
     }
 
@@ -99,7 +112,7 @@ public class ClassEntry {
      */
     public void controlDefaultConstructor() {
         if (getConstructorEntry() == null) {
-            constructor = new ConstructorEntry(className, className,-1);
+            constructor = new ConstructorEntry(className, className, 0);
         }
     }
 
@@ -174,60 +187,105 @@ public class ClassEntry {
      * @return true si la clase tiene un metodo main void y static, false en
      * caso contrario
      */
-    public boolean hasMain() {
+    public boolean hasMain() throws SemanticException {
         MethodEntry main = methodsTable.get("main");
+
         if (main != null) {
-            if (main.getModifier().equals("static") && main.getParameters().isEmpty()) {
-                return true;
+            if (!main.getModifier().equals("static")) {
+                throw new SemanticException("Linea: " + main.getLineNumber() + " - Error semantico: El metodo main debe ser estatico");
             }
+
+            if (!main.getParameters().isEmpty()) {
+                throw new SemanticException("Linea: " + main.getLineNumber() + " - Error semantico: El metodo main no debe tener parametros");
+            }
+        } else {
+            return false;
         }
-        return false;
+
+        return true;
     }
 
-    public void controlInstanceVariables(String instanceVariableName) throws SemanticException {
-        if (instanceVariableName.equals(className)) {
-            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia con su mismo nombre.");
-        }
-        if (methodsTable.get(instanceVariableName) != null) {
-            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia " + instanceVariableName + " con el mismo nombre que uno de sus metodos.");
+//    public void controlInstanceVariables(String instanceVariableName) throws SemanticException {
+//        if (instanceVariableName.equals(className)) {
+//            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia con su mismo nombre.");
+//        }
+//        if (methodsTable.get(instanceVariableName) != null) {
+//            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia " + instanceVariableName + " con el mismo nombre que uno de sus metodos.");
+//        }
+//    }
+    
+    /**
+     * De ser posible, copia los metodos heredados de la clase padre (herencia
+     * por copia)
+     *
+     * @throws SemanticException
+     */
+    public void controlInheritedMethods() throws SemanticException {
+
+        if (!parent.getName().equals("Object") && !inheritanceControl) {
+            // Las variables de instancia no se heredan
+            // Ver documentacoin
+            inheritMethods();
+            inheritanceControl = true;
         }
     }
 
     /**
-     * Realiza un control de herencia y copia los metodos heredados
+     * Copia metodos heredados y controla los metodos redefinidos
+     * 
+     * @throws SemanticException 
      */
-    public void controlInheritedMethods(SymbolTable symbolTable) throws SemanticException {
-        Set<String> parentMethods = symbolTable.getClassEntry(parent).getMethods().keySet();
+    private void inheritMethods() throws SemanticException {
+        Collection<MethodEntry> inheritedMethods = parent.getMethods().values();
         
-        for (String parentMethod: parentMethods) {
-            // Buscamos el método en la clase hijo.
-            MethodEntry childMethodEntry = getMethodEntry(parentMethod);
-            MethodEntry parentMethodEntry = symbolTable.getClassEntry(parent).getMethodEntry(parentMethod);
-            if (childMethodEntry != null) {
-                // El método del padre se encuentra en la clase hijo.
-                
-                /*if (childMethodEntry.compareModifier(parentMethodEntry) &&
-                    childMethodEntry.compareParameters(parentMethodEntry) &&
-                    childMethodEntry.compareReturn(parentMethodEntry)) {
-                    // Es una redefinición válida.     
-                    
-                } else {
-                    throw new SemanticException("Error semantico: El metodo " + parentMethod + " de la clase " + parent + " es sobrecargado en la clase " + parent + ".");
-                }*/
+        for (MethodEntry parentMethod : inheritedMethods) {
+            String parentMethodName = parentMethod.getName();
+            
+            if (parentMethodName.equals(className)) {
+                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase padre tiene un metodo con el nombre de la clase actual.");
+            }
+            
+            if (methodsTable.get(parentMethodName) != null) {
+                // Se encontro el nombre
+                // Controlar si el metodo fue redefinido
+                MethodEntry redefinedMethod = methodsTable.get(parentMethodName);
+                redefinedMethod.compareModifier(parentMethod);
+                redefinedMethod.compareReturnType(parentMethod);
+                redefinedMethod.compareParameters(parentMethod);                      
             } else {
-                // El método del padre no se encuentra en la clase hijo. Se copia en la subclase (herencia por copia).
-                if (className.equals(parentMethod)) {
-                    throw new SemanticException("Error semantico: El metodo " + parentMethod + " de la clase " + parent + " tiene el mismo nombre que la clase " + className + " que lo hereda.");
-                }
-                if (instanceVariablesTable.get(parentMethod) != null) {
-                    throw new SemanticException("Error semantico: El metodo " + parentMethod + " de la clase " + parent + " heredado por la clase " + className + " tiene el mismo nombre que una de sus variables de instancia");
-                }
-                methodsTable.put(parentMethod, parentMethodEntry);
+                // Se hereda el metood
+                addInheritedMethod(parentMethod);
             }
         }
     }
+    
+    /**
+     * Agrega el metodo heredado a la tabla de metodos de la clase actual
+     * Previamente se controla de que el metodo agregado no colisione con una variable de instancia
+     * 
+     * @param parentMethod
+     * @throws SemanticException 
+     */
+    private void addInheritedMethod(MethodEntry parentMethod) throws SemanticException {
+        String parentMethodName = parentMethod.getName();
+        if (instanceVariablesTable.get(parentMethodName) != null) {
+            throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase padre tiene un metodo con el nombre de una variable de instancia de la clase actual.");
+        }
+        
+        methodsTable.put(parentMethodName, parentMethod);
+    }
 
-    void checkClass() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Control de sentencias de la clase
+     * 
+     * @param symbolTable 
+     */
+    void checkClass(SymbolTable symbolTable) {
+        Collection<MethodEntry> methods = methodsTable.values();
+        
+        for (MethodEntry method : methods) {
+            symbolTable.setCurrentMethod(method.getName());
+            method.checkMethod();
+        }
     }
 }

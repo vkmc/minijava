@@ -50,7 +50,7 @@ public class SymbolTable {
      */
     private void addClassObject() {
         ClassEntry Object = new ClassEntry("Object", 0);
-        Object.setParent("Object"); // El padre de Object es si mismo (para simplificar controles)
+        Object.setParent(Object); // El padre de Object es si mismo (para simplificar controles)
 
         classTable.put("Object", Object);
 
@@ -62,7 +62,7 @@ public class SymbolTable {
      */
     private void addClassSystem() {
         ClassEntry System = new ClassEntry("System", 0);
-        System.setParent("Object");
+        System.setParent(classTable.get("Object"));
 
         classTable.put("System", System);
 
@@ -185,8 +185,8 @@ public class SymbolTable {
 
             // control de existencia de las clases padre
             if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
-                String parent = aClass.getParent();
-                if (classTable.get(parent) == null) {
+                ClassEntry parent = aClass.getParent();
+                if (classTable.get(parent.getName()) == null) {
                     throw new SemanticException("Error semantico: La clase padre de la clase '" + aClass.getName() + "' no existe.");
                 }
 
@@ -202,10 +202,11 @@ public class SymbolTable {
      * @param className
      */
     private void controlCircularInheritance(ClassEntry aClass) throws SemanticException {
+        LinkedHashMap<String, ClassEntry> parents = aClass.getParents();
         String className = aClass.getName();
-        LinkedList<String> parents = aClass.getParents();
-
-        if (parents.contains(className)) {
+        
+        // CONTROLAR QUE SE COMPARE POR NOMBRE Y NO POR REFERENCIA
+        if (parents.get(className) != null) {
             // Una clase se tiene a si misma en la lista de ancestros.
             throw new SemanticException("Error semantico: Herencia circular. La clase " + className + " no puede heredar de si misma.");
         }
@@ -222,12 +223,12 @@ public class SymbolTable {
      */
     private void controlInheritance(String className) throws SemanticException {
         ClassEntry aClass = classTable.get(className);
-        String parent = aClass.getParent();
+        ClassEntry parent = aClass.getParent();
 
-        if (controlledClasses.get(parent) == null) {
-            controlInheritance(parent);
+        if (controlledClasses.get(parent.getName()) == null) {
+            controlInheritance(parent.getName());
         } else {
-            aClass.controlInheritedMethods(this);
+            aClass.controlInheritedMethods();
             controlledClasses.put(className, aClass);
         }
     }
@@ -272,13 +273,18 @@ public class SymbolTable {
      */
     public void declarationCheckMainExistence() throws SemanticException {
         Set<String> classes = classTable.keySet();
+        String main = null;
         for (String aClass : classes) {
-            if (getClassEntry(aClass).hasMain()) {
-                // Si se encuentra una clase con el método main el control tiene éxito.
-                return;
+            if (main == null) {
+                if (getClassEntry(aClass).hasMain()) {
+                    // Si se encuentra una clase con el metodo main el control tiene exito.
+                    main = aClass;
+                }
+            } else {
+                throw new SemanticException("Linea: " + getClassEntry(aClass).getLineNumber() + " - Error semantico: Ya se declaro la clase "+ main +" como principal");
             }
         }
-        // No se encontró una clase con método main.
+        // No se encontro una clase con metodo main.
         throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
     }
 
@@ -365,7 +371,7 @@ public class SymbolTable {
         for (ClassEntry aClass : classes) {
             if (!aClass.getName().equals("Object") || !aClass.getName().equals("System")) {
                 currentClass = aClass.getName();
-                aClass.checkClass();
+                aClass.checkClass(this);
             }
         }
     }
