@@ -9,21 +9,29 @@ import SemanticAnalyzer.SymbolTable.SymbolTable;
  * @author Victoria Martínez de la Cruz
  */
 public class SemanticAnalyzer {
+    private Parser parser;
     private SymbolTable symbolTable;
     
-    public SemanticAnalyzer() {
-        symbolTable = new SymbolTable();
+    public SemanticAnalyzer(String fileName) {
+        parser = new Parser(fileName);
+        symbolTable = parser.getSymbolTable();
     }
     
-    public void checkSemantics() {
+    public void checkSemantics() throws LexicalException, SyntacticException, SemanticException {
+        parser.analize();
         declarationCheck();
         sentencesCheck();
     }
 
-    private void declarationCheck() {
+    private void declarationCheck() throws SemanticException {
+        symbolTable.declarationCheckInheritance();
+        symbolTable.declarationCheckReturnType();
+        symbolTable.declarationCheckVariables();
+        symbolTable.declarationCheckMainExistence();
     }
 
     private void sentencesCheck() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        symbolTable.sentenceCheck();
     }
+    
 }

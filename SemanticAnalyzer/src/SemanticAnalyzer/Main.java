@@ -1,10 +1,7 @@
 package SemanticAnalyzer;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
- * CLI para el analizador sintáctico.
+ * CLI para el analizador semantico.
  *
  * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
@@ -21,9 +18,11 @@ public class Main {
             System.err.println("Cantidad de argumentos invalida.");
             System.err.println("Uso: java -jar SyntacticAnalyzer.jar <IN_FILE>");
         } else {
-            Parser parser = new Parser(args[0]);
+            SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(args[0]);
             try {
-                parser.analize();
+                semanticAnalyzer.checkSemantics();
+            } catch (SemanticException exc) {
+                System.err.println(exc);
             } catch (SyntacticException exc) {
                 System.err.println(exc);
             } catch (LexicalException exc) {

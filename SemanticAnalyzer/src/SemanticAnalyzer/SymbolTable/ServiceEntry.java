@@ -93,9 +93,8 @@ public abstract class ServiceEntry {
     public void setBody(BlockNode body) {
         this.body = body;
     }
-
     
-
-    
-    
+    public int getLineNumber() {
+        return lineNumber;
+    }    
 }

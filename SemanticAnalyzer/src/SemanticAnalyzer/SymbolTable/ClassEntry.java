@@ -196,13 +196,13 @@ public class ClassEntry {
     /**
      * Realiza un control de herencia y copia los metodos heredados
      */
-    public void controlInheritedMethods(SymbolTable st) throws SemanticException {
-        Set<String> parentMethods = st.getClassEntry(parent).getMethods().keySet();
+    public void controlInheritedMethods(SymbolTable symbolTable) throws SemanticException {
+        Set<String> parentMethods = symbolTable.getClassEntry(parent).getMethods().keySet();
         
         for (String parentMethod: parentMethods) {
             // Buscamos el método en la clase hijo.
             MethodEntry childMethodEntry = getMethodEntry(parentMethod);
-            MethodEntry parentMethodEntry = st.getClassEntry(parent).getMethodEntry(parentMethod);
+            MethodEntry parentMethodEntry = symbolTable.getClassEntry(parent).getMethodEntry(parentMethod);
             if (childMethodEntry != null) {
                 // El método del padre se encuentra en la clase hijo.
                 
@@ -225,5 +225,9 @@ public class ClassEntry {
                 methodsTable.put(parentMethod, parentMethodEntry);
             }
         }
+    }
+
+    void checkClass() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

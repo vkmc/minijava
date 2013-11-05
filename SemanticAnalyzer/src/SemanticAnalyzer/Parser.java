@@ -24,6 +24,7 @@ public class Parser {
     public SymbolTable symbolTable;
 
     // analizador sintactico
+    
     /**
      * Constructor de la clase Parser
      *
@@ -124,7 +125,7 @@ public class Parser {
             String parentClass = currentToken.getLexeme();
             classEntry.addParent(parentClass);
             classEntry.setParent(parentClass);
-            symbolTable.controlInheritance(className);
+            //symbolTable.controlInheritance(className);
         } else if (lookAhead.equals("{")) {
             // Herencia -> lambda
             // No hay herencia
@@ -860,6 +861,12 @@ public class Parser {
         return lookAhead.equals("void") || lookAhead.equals("boolean") || lookAhead.equals("char") || lookAhead.equals("int") || lookAhead.equals("String") || lookAhead.equals("id");
     }
 
+    /**
+     * Crea un objeto Type para el manejo de tipos
+     * 
+     * @param type
+     * @return objeto Type
+     */
     private Type createType(String type) {
         Type aType;
 
@@ -878,5 +885,9 @@ public class Parser {
         }
 
         return aType;
+    }
+    
+    protected SymbolTable getSymbolTable() {
+        return symbolTable;
     }
 }
