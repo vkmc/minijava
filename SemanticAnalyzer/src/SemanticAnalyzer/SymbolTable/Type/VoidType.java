@@ -1,5 +1,7 @@
 package SemanticAnalyzer.SymbolTable.Type;
 
+import SemanticAnalyzer.SymbolTable.SymbolTable;
+
 /**
  * Representacion de un Void
  * @author Ramiro Agis
@@ -10,11 +12,5 @@ public class VoidType extends PrimitiveType {
     public VoidType() {
         super("void");
     }
-
-    @Override
-    public boolean checkConformity(Type type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
+ 
 }

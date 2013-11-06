@@ -148,7 +148,7 @@ public class IdMethodCallNode extends PrimaryNode {
         
         for (CallNode nextCall : callList) {
             nextCallType = nextCall.getExpressionType();
-            nextCallType.checkConformity(currentType);
+            nextCallType.checkConformity(currentType, symbolTable);
         }
 
         // si no surge ningun error durante el control de conformidad de tipos

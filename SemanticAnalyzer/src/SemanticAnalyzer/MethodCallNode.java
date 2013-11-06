@@ -117,9 +117,9 @@ public class MethodCallNode extends PrimaryNode {
 
         while (formalArgsIterator.hasNext()) {
             ParameterEntry formalArg = formalArgsIterator.next();
-            if (formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType())) {
+            if (!formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType(), symbolTable)) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo del argumento actual no conforma con el tipo del argumento formal."
-                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType() + " y el tipo del argumento formal es " + formalArg.getType() + ".");
+                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
             }
         }
     }
@@ -138,7 +138,7 @@ public class MethodCallNode extends PrimaryNode {
 
         for (CallNode nextCall : callList) {
             nextCallType = nextCall.getExpressionType();
-            nextCallType.checkConformity(currentType);
+            nextCallType.checkConformity(currentType, symbolTable);
         }
 
         // si no surge ningun error durante el control de conformidad de tipos

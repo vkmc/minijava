@@ -49,7 +49,7 @@ public class BinaryExpressionNode extends ExpressionNode {
                 this.setExpressionType(type);
             }
         } else if (operatorLexeme.equals("==") || operatorLexeme.equals("!=")) {
-            if (left.getExpressionType().checkConformity(right.getExpressionType()) && right.getExpressionType().checkConformity(left.getExpressionType())) {
+            if (left.getExpressionType().checkConformity(right.getExpressionType(), symbolTable) && right.getExpressionType().checkConformity(left.getExpressionType(), symbolTable)) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Los tipos de las subexpresiones no son conformantes. La subexpresion a la izquierda es de tipo " + left.getExpressionType() + " y la subexpresion a la derecha es de tipo " + right.getExpressionType());
             } else {
                 Type type = new BooleanType();

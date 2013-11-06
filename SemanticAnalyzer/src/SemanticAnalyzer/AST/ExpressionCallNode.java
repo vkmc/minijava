@@ -55,7 +55,7 @@ public class ExpressionCallNode extends PrimaryNode {
 
         for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
-            nextType.checkConformity(currentType);
+            nextType.checkConformity(currentType, symbolTable);
 
             currentType = nextType;
         }

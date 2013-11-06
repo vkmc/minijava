@@ -517,10 +517,11 @@ public class Parser {
     }
 
     private AssignNode Asignacion() throws LexicalException, SyntacticException {
-        Token current = currentToken;
+        
         match("id");
         Token id = currentToken;
         match("=");
+        Token current = currentToken;
         ExpressionNode expression = Expresion();
         return new AssignNode(symbolTable, id, expression, current);
     }
@@ -746,12 +747,13 @@ public class Parser {
             match("id");
             return ListaLlamadas_(currentToken);
         } else if (lookAhead.equals("new")) {
-            Token current = currentToken;
             match("new");
+            Token newToken = currentToken;
             match("id");
+            Token idToken = currentToken;
             LinkedList<ExpressionNode> actualArgs = ArgsActuales();
             LinkedList<CallNode> callList = ListaLlamadas();
-            return new NewNode(symbolTable, currentToken, actualArgs, callList, current);
+            return new NewNode(symbolTable, idToken, actualArgs, callList, newToken);
         } else {
             return Literal();
         }

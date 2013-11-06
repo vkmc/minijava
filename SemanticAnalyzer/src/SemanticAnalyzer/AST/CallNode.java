@@ -34,9 +34,18 @@ public class CallNode extends PrimaryNode {
         }
 
         // Compatibilidad con argumentos formales
-
-        String currentClass = symbolTable.getCurrentClass();
-        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
+        
+        String currentClass = symbolTable.getCurrentClass();       
+        Collection<ParameterEntry> formalArgs;
+        //if (currentClass.equals(id.getLexeme())) {
+            // Constructor call.
+          //  formalArgs = symbolTable.getClassEntry(currentClass).getConstructorEntry().getParameters().values();
+        //}  else {
+            // Method call.
+        System.out.println("HAY QUE ARREGLAR ESTO:" + token.getLexeme());
+        formalArgs = symbolTable.getClassEntry(token.getLexeme()).getMethodEntry(id.getLexeme()).getParameters().values();
+        //}
+        
         int counter = 0;
 
         if (formalArgs.size() != actualArgs.size()) {
@@ -44,9 +53,9 @@ public class CallNode extends PrimaryNode {
         }
 
         for (ParameterEntry formalArg : formalArgs) {
-            if (formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType())) {
+            if (!formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType(), symbolTable)) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo del argumento actual no conforma con el tipo del argumento formal."
-                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType() + " y el tipo del argumento formal es " + formalArg.getType() + ".");
+                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
             }
             counter++;
         }

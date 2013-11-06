@@ -1,5 +1,7 @@
 package SemanticAnalyzer.SymbolTable.Type;
 
+import SemanticAnalyzer.SymbolTable.SymbolTable;
+
 /**
  * Representacion de los tipos de datos
  *
@@ -21,7 +23,7 @@ public abstract class Type {
      * @param type
      * @return true si hay conformidad de tipos, false en caso contrario
      */
-    public abstract boolean checkConformity(Type type);
+    public abstract boolean checkConformity(Type type, SymbolTable symbolTable);
     
     /**
      * Retorna el nombre del tipo
@@ -29,5 +31,10 @@ public abstract class Type {
      */
     public String getTypeName() {
         return typeName;
+    }
+    
+    protected boolean isPrimitiveType(Type type) {
+        String t = type.getTypeName();
+        return t.equals("boolean") || t.equals("char") || t.equals("int") || t.equals("String") || t.equals("void");
     }
 }

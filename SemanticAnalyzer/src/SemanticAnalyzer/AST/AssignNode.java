@@ -24,6 +24,7 @@ public class AssignNode extends SentenceNode {
     public AssignNode(SymbolTable symbolTable, Token id, ExpressionNode expression, Token token) {
         super(symbolTable, token);
         this.id = id;
+
         this.expression = expression;
     }
 
@@ -33,12 +34,14 @@ public class AssignNode extends SentenceNode {
         String currentMethod = symbolTable.getCurrentMethod();
 
         checkId();
-
+        expression.checkNode();
+        
         if (symbolTable.getClassEntry(currentClass).getInstanceVariableEntry(id.getLexeme()) != null
                 || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariableEntry(id.getLexeme()) != null
                 || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameterEntry(id.getLexeme()) != null) {
-            if (!idType.checkConformity(expression.getExpressionType())) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede asignarse una expresion de tipo " + idType.getTypeName() + " a una variable de tipo " + expression.getExpressionType().getTypeName() + ".");
+
+            if (!idType.checkConformity(expression.getExpressionType(), symbolTable)) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede asignarse una expresion de tipo " + expression.getExpressionType().getTypeName() + " a una variable de tipo " + idType.getTypeName() + ".");
             }
         } else {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La variable " + id.getLexeme() + " no esta declarada.");

@@ -31,7 +31,8 @@ public class NewNode extends PrimaryNode {
     @Override
     public void checkNode() throws SemanticException {
         checkId(); // controlo la existencia del constructor
-
+        
+        System.out.println("VIVA HITLER");
         for (ExpressionNode actualArg : actualArgs) {
             actualArg.checkNode();
         }
@@ -58,7 +59,6 @@ public class NewNode extends PrimaryNode {
      */
     private void checkId() throws SemanticException {
         // debe ser un constructor
-
         if (symbolTable.isConstructor(id.getLexeme()) == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El constructor invocado no esta declarado.");
         }
@@ -75,7 +75,16 @@ public class NewNode extends PrimaryNode {
      */
     private void controlFormalArgs() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
+        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getConstructorEntry().getParameters().values();
+        /*if (currentClass.equals(id.getLexeme())) {
+            // Constructor call.
+            
+        }  else {
+            // Method call.
+            formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
+        }*/
+   
+  
         int counter = 0;
 
         if (formalArgs.size() != actualArgs.size()) {
@@ -83,9 +92,9 @@ public class NewNode extends PrimaryNode {
         }
 
         for (ParameterEntry formalArg : formalArgs) {
-            if (formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType())) {
+            if (!formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType(), symbolTable)) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo del argumento actual no conforma con el tipo del argumento formal."
-                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType() + " y el tipo del argumento formal es " + formalArg.getType() + ".");
+                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
             }
             counter++;
         }
@@ -103,14 +112,13 @@ public class NewNode extends PrimaryNode {
 
         for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
-            nextType.checkConformity(currentType);
+            nextType.checkConformity(currentType, symbolTable);
 
             currentType = nextType;
         }
 
         // si no surge ningun error durante el control de conformidad de tipos
         // se le asigna al nodo actual el tipo del ultimo callnode en la lista
-
         this.setExpressionType(currentType);
 
     }
