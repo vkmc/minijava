@@ -189,7 +189,6 @@ public class ClassEntry {
      */
     public boolean hasMain() throws SemanticException {
         MethodEntry main = methodsTable.get("main");
-
         if (main != null) {
             if (!main.getModifier().equals("static")) {
                 throw new SemanticException("Linea: " + main.getLineNumber() + " - Error semantico: El metodo main debe ser estatico");
@@ -201,7 +200,6 @@ public class ClassEntry {
         } else {
             return false;
         }
-
         return true;
     }
 
@@ -280,7 +278,7 @@ public class ClassEntry {
      * 
      * @param symbolTable 
      */
-    void checkClass(SymbolTable symbolTable) {
+    void checkClass(SymbolTable symbolTable) throws SemanticException {
         Collection<MethodEntry> methods = methodsTable.values();
         
         for (MethodEntry method : methods) {

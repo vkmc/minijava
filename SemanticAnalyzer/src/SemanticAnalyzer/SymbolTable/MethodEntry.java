@@ -4,7 +4,6 @@ import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * Representacion de la entrada de metodo
@@ -103,7 +102,6 @@ public class MethodEntry extends ServiceEntry {
     public void compareParameters(MethodEntry aMethod) throws SemanticException {
         Collection<ParameterEntry> inheritedParameters = aMethod.getParameters().values();
         Iterator<ParameterEntry> parameters = parametersTable.values().iterator();
-        int counter = 0;
         
         if (inheritedParameters.size() != parametersTable.size()) {
             throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La cantidad de parametros del metodo de la clase padre es distinta a la cantidad de parametros del metodo de la clase actual.");
@@ -127,8 +125,9 @@ public class MethodEntry extends ServiceEntry {
         }
     }
 
-    void checkMethod() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    void checkMethod() throws SemanticException {
+        System.out.println("Voy a checkear: " + serviceName);
+        body.checkNode();
     }
    
 }

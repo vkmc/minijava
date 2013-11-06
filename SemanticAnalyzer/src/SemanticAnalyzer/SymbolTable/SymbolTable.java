@@ -9,7 +9,6 @@ import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.SymbolTable.Type.VoidType;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -274,19 +273,23 @@ public class SymbolTable {
     public void declarationCheckMainExistence() throws SemanticException {
         Set<String> classes = classTable.keySet();
         String main = null;
+        boolean found = false;
         for (String aClass : classes) {
-            if (main == null) {
-                if (getClassEntry(aClass).hasMain()) {
-                    // Si se encuentra una clase con el metodo main el control tiene exito.
+            if (getClassEntry(aClass).hasMain()) {
+                    if (found) {
+                        // If a main method was already found inside a class.
+                        throw new SemanticException("Linea: " + getClassEntry(aClass).getLineNumber() + " - Error semantico: Ya se declaro la clase " + main + " como principal");    
+                    }
                     main = aClass;
-                }
-            } else {
-                throw new SemanticException("Linea: " + getClassEntry(aClass).getLineNumber() + " - Error semantico: Ya se declaro la clase "+ main +" como principal");
+                    found = true;
             }
         }
-        // No se encontro una clase con metodo main.
-        throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
+        if (!found) {
+            // A class with the main method wasn't found.
+            throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
+        }
     }
+
 
     /**
      * Control de declaraciones: Variables de instancias
@@ -365,11 +368,11 @@ public class SymbolTable {
     /**
      * Control de sentencias
      */
-    public void sentenceCheck() {
+    public void sentenceCheck() throws SemanticException {
         Collection<ClassEntry> classes = classTable.values();
 
         for (ClassEntry aClass : classes) {
-            if (!aClass.getName().equals("Object") || !aClass.getName().equals("System")) {
+            if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
                 currentClass = aClass.getName();
                 aClass.checkClass(this);
             }
@@ -406,7 +409,7 @@ public class SymbolTable {
 
     private boolean isPrimitiveType(Type type) {
         String typeName = type.getTypeName();
-        return typeName.equals("boolean") || typeName.equals("char") || typeName.equals("int") || typeName.equals("string") || typeName.equals("void");
+        return typeName.equals("boolean") || typeName.equals("char") || typeName.equals("int") || typeName.equals("String") || typeName.equals("void");
     }
 
     private boolean typeExists(Type type) {

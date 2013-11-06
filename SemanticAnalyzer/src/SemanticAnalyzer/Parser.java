@@ -265,9 +265,19 @@ public class Parser {
         String parameterName = currentToken.getLexeme();
         String currentClass = symbolTable.getCurrentClass();
         String currentMethod = symbolTable.getCurrentMethod();
-        ServiceEntry serviceEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod);
+        ServiceEntry serviceEntry; // Can be a constructor or a method. 
+        
+        if (currentMethod.equals(currentClass)) {
+            // This is the constructor.
+            serviceEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
+
+        } else {
+            // This is a method.
+            serviceEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod);
+        }
+            
         if (serviceEntry.getParameterEntry(parameterName) != null) {
-            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en la clase " + currentClass);
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en el servicio " + currentMethod + " de la clase " + currentClass);
         } else {
             serviceEntry.addParameterEntry(parameterName, type, currentToken.getLineNumber());
         }

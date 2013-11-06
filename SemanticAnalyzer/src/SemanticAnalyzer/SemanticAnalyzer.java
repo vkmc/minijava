@@ -30,7 +30,7 @@ public class SemanticAnalyzer {
         symbolTable.declarationCheckMainExistence();
     }
 
-    private void sentencesCheck() {
+    private void sentencesCheck() throws SemanticException {
         symbolTable.sentenceCheck();
     }
     
