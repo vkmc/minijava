@@ -22,7 +22,7 @@ public class SymbolTable {
 
     private LinkedHashMap<String, ClassEntry> classTable;
     private LinkedHashMap<String, ClassEntry> controlledClasses;
-    private String currentClass, currentMethod, mainClass;
+    private String currentClass, currentMethod;
 
     /**
      * Constructor de la tabla de simbolos Crea las estructuras e inicializa los
@@ -272,14 +272,15 @@ public class SymbolTable {
      */
     public void declarationCheckMainExistence() throws SemanticException {
         Set<String> classes = classTable.keySet();
+        String main = null;
         boolean found = false;
         for (String aClass : classes) {
             if (getClassEntry(aClass).hasMain()) {
                     if (found) {
                         // If a main method was already found inside a class.
-                        throw new SemanticException("Linea: " + getClassEntry(aClass).getLineNumber() + " - Error semantico: Ya se declaro la clase " + mainClass + " como principal");    
+                        throw new SemanticException("Linea: " + getClassEntry(aClass).getLineNumber() + " - Error semantico: Ya se declaro la clase " + main + " como principal");    
                     }
-                    mainClass = aClass; 
+                    main = aClass;
                     found = true;
             }
         }
@@ -405,11 +406,6 @@ public class SymbolTable {
 
         return null;
     }
-    
-    
-    public String getMainClass() {
-        return mainClass;
-    }  
 
     private boolean isPrimitiveType(Type type) {
         String typeName = type.getTypeName();
