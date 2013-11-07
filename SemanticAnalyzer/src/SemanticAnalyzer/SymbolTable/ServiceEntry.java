@@ -18,6 +18,7 @@ public abstract class ServiceEntry {
     protected LinkedHashMap<String, ParameterEntry> parametersTable;
     protected LinkedHashMap<String, LocalVariableEntry> localVariablesTable;
     protected BlockNode body;
+    protected int offset;
     
     public ServiceEntry(String serviceName, String className, int lineNumber) {
         this.serviceName = serviceName;
@@ -96,5 +97,9 @@ public abstract class ServiceEntry {
     
     public int getLineNumber() {
         return lineNumber;
-    }    
+    }
+    
+    public int getOffset() {
+        return offset;
+    }
 }
