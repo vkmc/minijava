@@ -9,7 +9,6 @@ import SemanticAnalyzer.SymbolTable.SymbolTable;
 import SemanticAnalyzer.SymbolTable.Type.ClassType;
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.Token;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -25,8 +24,8 @@ import java.util.LinkedList;
 public class IdMethodCallNode extends PrimaryNode {
 
     protected Token id;
+    protected Type idType;  // necesario para controlar las llamadas
     protected LinkedList<CallNode> callList;
-    private int caseFlag;
 
     public IdMethodCallNode(SymbolTable symbolTable, Token id, LinkedList<CallNode> callList, Token token) {
         super(symbolTable, token);
@@ -63,8 +62,12 @@ public class IdMethodCallNode extends PrimaryNode {
     private void checkNodeCase3() throws SemanticException {
         checkId(true);
 
+        Type callerType = idType;
+
         for (CallNode call : callList) {
+            call.setCallerType(callerType);
             call.checkNode();
+            callerType = call.getCallReturnType();
         }
 
         controlReturnType();
@@ -97,11 +100,13 @@ public class IdMethodCallNode extends PrimaryNode {
 
         if (currentMethodParameters.containsKey(idName)) {
             // es un parametro del metodo actual
-            this.setExpressionType(currentMethodParameters.get(idName).getType());
+            idType = currentMethodParameters.get(idName).getType();
+            this.setExpressionType(idType);
             return;
         } else if (currentMethodLocalVariables.containsKey(idName)) {
             // es una variable local del metodo actual
-            this.setExpressionType(currentMethodLocalVariables.get(idName).getType());
+            idType = currentMethodLocalVariables.get(idName).getType();
+            setExpressionType(idType);
             return;
         }
 
@@ -114,10 +119,11 @@ public class IdMethodCallNode extends PrimaryNode {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede usarse una variable de instancia en un metodo estatico.");
             }
 
-            this.setExpressionType(currentClassInstanceVariables.get(idName).getType());
+            idType = currentClassInstanceVariables.get(idName).getType();
+            setExpressionType(idType);
             return;
         }
-        
+
         if (!checkClasses) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre en la tabla de simbolos.");
         }
@@ -127,7 +133,8 @@ public class IdMethodCallNode extends PrimaryNode {
         if (classes.containsKey(idName)) {
             // es una clase
             Type aType = new ClassType(idName);
-            this.setExpressionType(aType);
+            idType = aType;
+            setExpressionType(idType);
             return;
         }
 
@@ -144,8 +151,6 @@ public class IdMethodCallNode extends PrimaryNode {
         Type currentType = getExpressionType();
         Type nextCallType = currentType;
 
-        Iterator<CallNode> iteratorCallList = callList.iterator();
-        
         for (CallNode nextCall : callList) {
             nextCallType = nextCall.getExpressionType();
             nextCallType.checkConformity(currentType, symbolTable);

@@ -9,9 +9,8 @@ import SemanticAnalyzer.SymbolTable.Type.Type;
  * @author Victoria Martinez de la Cruz
  */
 public class LocalVariableEntry extends VariableEntry {
-    
+
     public LocalVariableEntry(String localVariableName, Type localVariableType, int lineNumber) {
         super(localVariableName, localVariableType, lineNumber);
     }
-    
 }

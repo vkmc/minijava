@@ -1,11 +1,11 @@
-package SemanticAnalyzer;
+package SemanticAnalyzer.AST;
 
-import SemanticAnalyzer.AST.CallNode;
-import SemanticAnalyzer.AST.ExpressionNode;
-import SemanticAnalyzer.AST.PrimaryNode;
+import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.ParameterEntry;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.SymbolTable.Type.ClassType;
 import SemanticAnalyzer.SymbolTable.Type.Type;
+import SemanticAnalyzer.Token;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,6 +20,7 @@ import java.util.LinkedList;
 public class MethodCallNode extends PrimaryNode {
 
     protected Token id;
+    protected Type idType;
     protected LinkedList<ExpressionNode> actualArgs;
     protected LinkedList<CallNode> callList;
 
@@ -60,7 +61,6 @@ public class MethodCallNode extends PrimaryNode {
         checkId();
 
         // control de argumentos
-
         for (ExpressionNode arg : actualArgs) {
             arg.checkNode();
         }
@@ -68,9 +68,12 @@ public class MethodCallNode extends PrimaryNode {
         controlFormalArgs();
 
         // control de llamadas
-        
+
+        Type callerType = idType;
         for (CallNode call : callList) {
+            call.setCallerType(callerType);
             call.checkNode();
+            callerType = call.getCallReturnType();
         }
 
         controlReturnType();
@@ -94,8 +97,9 @@ public class MethodCallNode extends PrimaryNode {
         } else if (symbolTable.getClassEntry(currentClass).getMethodEntry(idName) == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el metodo '" + idName + "' en la clase " + currentClass + ".");
         } else {
-            Type methodReturnType = symbolTable.getClassEntry(currentClass).getMethodEntry(idName).getReturnType();
-            this.setExpressionType(methodReturnType);
+            idType = new ClassType(currentClass);
+            // symbolTable.getClassEntry(currentClass).getMethodEntry(idName).getReturnType();
+            setExpressionType(idType);
         }
     }
 

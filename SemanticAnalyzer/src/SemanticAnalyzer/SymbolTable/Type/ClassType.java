@@ -14,7 +14,7 @@ public class ClassType extends Type {
     public ClassType(String typeName) {
         super(typeName);
     }
-    
+
     public boolean checkConformity(Type type, SymbolTable symbolTable) {
         // A (type) has to conform B.
         boolean conforms = false;
@@ -24,14 +24,14 @@ public class ClassType extends Type {
         }
         // 
         ClassEntry subtypeClass = symbolTable.getClassEntry(type.getTypeName());
-	ClassEntry supertypeClass = symbolTable.getClassEntry(this.getTypeName());
+        ClassEntry supertypeClass = symbolTable.getClassEntry(this.getTypeName());
         String subtypeName = subtypeClass.getName();
         String supertypeName = supertypeClass.getName();
-        
+
         if (subtypeName.equals("Object") && (supertypeName.equals("Object"))) {
             return true;
         }
-        
+
         while (!conforms && !subtypeName.equals("Object")) {
             // If the types are the same then it conforms.
             if (subtypeName.equals(supertypeName)) {

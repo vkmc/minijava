@@ -203,7 +203,7 @@ public class SymbolTable {
     private void controlCircularInheritance(ClassEntry aClass) throws SemanticException {
         LinkedHashMap<String, ClassEntry> parents = aClass.getParents();
         String className = aClass.getName();
-        
+
         // CONTROLAR QUE SE COMPARE POR NOMBRE Y NO POR REFERENCIA
         if (parents.get(className) != null) {
             // Una clase se tiene a si misma en la lista de ancestros.
@@ -276,12 +276,12 @@ public class SymbolTable {
         boolean found = false;
         for (String aClass : classes) {
             if (getClassEntry(aClass).hasMain()) {
-                    if (found) {
-                        // If a main method was already found inside a class.
-                        throw new SemanticException("Linea: " + getClassEntry(aClass).getLineNumber() + " - Error semantico: Ya se declaro la clase " + main + " como principal");    
-                    }
-                    main = aClass;
-                    found = true;
+                if (found) {
+                    // If a main method was already found inside a class.
+                    throw new SemanticException("Linea: " + getClassEntry(aClass).getLineNumber() + " - Error semantico: Ya se declaro la clase " + main + " como principal");
+                }
+                main = aClass;
+                found = true;
             }
         }
         if (!found) {
@@ -289,7 +289,6 @@ public class SymbolTable {
             throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
         }
     }
-
 
     /**
      * Control de declaraciones: Variables de instancias
@@ -392,19 +391,13 @@ public class SymbolTable {
         return null;
     }
 
-    public String isMethod(String id) {
-        Set<String> classes = classTable.keySet();
-
-        for (String aClass : classes) {
-            Set<String> methods = classTable.get(aClass).getMethods().keySet();
-
-            if (methods.contains(id)) {
-                return aClass;
+    public boolean isMethodInClass(String aClass, String aMethod) {
+        if (classTable.get(aClass) != null) {
+            if (classTable.get(aClass).getMethodEntry(aMethod) != null) {
+                return true;
             }
-
         }
-
-        return null;
+        return false;
     }
 
     private boolean isPrimitiveType(Type type) {

@@ -1,5 +1,6 @@
 package SemanticAnalyzer;
 
+import SemanticAnalyzer.AST.MethodCallNode;
 import SemanticAnalyzer.SymbolTable.Type.ClassType;
 import SemanticAnalyzer.SymbolTable.Type.VoidType;
 import SemanticAnalyzer.SymbolTable.Type.CharType;
@@ -24,7 +25,6 @@ public class Parser {
     public SymbolTable symbolTable;
 
     // analizador sintactico
-    
     /**
      * Constructor de la clase Parser
      *
@@ -266,7 +266,7 @@ public class Parser {
         String currentClass = symbolTable.getCurrentClass();
         String currentMethod = symbolTable.getCurrentMethod();
         ServiceEntry serviceEntry; // Can be a constructor or a method. 
-        
+
         if (currentMethod.equals(currentClass)) {
             // This is the constructor.
             serviceEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
@@ -275,7 +275,7 @@ public class Parser {
             // This is a method.
             serviceEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod);
         }
-            
+
         if (serviceEntry.getParameterEntry(parameterName) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un argumento formal con el nombre " + parameterName + " en el servicio " + currentMethod + " de la clase " + currentClass);
         } else {
@@ -503,7 +503,7 @@ public class Parser {
             // Sentencia_ -> lambda
             // if-then sin else
             return new IfThenNode(symbolTable, condition, sentenceIf, currentToken);
-            
+
         }
     }
 
@@ -517,7 +517,7 @@ public class Parser {
     }
 
     private AssignNode Asignacion() throws LexicalException, SyntacticException {
-        
+
         match("id");
         Token id = currentToken;
         match("=");
@@ -875,7 +875,7 @@ public class Parser {
 
     /**
      * Crea un objeto Type para el manejo de tipos
-     * 
+     *
      * @param type
      * @return objeto Type
      */
@@ -898,7 +898,7 @@ public class Parser {
 
         return aType;
     }
-    
+
     protected SymbolTable getSymbolTable() {
         return symbolTable;
     }

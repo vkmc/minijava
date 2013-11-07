@@ -17,6 +17,9 @@ import java.util.LinkedList;
 public class CallNode extends PrimaryNode {
 
     protected Token id;
+    // callerType representa el tipo del llamador - e.g. id.method1(), la clase de Id.
+    // callReturnType representa el tipo de retorno del metodo - e.g. si method1() retorna un objeto de clase Clase
+    protected Type callerType, callReturnType;
     protected LinkedList<ExpressionNode> actualArgs;
 
     public CallNode(SymbolTable symbolTable, Token id, LinkedList<ExpressionNode> actualArgs, Token token) {
@@ -34,20 +37,12 @@ public class CallNode extends PrimaryNode {
         }
 
         // Compatibilidad con argumentos formales
-        
-        String currentClass = symbolTable.getCurrentClass();       
-        Collection<ParameterEntry> formalArgs;
-        //if (currentClass.equals(id.getLexeme())) {
-            // Constructor call.
-          //  formalArgs = symbolTable.getClassEntry(currentClass).getConstructorEntry().getParameters().values();
-        //}  else {
-            // Method call.
-        System.out.println("HAY QUE ARREGLAR ESTO:" + token.getLexeme());
-        formalArgs = symbolTable.getClassEntry(token.getLexeme()).getMethodEntry(id.getLexeme()).getParameters().values();
-        //}
-        
-        int counter = 0;
 
+        String currentClass = symbolTable.getCurrentClass();
+        String callerTypeName = callerType.getTypeName();
+
+        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(callerTypeName).getMethodEntry(id.getLexeme()).getParameters().values();
+        int counter = 0;
         if (formalArgs.size() != actualArgs.size()) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
@@ -61,10 +56,6 @@ public class CallNode extends PrimaryNode {
         }
     }
 
-    public Token getIdNode() {
-        return id;
-    }
-
     /**
      * Controla que sea un metodo de una clase (cualquiera en la tabla de
      * simbolos) Si es un constructor o no esta definido, ocurrira un error Se
@@ -75,22 +66,23 @@ public class CallNode extends PrimaryNode {
     private void checkId() throws SemanticException {
         // o bien es un metodo de la clase (una clase cualquiera de la tabla de simbolos)
         // o bien representa a un constructor (lo que seria un error)
+        String callerTypeName = callerType.getTypeName();
 
-        String aClass = symbolTable.isMethod(id.getLexeme());
-
-        if (aClass != null) {
-            Type returnType = symbolTable.getClassEntry(aClass).getMethodEntry(id.getLexeme()).getReturnType();
-            setExpressionType(returnType);
+        if (symbolTable.isMethodInClass(callerTypeName, id.getLexeme())) {
+            callReturnType = symbolTable.getClassEntry(callerTypeName).getMethodEntry(id.getLexeme()).getReturnType();
+            setExpressionType(callReturnType);
         } else if (symbolTable.isConstructor(id.getLexeme()) != null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede realizarse una llamada a un constructor.");
         } else {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El metodo invocado no esta declarado en ninguna clase.");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El metodo invocado no esta declarado en clase " + callerTypeName);
         }
     }
-    // Tipo de retorno propio?
-    /*
-     * public Type getReturnType() {
-     *      return symbolTable.getClass(currentClass).getMethod(id.getToken().getLexeme()).getReturnType().getTypeName();
-     * }
-     */
+
+    public void setCallerType(Type callerType) {
+        this.callerType = callerType;
+    }
+
+    public Type getCallReturnType() {
+        return callReturnType;
+    }
 }

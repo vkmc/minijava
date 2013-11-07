@@ -22,11 +22,11 @@ public class IfThenElseNode extends IfThenNode {
     @Override
     public void checkNode() throws SemanticException {
         condition.checkNode();
-        
+
         if (!condition.getExpressionType().getTypeName().equals("boolean")) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La condicion debe ser de tipo boolean. Se encontro: " + condition.getExpressionType().getTypeName() + " .");
         }
-        
+
         sentenceIf.checkNode();
         sentenceElse.checkNode();
     }

@@ -8,19 +8,18 @@ import SemanticAnalyzer.SymbolTable.Type.Type;
  * @author Ramiro Agis
  * @author Victoria Martinez de la Cruz
  */
-
 public abstract class VariableEntry {
-    
+
     // guardar token del tipo y de la variable
     private String variableName;
     private Type variableType;
     private int lineNumber, offset;
-    
+
     public VariableEntry(String variableName, Type variableType, int lineNumber) {
         this.variableName = variableName;
         this.variableType = variableType;
         this.lineNumber = lineNumber;
-        offset = 0;               
+        offset = 0;
     }
 
     public String getVariableName() {
@@ -54,6 +53,4 @@ public abstract class VariableEntry {
     public void setOffset(int offset) {
         this.offset = offset;
     }
-    
-    
 }

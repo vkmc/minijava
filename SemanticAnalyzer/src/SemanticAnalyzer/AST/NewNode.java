@@ -31,8 +31,7 @@ public class NewNode extends PrimaryNode {
     @Override
     public void checkNode() throws SemanticException {
         checkId(); // controlo la existencia del constructor
-        
-        System.out.println("VIVA HITLER");
+
         for (ExpressionNode actualArg : actualArgs) {
             actualArg.checkNode();
         }
@@ -77,14 +76,14 @@ public class NewNode extends PrimaryNode {
         String currentClass = symbolTable.getCurrentClass();
         Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getConstructorEntry().getParameters().values();
         /*if (currentClass.equals(id.getLexeme())) {
-            // Constructor call.
+         // Constructor call.
             
-        }  else {
-            // Method call.
-            formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
-        }*/
-   
-  
+         }  else {
+         // Method call.
+         formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
+         }*/
+
+
         int counter = 0;
 
         if (formalArgs.size() != actualArgs.size()) {

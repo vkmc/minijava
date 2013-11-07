@@ -211,7 +211,6 @@ public class ClassEntry {
 //            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia " + instanceVariableName + " con el mismo nombre que uno de sus metodos.");
 //        }
 //    }
-    
     /**
      * De ser posible, copia los metodos heredados de la clase padre (herencia
      * por copia)
@@ -230,57 +229,58 @@ public class ClassEntry {
 
     /**
      * Copia metodos heredados y controla los metodos redefinidos
-     * 
-     * @throws SemanticException 
+     *
+     * @throws SemanticException
      */
     private void inheritMethods() throws SemanticException {
         Collection<MethodEntry> inheritedMethods = parent.getMethods().values();
-        
+
         for (MethodEntry parentMethod : inheritedMethods) {
             String parentMethodName = parentMethod.getName();
-            
+
             if (parentMethodName.equals(className)) {
                 throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase padre tiene un metodo con el nombre de la clase actual.");
             }
-            
+
             if (methodsTable.get(parentMethodName) != null) {
                 // Se encontro el nombre
                 // Controlar si el metodo fue redefinido
                 MethodEntry redefinedMethod = methodsTable.get(parentMethodName);
                 redefinedMethod.compareModifier(parentMethod);
                 redefinedMethod.compareReturnType(parentMethod);
-                redefinedMethod.compareParameters(parentMethod);                      
+                redefinedMethod.compareParameters(parentMethod);
             } else {
                 // Se hereda el metood
                 addInheritedMethod(parentMethod);
             }
         }
     }
-    
+
     /**
      * Agrega el metodo heredado a la tabla de metodos de la clase actual
-     * Previamente se controla de que el metodo agregado no colisione con una variable de instancia
-     * 
+     * Previamente se controla de que el metodo agregado no colisione con una
+     * variable de instancia
+     *
      * @param parentMethod
-     * @throws SemanticException 
+     * @throws SemanticException
      */
     private void addInheritedMethod(MethodEntry parentMethod) throws SemanticException {
         String parentMethodName = parentMethod.getName();
         if (instanceVariablesTable.get(parentMethodName) != null) {
             throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase padre tiene un metodo con el nombre de una variable de instancia de la clase actual.");
         }
-        
+
         methodsTable.put(parentMethodName, parentMethod);
     }
 
     /**
      * Control de sentencias de la clase
-     * 
-     * @param symbolTable 
+     *
+     * @param symbolTable
      */
     void checkClass(SymbolTable symbolTable) throws SemanticException {
         Collection<MethodEntry> methods = methodsTable.values();
-        
+
         for (MethodEntry method : methods) {
             symbolTable.setCurrentMethod(method.getName());
             method.checkMethod();

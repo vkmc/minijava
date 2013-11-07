@@ -15,24 +15,25 @@ public abstract class Type {
     public Type(String typeName) {
         this.typeName = typeName;
     }
-    
-     /**
-     * Controla que haya conformidad de tipos entre el tipo que recibe el mensaje
-     * y el tipo pasado por parametro
+
+    /**
+     * Controla que haya conformidad de tipos entre el tipo que recibe el
+     * mensaje y el tipo pasado por parametro
      *
      * @param type
      * @return true si hay conformidad de tipos, false en caso contrario
      */
     public abstract boolean checkConformity(Type type, SymbolTable symbolTable);
-    
+
     /**
      * Retorna el nombre del tipo
+     *
      * @return typeName
      */
     public String getTypeName() {
         return typeName;
     }
-    
+
     protected boolean isPrimitiveType(Type type) {
         String t = type.getTypeName();
         return t.equals("boolean") || t.equals("char") || t.equals("int") || t.equals("String") || t.equals("void");

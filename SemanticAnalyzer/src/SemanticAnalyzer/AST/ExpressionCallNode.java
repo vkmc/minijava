@@ -32,12 +32,18 @@ public class ExpressionCallNode extends PrimaryNode {
 
     @Override
     public void checkNode() throws SemanticException {
+        System.out.println("CONTROL DEL NODO EXPRESSSION CALL NODE");
+
         expression.checkNode();
 
-        this.setExpressionType(expression.getExpressionType());
+        setExpressionType(expression.getExpressionType());
+
+        Type callerType = getExpressionType();
 
         for (CallNode call : callList) {
+            call.setCallerType(callerType);
             call.checkNode();
+            callerType = call.getCallReturnType();
         }
 
         controlReturnType();

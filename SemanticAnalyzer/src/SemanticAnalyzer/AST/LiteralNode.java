@@ -21,5 +21,6 @@ public class LiteralNode extends PrimaryNode {
     }
 
     @Override
-    public void checkNode() {}
+    public void checkNode() {
+    }
 }

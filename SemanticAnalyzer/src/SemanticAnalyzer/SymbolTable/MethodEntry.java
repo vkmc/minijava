@@ -21,10 +21,10 @@ public class MethodEntry extends ServiceEntry {
         this.modifier = modifier;
         this.returnType = returnType;
     }
-    
+
     /**
      * Retorna el nombre del metodo
-     * 
+     *
      * @return serviceName
      */
     public String getName() {
@@ -87,7 +87,7 @@ public class MethodEntry extends ServiceEntry {
     public void compareReturnType(MethodEntry aMethod) throws SemanticException {
         String thisMethodReturn = returnType.getTypeName();
         String aMethodReturn = aMethod.getReturnType().getTypeName();
-        
+
         if (!thisMethodReturn.equals(aMethodReturn)) {
             throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: El metodo de la clase padre tiene diferente tipo de retorno.");
         }
@@ -102,17 +102,17 @@ public class MethodEntry extends ServiceEntry {
     public void compareParameters(MethodEntry aMethod) throws SemanticException {
         Collection<ParameterEntry> inheritedParameters = aMethod.getParameters().values();
         Iterator<ParameterEntry> parameters = parametersTable.values().iterator();
-        
+
         if (inheritedParameters.size() != parametersTable.size()) {
             throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La cantidad de parametros del metodo de la clase padre es distinta a la cantidad de parametros del metodo de la clase actual.");
         }
-        
+
         for (ParameterEntry inheritedParameter : inheritedParameters) {
             ParameterEntry currentParameter = parameters.next();
-            
+
             // Controlo nombre
             if (!inheritedParameter.getVariableName().equals(currentParameter.getVariableName())) {
-               throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: Los parametros del metodo de la clase actual tienen diferente nombre a los parametros del metodo de la clase padre."); 
+                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: Los parametros del metodo de la clase actual tienen diferente nombre a los parametros del metodo de la clase padre.");
             }
 
             // Controlo tipo
@@ -120,7 +120,7 @@ public class MethodEntry extends ServiceEntry {
             String currentParameterType = currentParameter.getType().getTypeName();
 
             if (!inheritedParameterType.equals(currentParameterType)) {
-                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: El tipo de los parametros del metodo de la clase actual es diferente a el tipo de los parametros del metodo de la clase padre.");    
+                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: El tipo de los parametros del metodo de la clase actual es diferente a el tipo de los parametros del metodo de la clase padre.");
             }
         }
     }
@@ -129,5 +129,4 @@ public class MethodEntry extends ServiceEntry {
         System.out.println("Voy a checkear: " + serviceName);
         body.checkNode();
     }
-   
 }

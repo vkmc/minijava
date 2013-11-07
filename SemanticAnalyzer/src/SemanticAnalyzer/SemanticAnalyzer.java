@@ -3,20 +3,22 @@ package SemanticAnalyzer;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
 
 /**
- * Analizador semantico. Agrega información semantica al parse tree y crea la tabla de simbolos.
- * 
+ * Analizador semantico. Agrega información semantica al parse tree y crea la
+ * tabla de simbolos.
+ *
  * @author Ramiro Agis
  * @author Victoria Martínez de la Cruz
  */
 public class SemanticAnalyzer {
+
     private Parser parser;
     private SymbolTable symbolTable;
-    
+
     public SemanticAnalyzer(String fileName) {
         parser = new Parser(fileName);
         symbolTable = parser.getSymbolTable();
     }
-    
+
     public void checkSemantics() throws LexicalException, SyntacticException, SemanticException {
         parser.analize();
         declarationCheck();
@@ -33,5 +35,4 @@ public class SemanticAnalyzer {
     private void sentencesCheck() throws SemanticException {
         symbolTable.sentenceCheck();
     }
-    
 }
