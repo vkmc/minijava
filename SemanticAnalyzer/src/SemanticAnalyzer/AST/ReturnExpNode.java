@@ -27,7 +27,7 @@ public class ReturnExpNode extends ReturnNode {
         String currentMethod = symbolTable.getCurrentMethod();
 
         if (!expression.getExpressionType().checkConformity(symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType(), symbolTable)) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo de la expresion retornada no es conforme al tipo de retorno del metodo actual. El tipo de retorno de la expresion es: '" + expression.getExpressionType().getTypeName() + ". Se esperaba: '" + symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType().getTypeName() + "' .");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo de la expresion retornada no es conforme al tipo de retorno del metodo actual. El tipo de la expresion retornada es '" + expression.getExpressionType().getTypeName() + "' y el tipo de retorno del metodo es '" + symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType().getTypeName() + "'.");
         }
 
         this.setSentenceType(expression.getExpressionType());

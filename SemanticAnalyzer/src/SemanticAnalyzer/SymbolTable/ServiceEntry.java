@@ -101,7 +101,6 @@ public abstract class ServiceEntry {
      */
     public void setBody(BlockNode body) {
         this.body = body;
-        System.out.println(serviceName);
     }
 
     public int getLineNumber() {

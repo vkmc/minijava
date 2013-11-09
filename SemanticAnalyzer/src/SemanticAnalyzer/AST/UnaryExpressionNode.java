@@ -2,6 +2,9 @@ package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
+import SemanticAnalyzer.SymbolTable.Type.BooleanType;
+import SemanticAnalyzer.SymbolTable.Type.Type;
+
 import SemanticAnalyzer.Token;
 
 /**
@@ -26,13 +29,16 @@ public class UnaryExpressionNode extends ExpressionNode {
         right.checkNode();
 
         if (operator.getLexeme().equals("+") || operator.getLexeme().equals("-")) {
-            if (!right.getExpressionType().equals("intLiteral")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador unario " + token.getLexeme() + " no puede aplicarse a la expresion de tipo " + right.getExpressionType() + ". Se esperaba una expresion de tipo entero.");
+            if (!right.getExpressionType().getTypeName().equals("int")) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador unario " + token.getLexeme() + " no puede aplicarse a la expresion de tipo " + right.getExpressionType().getTypeName() + ". Se esperaba una expresion de tipo entero.");
             }
+            Type aType = new BooleanType();
         } else if (operator.getLexeme().equals("!")) {
-            if (!right.getExpressionType().equals("booleanLiteral")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador unario " + token.getLexeme() + " no puede aplicarse a la expresion de tipo " + right.getExpressionType() + ". Se esperaba una expresion de tipo boolean.");
+            if (!right.getExpressionType().getTypeName().equals("boolean")) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador unario " + token.getLexeme() + " no puede aplicarse a la expresion de tipo " + right.getExpressionType().getTypeName() + ". Se esperaba una expresion de tipo boolean.");
             }
+            Type aType = new BooleanType();
+            setExpressionType(aType);
         }
     }
 }

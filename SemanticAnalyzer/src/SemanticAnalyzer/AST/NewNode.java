@@ -17,7 +17,9 @@ import java.util.LinkedList;
  */
 public class NewNode extends PrimaryNode {
 
+    // Llamadas? Como seria eso? Controlar!
     protected Token id;
+    protected Type idType;
     protected LinkedList<ExpressionNode> actualArgs;
     protected LinkedList<CallNode> callList;
 
@@ -40,8 +42,11 @@ public class NewNode extends PrimaryNode {
 
         if (!callList.isEmpty()) {
 
+            Type callerType = idType;
             for (CallNode call : callList) {
+                call.setCallerType(callerType);
                 call.checkNode();
+                callerType = call.getCallReturnType();
             }
 
             controlReturnType();
@@ -62,8 +67,8 @@ public class NewNode extends PrimaryNode {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El constructor invocado no esta declarado.");
         }
 
-        Type aType = new ClassType(id.getLexeme());
-        setExpressionType(aType);
+        idType = new ClassType(id.getLexeme());
+        setExpressionType(idType);
     }
 
     /**
@@ -74,16 +79,8 @@ public class NewNode extends PrimaryNode {
      */
     private void controlFormalArgs() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getConstructorEntry().getParameters().values();
-        /*if (currentClass.equals(id.getLexeme())) {
-         // Constructor call.
-            
-         }  else {
-         // Method call.
-         formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
-         }*/
-
-
+        String idTypeName = idType.getTypeName();
+        Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(idTypeName).getConstructorEntry().getParameters().values();
         int counter = 0;
 
         if (formalArgs.size() != actualArgs.size()) {

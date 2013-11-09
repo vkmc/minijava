@@ -23,6 +23,7 @@ public class SemanticAnalyzer {
         parser.analize();
         declarationCheck();
         sentencesCheck();
+        System.out.println("El analizador semantico termino exitosamente");
     }
 
     private void declarationCheck() throws SemanticException {

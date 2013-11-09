@@ -126,7 +126,6 @@ public class MethodEntry extends ServiceEntry {
     }
 
     void checkMethod() throws SemanticException {
-        System.out.println("Voy a checkear: " + serviceName);
         body.checkNode();
     }
 }

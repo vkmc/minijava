@@ -85,7 +85,7 @@ public class Parser {
             Clase();
             ListaClases();
         } else if (lookAhead.equals("EOF")) {
-            System.out.println("El analizador sintactico termino exitosamente.");
+            // El analizador semantico termino exitosamente
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba la palabra reservada 'class'. Se encontro: '" + lookAhead.getToken() + "'.");
         }
@@ -193,6 +193,7 @@ public class Parser {
         } else {
             classEntry.addMethodEntry(methodName, type, modificator, lookAhead.getLineNumber());
         }
+
         ArgsFormales();
         VarsLocales("method");
         BlockNode body = Bloque();
@@ -213,7 +214,7 @@ public class Parser {
             classEntry.setConstructorEntry(constructorName, lookAhead.getLineNumber());
         }
         ArgsFormales();
-        VarsLocales("method");
+        VarsLocales("constructor");
         BlockNode body = Bloque();
         classEntry.getConstructorEntry().setBody(body);
     }
@@ -382,6 +383,18 @@ public class Parser {
                     serviceEntry.addLocalVariableEntry(variableName, type, lineNumber);
                 }
 
+            } else if (from.equals("constructor")) {
+                // Declaración de variable local.
+                String currentConstructor = symbolTable.getCurrentMethod();
+                ServiceEntry serviceEntry = classEntry.getConstructorEntry();
+                if (serviceEntry.getParameterEntry(variableName) != null) {
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de un parametro con el nombre " + variableName + " en el constructor " + currentConstructor + " de la clase " + currentClass);
+                } else if (serviceEntry.getLocalVariableEntry(variableName) != null) {
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de una variable local con el nombre " + variableName + " en el constructor " + currentConstructor + " de la clase " + currentClass);
+                } else {
+                    // La variable local no existe. Se crea.
+                    serviceEntry.addLocalVariableEntry(variableName, type, lineNumber);
+                }
             }
         } else if (lookAhead.equals(",")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Falta especificar el tipo de las variables declaradas."); // caso: var v1, v2;                                                                                                                                                 // v1 se toma como tipo  
@@ -473,8 +486,8 @@ public class Parser {
         } else if (lookAhead.equals("{")) {
             return Bloque();
         } else if (lookAhead.equals("return")) {
-            Token current = currentToken;
             match("return");
+            Token current = currentToken;
             Token returnToken = currentToken;
             ExpressionNode expression = Sentencia__();
             match(";");
