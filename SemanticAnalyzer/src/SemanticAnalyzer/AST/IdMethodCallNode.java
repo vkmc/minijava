@@ -132,7 +132,7 @@ public class IdMethodCallNode extends PrimaryNode {
 
         if (classes.containsKey(idName)) {
             // es una clase
-            Type aType = new ClassType(idName);
+            Type aType = new ClassType(idName, symbolTable);
             idType = aType;
             setExpressionType(idType);
             return;
@@ -153,7 +153,7 @@ public class IdMethodCallNode extends PrimaryNode {
 
         for (CallNode nextCall : callList) {
             nextCallType = nextCall.getExpressionType();
-            nextCallType.checkConformity(currentType, symbolTable);
+            nextCallType.checkConformity(currentType);
         }
 
         // si no surge ningun error durante el control de conformidad de tipos

@@ -39,7 +39,7 @@ public class AssignNode extends SentenceNode {
         if (symbolTable.getClassEntry(currentClass).getInstanceVariableEntry(id.getLexeme()) != null
                 || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariableEntry(id.getLexeme()) != null
                 || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameterEntry(id.getLexeme()) != null) {
-            if (!idType.checkConformity(expression.getExpressionType(), symbolTable)) {
+            if (!idType.checkConformity(expression.getExpressionType())) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede asignarse una expresion de tipo " + expression.getExpressionType().getTypeName() + " a una variable de tipo " + idType.getTypeName() + ".");
             }
         } else {

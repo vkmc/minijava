@@ -126,7 +126,7 @@ public class MethodCallNode extends PrimaryNode {
 
         for (ParameterEntry formalArg : formalArgs) {
             actualArgs.get(index).checkNode();
-            if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType(), symbolTable)) {
+            if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType())) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + counter + ") no conforma con el tipo del argumento formal."
                         + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
             }
@@ -147,7 +147,7 @@ public class MethodCallNode extends PrimaryNode {
 
         for (CallNode nextCall : callList) {
             nextCallType = nextCall.getExpressionType();
-            nextCallType.checkConformity(currentType, symbolTable);
+            nextCallType.checkConformity(currentType);
         }
 
         // si no surge ningun error durante el control de conformidad de tipos

@@ -2,6 +2,7 @@ package SemanticAnalyzer.SymbolTable.Type;
 
 import SemanticAnalyzer.SymbolTable.ClassEntry;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
+import com.sun.java_cup.internal.runtime.Symbol;
 
 /**
  * Representacion de los tipos de datos definidos por el programador
@@ -11,12 +12,15 @@ import SemanticAnalyzer.SymbolTable.SymbolTable;
  */
 public class ClassType extends Type {
 
-    public ClassType(String typeName) {
+    private SymbolTable symbolTable;
+
+    public ClassType(String typeName, SymbolTable symbolTable) {
         super(typeName);
+        this.symbolTable = symbolTable;
     }
 
     @Override
-    public boolean checkConformity(Type type, SymbolTable symbolTable) {
+    public boolean checkConformity(Type type) {
         // El tipo A (quien recibe el mensaje) conforma B el tipo pasado por parametro
 
         boolean conforms = false;

@@ -328,7 +328,7 @@ public class Parser {
         Type type;
         if (lookAhead.equals("id")) {
             match("id");
-            type = new ClassType(currentToken.getLexeme());
+            type = new ClassType(currentToken.getLexeme(), symbolTable);
         } else {
             type = TipoPrimitivo();
         }
@@ -908,7 +908,7 @@ public class Parser {
         } else if (type.equals("void")) {
             aType = new VoidType();
         } else {
-            aType = new ClassType(type);
+            aType = new ClassType(type, symbolTable);
         }
 
         return aType;

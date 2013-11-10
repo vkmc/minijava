@@ -15,7 +15,7 @@ public abstract class PrimitiveType extends Type {
     }
 
     @Override
-    public boolean checkConformity(Type type, SymbolTable symbolTable) {
+    public boolean checkConformity(Type type) {
         if (isPrimitiveType(type) && typeName.equals(type.getTypeName())) {
             return true;
         }

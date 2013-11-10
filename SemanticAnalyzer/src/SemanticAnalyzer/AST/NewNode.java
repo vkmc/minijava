@@ -67,7 +67,7 @@ public class NewNode extends PrimaryNode {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El constructor invocado no esta declarado.");
         }
 
-        idType = new ClassType(id.getLexeme());
+        idType = new ClassType(id.getLexeme(), symbolTable);
         setExpressionType(idType);
     }
 
@@ -89,7 +89,7 @@ public class NewNode extends PrimaryNode {
 
         for (ParameterEntry formalArg : formalArgs) {
             actualArgs.get(index).checkNode();
-            if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType(), symbolTable)) {
+            if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType())) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + counter + ") no conforma con el tipo del argumento formal."
                         + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
             }
@@ -111,7 +111,7 @@ public class NewNode extends PrimaryNode {
         for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
             // TIRAR EXCEPCION SI NO HAY CONFORMIDAD
-            nextType.checkConformity(currentType, symbolTable);
+            nextType.checkConformity(currentType);
 
             currentType = nextType;
         }

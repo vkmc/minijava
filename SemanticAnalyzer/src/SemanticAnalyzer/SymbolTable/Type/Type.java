@@ -23,7 +23,7 @@ public abstract class Type {
      * @param type
      * @return true si hay conformidad de tipos, false en caso contrario
      */
-    public abstract boolean checkConformity(Type type, SymbolTable symbolTable);
+    public abstract boolean checkConformity(Type type);
 
     /**
      * Retorna el nombre del tipo

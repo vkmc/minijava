@@ -374,7 +374,7 @@ public class SymbolTable {
         for (ClassEntry aClass : classes) {
             if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
                 currentClass = aClass.getName();
-                aClass.checkClass(this);
+                aClass.checkClass();
             }
         }
     }

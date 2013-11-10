@@ -4,7 +4,7 @@ class A {
 		var String s1, s2;
 	{}
 
-	dynamic int methodi1 () {}
+	dynamic int methodi1() {}
 }
 
 class Objeto {

@@ -283,7 +283,7 @@ public class ClassEntry {
      *
      * @param symbolTable
      */
-    void checkClass(SymbolTable symbolTable) throws SemanticException {
+    public void checkClass() throws SemanticException {
         Collection<MethodEntry> methods = methodsTable.values();
 
         for (MethodEntry method : methods) {
