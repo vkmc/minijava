@@ -125,7 +125,7 @@ public class IdMethodCallNode extends PrimaryNode {
         }
 
         if (!checkClasses) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre en la tabla de simbolos.");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre '" + idName + "' en la tabla de simbolos.");
         }
 
         LinkedHashMap<String, ClassEntry> classes = symbolTable.getClasses();
@@ -138,7 +138,7 @@ public class IdMethodCallNode extends PrimaryNode {
             return;
         }
 
-        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre en la tabla de simbolos.");
+        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre '" + idName + "' en la tabla de simbolos.");
     }
 
     /**

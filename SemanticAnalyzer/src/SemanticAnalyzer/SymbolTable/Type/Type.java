@@ -28,14 +28,14 @@ public abstract class Type {
     /**
      * Retorna el nombre del tipo
      *
-     * @return typeName
+     * @return aTypeName
      */
     public String getTypeName() {
         return typeName;
     }
 
-    protected boolean isPrimitiveType(Type type) {
-        String t = type.getTypeName();
-        return t.equals("boolean") || t.equals("char") || t.equals("int") || t.equals("String") || t.equals("void");
+    public static boolean isPrimitiveType(Type aType) {
+        String aTypeName = aType.getTypeName();
+        return aTypeName.equals("boolean") || aTypeName.equals("char") || aTypeName.equals("int") || aTypeName.equals("String") || aTypeName.equals("void") || aTypeName.equals("null");
     }
 }

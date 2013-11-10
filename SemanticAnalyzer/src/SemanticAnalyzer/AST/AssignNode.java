@@ -39,7 +39,6 @@ public class AssignNode extends SentenceNode {
         if (symbolTable.getClassEntry(currentClass).getInstanceVariableEntry(id.getLexeme()) != null
                 || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariableEntry(id.getLexeme()) != null
                 || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameterEntry(id.getLexeme()) != null) {
-
             if (!idType.checkConformity(expression.getExpressionType(), symbolTable)) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede asignarse una expresion de tipo " + expression.getExpressionType().getTypeName() + " a una variable de tipo " + idType.getTypeName() + ".");
             }
@@ -75,13 +74,13 @@ public class AssignNode extends SentenceNode {
             // es una variable de instancia de la clase actual
 
             if (symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getModifier().equals("static")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede usarse una variable de instancia en un metodo estatico.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede usarse la variable de instancia '" + idName + "' en un metodo estatico.");
             }
 
             idType = currentClassInstanceVariables.get(idName).getType();
             return;
         }
 
-        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre en la tabla de simbolos.");
+        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre '" + idName + "' en la tabla de simbolos.");
     }
 }

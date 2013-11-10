@@ -15,14 +15,22 @@ public class ClassType extends Type {
         super(typeName);
     }
 
+    @Override
     public boolean checkConformity(Type type, SymbolTable symbolTable) {
-        // A (type) has to conform B.
+        // El tipo A (quien recibe el mensaje) conforma B el tipo pasado por parametro
+
         boolean conforms = false;
+
         if (isPrimitiveType(type)) {
-            // A primitive type can't conform a class type.
+            // El unico tipo primitivo que puede conformar con un tipo clase
+            // es null
+            if (type.getTypeName().equals("null")) {
+                return true;
+            }
+            // Un tipo primitivo no puede conformar con uno de tipo clase
             return false;
         }
-        // 
+
         ClassEntry subtypeClass = symbolTable.getClassEntry(type.getTypeName());
         ClassEntry supertypeClass = symbolTable.getClassEntry(this.getTypeName());
         String subtypeName = subtypeClass.getName();
@@ -38,7 +46,7 @@ public class ClassType extends Type {
                 conforms = true;
             } else {
                 // If the types aren't the same, we check with the subtype's parent.
-                subtypeClass = subtypeClass.getParent();
+                subtypeClass = symbolTable.getClassEntry(subtypeClass.getParent());
                 subtypeName = subtypeClass.getName();
             }
         }

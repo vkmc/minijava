@@ -110,7 +110,8 @@ public class Parser {
         match("{");
         ListaMiembros("class");
 
-        // Si la clase fue declarade sin constructor el compilador le asignará un constructor sin argumentos y con cuerpo vacío.
+        // Si la clase fue declarada sin constructor,
+        // el compilador le asignará un constructor sin argumentos y con cuerpo vacío.
         symbolTable.getClassEntry(className).controlDefaultConstructor();
         // el control de } lo hace ListaMiembros()
         match("}");
@@ -122,15 +123,16 @@ public class Parser {
         if (lookAhead.equals("extends")) {
             match("extends");
             match("id");
-            ClassEntry parentEntry = new ClassEntry(currentToken.getLexeme(), currentToken.getLineNumber());
-            classEntry.addParent(parentEntry);
-            classEntry.setParent(parentEntry);
-            //symbolTable.controlInheritance(className);
+            String parent = currentToken.getLexeme();
+            classEntry.setParent(parent);
+            classEntry.setParentList(parent);
+            symbolTable.controlCircularInheritance(classEntry);
         } else if (lookAhead.equals("{")) {
             // Herencia -> lambda
             // No hay herencia
-            classEntry.addParent(symbolTable.getClassEntry("Object"));
-            classEntry.setParent(symbolTable.getClassEntry("Object"));
+            classEntry.setParent("Object");
+            classEntry.setParentList("Object");
+            symbolTable.controlCircularInheritance(classEntry);
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de la clase '{' o la especificacion de herencia. Se encontro: '" + lookAhead.getToken() + "'.");
         }
@@ -809,7 +811,7 @@ public class Parser {
         Type type;
         if (lookAhead.equals("null")) {
             match("null");
-            type = null;
+            type = createType("null");
         } else if (lookAhead.equals("true")) {
             match("true");
             type = createType("boolean");

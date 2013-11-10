@@ -1,13 +1,12 @@
 package SemanticAnalyzer.AST;
 
 import SemanticAnalyzer.SemanticException;
+import SemanticAnalyzer.SymbolTable.MethodEntry;
 import SemanticAnalyzer.SymbolTable.ParameterEntry;
 import SemanticAnalyzer.SymbolTable.SymbolTable;
-import SemanticAnalyzer.SymbolTable.Type.ClassType;
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.Token;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -90,15 +89,22 @@ public class MethodCallNode extends PrimaryNode {
         // o bien es un metodo de alguna clase ancestro de la clase actual
         // si es un constructor, ocurrira un error
         String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
         String idName = id.getLexeme();
 
         if (currentClass.equals(idName)) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede realizarse una llamada a un constructor.");
-        } else if (symbolTable.getClassEntry(currentClass).getMethodEntry(idName) == null) {
+        }
+
+        MethodEntry methodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(idName);
+        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod);
+
+        if (methodEntry == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el metodo '" + idName + "' en la clase " + currentClass + ".");
+        } else if (currentMethodEntry.getModifier().equals("static")) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede hacerse una invocacion al metodo dinamico '" + idName + "' en la clase " + currentClass + " en el contexto del metodo estatico '" + currentMethod + "'.");
         } else {
-            idType = new ClassType(currentClass);
-            // symbolTable.getClassEntry(currentClass).getMethodEntry(idName).getReturnType();
+            idType = symbolTable.getClassEntry(currentClass).getMethodEntry(idName).getReturnType();
             setExpressionType(idType);
         }
     }
@@ -112,19 +118,20 @@ public class MethodCallNode extends PrimaryNode {
     private void controlFormalArgs() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
         Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
-        Iterator<ParameterEntry> formalArgsIterator = formalArgs.iterator();
-        int counter = 0;
+        int index = 0, counter = 1;
 
         if (formalArgs.size() != actualArgs.size()) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
 
-        while (formalArgsIterator.hasNext()) {
-            ParameterEntry formalArg = formalArgsIterator.next();
-            if (!formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType(), symbolTable)) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo del argumento actual no conforma con el tipo del argumento formal."
+        for (ParameterEntry formalArg : formalArgs) {
+            actualArgs.get(index).checkNode();
+            if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType(), symbolTable)) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + counter + ") no conforma con el tipo del argumento formal."
                         + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
             }
+            index++;
+            counter++;
         }
     }
 
@@ -137,8 +144,6 @@ public class MethodCallNode extends PrimaryNode {
     private void controlReturnType() {
         Type currentType = getExpressionType();
         Type nextCallType = currentType;
-
-        Iterator<CallNode> iteratorCallList = callList.iterator();
 
         for (CallNode nextCall : callList) {
             nextCallType = nextCall.getExpressionType();

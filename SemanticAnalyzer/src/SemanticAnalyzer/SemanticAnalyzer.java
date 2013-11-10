@@ -28,6 +28,7 @@ public class SemanticAnalyzer {
 
     private void declarationCheck() throws SemanticException {
         symbolTable.declarationCheckInheritance();
+        symbolTable.consolidateInheritance();
         symbolTable.declarationCheckReturnType();
         symbolTable.declarationCheckVariables();
         symbolTable.declarationCheckMainExistence();

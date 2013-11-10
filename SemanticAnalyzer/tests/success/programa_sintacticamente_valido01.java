@@ -50,8 +50,8 @@ class Clase
 			a = a + 1;
 		}
 		
-		if(b >= 10)
-		// if(b >= potencia(x, y)) esto es valido en minijava? deberia ver el retorno de potencia(x,y)?
+		// if(b >= 10)
+		if(b >= potencia(x, y)) // esto es valido en minijava? deberia ver el retorno de potencia(x,y)?
 			return "Mayor que potencia";
 		else
 			return "Menor que potencia";

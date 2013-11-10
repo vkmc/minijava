@@ -81,17 +81,19 @@ public class NewNode extends PrimaryNode {
         String currentClass = symbolTable.getCurrentClass();
         String idTypeName = idType.getTypeName();
         Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(idTypeName).getConstructorEntry().getParameters().values();
-        int counter = 0;
+        int index = 0, counter = 1;
 
         if (formalArgs.size() != actualArgs.size()) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
 
         for (ParameterEntry formalArg : formalArgs) {
-            if (!formalArg.getType().checkConformity(actualArgs.get(counter).getExpressionType(), symbolTable)) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo del argumento actual no conforma con el tipo del argumento formal."
+            actualArgs.get(index).checkNode();
+            if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType(), symbolTable)) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + counter + ") no conforma con el tipo del argumento formal."
                         + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
             }
+            index++;
             counter++;
         }
     }
@@ -108,6 +110,7 @@ public class NewNode extends PrimaryNode {
 
         for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
+            // TIRAR EXCEPCION SI NO HAY CONFORMIDAD
             nextType.checkConformity(currentType, symbolTable);
 
             currentType = nextType;

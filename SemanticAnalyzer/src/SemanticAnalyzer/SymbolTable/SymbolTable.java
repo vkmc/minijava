@@ -9,6 +9,7 @@ import SemanticAnalyzer.SymbolTable.Type.Type;
 import SemanticAnalyzer.SymbolTable.Type.VoidType;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -48,8 +49,8 @@ public class SymbolTable {
      * Agrega la clase "Object" a la tabla de simbolos
      */
     private void addClassObject() {
-        ClassEntry Object = new ClassEntry("Object", 0);
-        Object.setParent(Object); // El padre de Object es si mismo (para simplificar controles)
+        ClassEntry Object = new ClassEntry("Object", this, 0);
+        Object.setParent(null); // El padre de Object es null
 
         classTable.put("Object", Object);
 
@@ -60,8 +61,8 @@ public class SymbolTable {
      * Agrega la clase "System" y sus metodos a la tabla de simbolos
      */
     private void addClassSystem() {
-        ClassEntry System = new ClassEntry("System", 0);
-        System.setParent(classTable.get("Object"));
+        ClassEntry System = new ClassEntry("System", null, 0);
+        System.setParent("Object");
 
         classTable.put("System", System);
 
@@ -124,7 +125,7 @@ public class SymbolTable {
      * @param className nombre de la entrada de clase a agregar
      */
     public void addClassEntry(String className, int lineNumber) {
-        ClassEntry aClass = new ClassEntry(className, lineNumber);
+        ClassEntry aClass = new ClassEntry(className, this, lineNumber);
         classTable.put(className, aClass);
     }
 
@@ -175,21 +176,31 @@ public class SymbolTable {
 
         for (ClassEntry aClass : classes) {
 
-            // control de herencia circular
-            controlCircularInheritance(aClass);
-
-            // control de herencia
-            // consolidacion de herencia
-            controlInheritance(aClass.getName());
-
-            // control de existencia de las clases padre
             if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
-                ClassEntry parent = aClass.getParent();
-                if (classTable.get(parent.getName()) == null) {
-                    throw new SemanticException("Error semantico: La clase padre de la clase '" + aClass.getName() + "' no existe.");
+                // control de existencia de las clases padre
+                String parent = aClass.getParent();
+                if (classTable.get(parent) == null) {
+                    throw new SemanticException("Error semantico: La clase '" + aClass.getParent() + "', padre de la clase '" + aClass.getName() + "', no existe.");
                 }
+            }
+        }
+    }
 
+    /**
+     * Consolidacion de herencia Se efectua, de ser posible, la herencia por
+     * copia entre las clases que tienen una relacion "es un"
+     *
+     * @throws SemanticException
+     */
+    public void consolidateInheritance() throws SemanticException {
+        Collection<ClassEntry> classes = classTable.values();
 
+        for (ClassEntry aClass : classes) {
+
+            if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
+                // control de herencia
+                // consolidacion de herencia
+                controlInheritance(aClass.getName());
             }
         }
     }
@@ -200,12 +211,11 @@ public class SymbolTable {
      *
      * @param className
      */
-    private void controlCircularInheritance(ClassEntry aClass) throws SemanticException {
-        LinkedHashMap<String, ClassEntry> parents = aClass.getParents();
+    public void controlCircularInheritance(ClassEntry aClass) throws SemanticException {
+        LinkedList<String> parents = aClass.getParentList();
         String className = aClass.getName();
 
-        // CONTROLAR QUE SE COMPARE POR NOMBRE Y NO POR REFERENCIA
-        if (parents.get(className) != null) {
+        if (parents.contains(className) == true) {
             // Una clase se tiene a si misma en la lista de ancestros.
             throw new SemanticException("Error semantico: Herencia circular. La clase " + className + " no puede heredar de si misma.");
         }
@@ -222,10 +232,10 @@ public class SymbolTable {
      */
     private void controlInheritance(String className) throws SemanticException {
         ClassEntry aClass = classTable.get(className);
-        ClassEntry parent = aClass.getParent();
+        String parent = aClass.getParent();
 
-        if (controlledClasses.get(parent.getName()) == null) {
-            controlInheritance(parent.getName());
+        if (controlledClasses.get(parent) == null) {
+            controlInheritance(parent);
         } else {
             aClass.controlInheritedMethods();
             controlledClasses.put(className, aClass);
@@ -273,21 +283,12 @@ public class SymbolTable {
     public void declarationCheckMainExistence() throws SemanticException {
         Set<String> classes = classTable.keySet();
         String main = null;
-        boolean found = false;
         for (String aClass : classes) {
             if (getClassEntry(aClass).hasMain()) {
-                if (found) {
-                    // If a main method was already found inside a class.
-                    throw new SemanticException("Linea: " + getClassEntry(aClass).getLineNumber() + " - Error semantico: Ya se declaro la clase " + main + " como principal");
-                }
-                main = aClass;
-                found = true;
+                return;
             }
         }
-        if (!found) {
-            // A class with the main method wasn't found.
-            throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
-        }
+        throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
     }
 
     /**
@@ -400,12 +401,7 @@ public class SymbolTable {
         return false;
     }
 
-    private boolean isPrimitiveType(Type type) {
-        String typeName = type.getTypeName();
-        return typeName.equals("boolean") || typeName.equals("char") || typeName.equals("int") || typeName.equals("String") || typeName.equals("void");
-    }
-
     private boolean typeExists(Type type) {
-        return isPrimitiveType(type) || classTable.get(type.getTypeName()) != null;
+        return Type.isPrimitiveType(type) || classTable.get(type.getTypeName()) != null;
     }
 }

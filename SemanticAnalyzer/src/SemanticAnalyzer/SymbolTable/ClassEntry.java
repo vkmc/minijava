@@ -4,6 +4,7 @@ import SemanticAnalyzer.SemanticException;
 import SemanticAnalyzer.SymbolTable.Type.Type;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 /**
  * Representacion de la entrada de clase
@@ -16,18 +17,20 @@ public class ClassEntry {
     private String className;
     private int lineNumber;
     private boolean inheritanceControl;
-    private ClassEntry parent;
-    private LinkedHashMap<String, ClassEntry> parentList;
+    private String parent;
+    private LinkedList<String> parentList;
     private ConstructorEntry constructor;
     private LinkedHashMap<String, InstanceVariableEntry> instanceVariablesTable;
     private LinkedHashMap<String, MethodEntry> methodsTable;
+    private SymbolTable symbolTable;
 
-    public ClassEntry(String className, int lineNumber) {
+    public ClassEntry(String className, SymbolTable symbolTable, int lineNumber) {
         this.className = className;
         this.lineNumber = lineNumber;
+        this.symbolTable = symbolTable;
         inheritanceControl = false;
         parent = null;
-        parentList = new LinkedHashMap<>();
+        parentList = new LinkedList<>();
         constructor = null;
         instanceVariablesTable = new LinkedHashMap<>();
         methodsTable = new LinkedHashMap<>();
@@ -56,14 +59,14 @@ public class ClassEntry {
      *
      * @param parent
      */
-    public void setParent(ClassEntry parent) {
+    public void setParent(String parent) {
         this.parent = parent;
     }
 
     /**
      * Retorna el ancestro directo de la entrada de clase
      */
-    public ClassEntry getParent() {
+    public String getParent() {
         return parent;
     }
 
@@ -73,8 +76,18 @@ public class ClassEntry {
      *
      * @param parent nombre del ancestro a agregar a la lista de ancestros
      */
-    public void addParent(ClassEntry parent) {
-        parentList.put(parent.getName(), parent);
+    public void setParentList(String aParent) {
+        ClassEntry parentEntry = symbolTable.getClassEntry(parent);
+
+        if (parentEntry != null) {
+            LinkedList<String> ancestors = parentEntry.getParentList();
+            for (String ancestor : ancestors) {
+                parentList.addLast(ancestor);
+            }
+            parentList.addLast(aParent);
+        } else {
+            parentList.addLast(aParent);
+        }
     }
 
     /**
@@ -82,7 +95,7 @@ public class ClassEntry {
      *
      * @return lista con los ancestros de la clase
      */
-    public LinkedHashMap<String, ClassEntry> getParents() {
+    public LinkedList<String> getParentList() {
         return parentList;
     }
 
@@ -203,14 +216,6 @@ public class ClassEntry {
         return true;
     }
 
-//    public void controlInstanceVariables(String instanceVariableName) throws SemanticException {
-//        if (instanceVariableName.equals(className)) {
-//            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia con su mismo nombre.");
-//        }
-//        if (methodsTable.get(instanceVariableName) != null) {
-//            throw new SemanticException("Error semantico: La clase " + className + " contiene una variable de instancia " + instanceVariableName + " con el mismo nombre que uno de sus metodos.");
-//        }
-//    }
     /**
      * De ser posible, copia los metodos heredados de la clase padre (herencia
      * por copia)
@@ -219,7 +224,7 @@ public class ClassEntry {
      */
     public void controlInheritedMethods() throws SemanticException {
 
-        if (!parent.getName().equals("Object") && !inheritanceControl) {
+        if (!parent.equals("Object") && !inheritanceControl) {
             // Las variables de instancia no se heredan
             // Ver documentacoin
             inheritMethods();
@@ -233,7 +238,7 @@ public class ClassEntry {
      * @throws SemanticException
      */
     private void inheritMethods() throws SemanticException {
-        Collection<MethodEntry> inheritedMethods = parent.getMethods().values();
+        Collection<MethodEntry> inheritedMethods = symbolTable.getClassEntry(parent).getMethods().values();
 
         for (MethodEntry parentMethod : inheritedMethods) {
             String parentMethodName = parentMethod.getName();
@@ -250,7 +255,7 @@ public class ClassEntry {
                 redefinedMethod.compareReturnType(parentMethod);
                 redefinedMethod.compareParameters(parentMethod);
             } else {
-                // Se hereda el metood
+                // Se hereda el metodo
                 addInheritedMethod(parentMethod);
             }
         }

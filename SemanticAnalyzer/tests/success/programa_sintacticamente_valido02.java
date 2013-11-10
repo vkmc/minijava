@@ -34,12 +34,7 @@ class Foo
 
 	}
 	
-	/*
-	
-	METODOS
-	
-	*/
-
+	// METODOS
 	static void main()
 	{
 	}
@@ -62,14 +57,17 @@ class Foo
 	}
 	
 	dynamic wasd test1(int i, String asdfgais__)
-		var int j;
-		var wasd awasd;
+		var int w, h, j;
+		var wasd awasd, asdf;
+		var boolean foo;
 		{
-		 wasd = new wasd('a', 1, 2, true);
-		 if ((new wasd('h', 777, 111 * 116 / 99, false || true).foo() != false)) j = (test1(1, "heyapple").foo());
+		 awasd = new wasd('a', 1, 2, true);
+		 foo = false;
+		 if ((new wasd('h', 777, 111 * 116 / 99, false || true).foo1() != false)) j = (test1(1, "heyapple").foo());
 			else {					
 					w = (h + 3) % j;
-					for(asdf = null; w <= 54 / 2; foo || true){
+					//for(asdf = null; w <= 54 / 2; foo || true){
+					for(w = 10; w < 40; w+1) {
 					
 						
 					}
@@ -78,25 +76,28 @@ class Foo
 		}
 	
 	dynamic void test2(int i)
-		var int j, w;
+		var int h, j, w, y;
+		var wasd asdf;
+		var boolean foo, estado;
 		{
-		 if ((new wasd('h', 777, 111 * 116 / 99, false || true).foo() != false)) j = (test1(1, "hey").foo());
+		 if ((new wasd('h', 777, 111 * 116 / 99, false || true).foo1() != false)) j = (test1(1, "hey").foo());
 			else {					
 					w = (h + 3) % j;
-					for(asdf = null; w <= 54 / 2; foo || true){
+					for (w = 10; w < 20; w-1) {
+					//for(asdf = null; w <= 54 / 2; foo || true){
 						//COMMENT
 						 for(j=2; j<w;j/i);{
 							i=i+1;
-							for(j=null;j<=54/2;j-1){
+							for(j=1 ; j <= 54/2 ; j-1) {
 							
 								if (estado){
-									y=j%2;
+									y = j % 2;
 								}
 								else{ 
-										y=j*50/2-44+'a'==true;
+										y = j*50/2-44;
 										;
-										while (y-8==i>=2){
-										y=y+-1;
+										while (y > 10 == i >= 2){
+										   y = y+-1;
 										}
 								}
 			}
@@ -108,9 +109,9 @@ class Foo
 	
 	static void test3()
 	{
-		/*
+		//
 		
-		*/
+		
 	}
 	
 	dynamic Object test4()
@@ -119,11 +120,14 @@ class Foo
 	}
 	
 	static Random random()
+	var int a;
+	var boolean flag_mayor;
+	var Foo f;
 	{
 		if (a == 77 && flag_mayor == false)
-			if (potencia(2,10) < 10000000)
-				(printSln("true"));
-					else (printSln("false")); 
+			if (f.potencia(2,10) < 10000000)
+				(System.printSln("true"));
+					else (System.printSln("false")); 
 	}
 	
 	dynamic String exec(int x, int y) 
@@ -136,7 +140,7 @@ class Foo
 			for(j = 1; j < 20; j / i); 
 			{ 
 				i = i + 1;
-				for (j = null;  j<= 54/2; j - i) {
+				for (j = 10;  j <= 54/2; j-i) {
 				
 				}
 			}
@@ -159,7 +163,7 @@ class Foo
 		 if (i < 3) j=j*5;
 			else{
 					i=i+1;
-					for(j=null;j<=54/2;j-1){
+					for(j = 10; j <= 54/2; j-1){
 			
 						
 					}
@@ -184,13 +188,13 @@ class Foo
 	
 }
 
-class Foo2 extends Bar2 {
+class Foo2 extends Foo {
 
 
 
 }
 
-class Foo3 {
+class Foo3 extends Foo2 {
 		Foo3(int i)
 		var int j;
 		{
@@ -238,7 +242,12 @@ class wasd
 
 	}
 
-	dynamic boolean foo()
+	dynamic int foo()
+	{
+		return 1;
+	}
+
+	dynamic boolean foo1()
 	{
 		return true;
 	}
