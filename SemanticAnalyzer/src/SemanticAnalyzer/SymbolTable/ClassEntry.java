@@ -271,11 +271,16 @@ public class ClassEntry {
      */
     private void addInheritedMethod(MethodEntry parentMethod) throws SemanticException {
         String parentMethodName = parentMethod.getName();
+        MethodEntry parentMethodClone = new MethodEntry(parentMethod.getName(), parentMethod.getClassName(), parentMethod.getModifier(), parentMethod.getReturnType(), -1);
+        parentMethodClone.setParameters(parentMethod.getParameters());
+        parentMethodClone.setLocalVariables(parentMethod.getLocalVariables());
+        parentMethodClone.setInherited();
+               
         if (instanceVariablesTable.get(parentMethodName) != null) {
             throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase padre tiene un metodo con el nombre de una variable de instancia de la clase actual.");
         }
 
-        methodsTable.put(parentMethodName, parentMethod);
+        methodsTable.put(parentMethodName, parentMethodClone);
     }
 
     /**

@@ -236,10 +236,10 @@ public class SymbolTable {
 
         if (controlledClasses.get(parent) == null) {
             controlInheritance(parent);
-        } else {
-            aClass.controlInheritedMethods();
-            controlledClasses.put(className, aClass);
         }
+        
+        aClass.controlInheritedMethods();
+        controlledClasses.put(className, aClass);
     }
 
     /**

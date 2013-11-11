@@ -29,6 +29,34 @@ public abstract class ServiceEntry {
     }
 
     /**
+     * Retorna el nombre de la clase en la que esta declarado el metodo
+     *
+     * @return className
+     */
+    public String getClassName() {
+        return className;
+    }
+
+    /**
+     * Retorna el numero de linea de la declaracion del metodo
+     *
+     * @return lineNumber
+     */
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    /**
+     * Establece como parametros del metodo actual el diccionario pasado por
+     * parametro
+     *
+     * @param parametersTable
+     */
+    public void setParameters(LinkedHashMap<String, ParameterEntry> parametersTable) {
+        this.parametersTable = parametersTable;
+    }
+
+    /**
      * Crea e inserta una nueva entrada de parametro en la tabla de parametros
      *
      * @param parameterName nombre del parametro a insertar
@@ -59,6 +87,16 @@ public abstract class ServiceEntry {
      */
     public ParameterEntry getParameterEntry(String parameterName) {
         return parametersTable.get(parameterName);
+    }
+
+    /**
+     * Establece como variables locales del metodo actual el diccionario pasado
+     * por parametro
+     *
+     * @param localVariablesTable
+     */
+    public void setLocalVariables(LinkedHashMap<String, LocalVariableEntry> localVariablesTable) {
+        this.localVariablesTable = localVariablesTable;
     }
 
     /**
@@ -101,9 +139,5 @@ public abstract class ServiceEntry {
      */
     public void setBody(BlockNode body) {
         this.body = body;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
     }
 }

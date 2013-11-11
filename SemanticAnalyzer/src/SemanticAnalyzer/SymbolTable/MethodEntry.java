@@ -15,11 +15,13 @@ public class MethodEntry extends ServiceEntry {
 
     private String modifier;
     private Type returnType;
+    private boolean inherited;
 
     public MethodEntry(String methodName, String className, String modifier, Type returnType, int lineNumber) {
         super(methodName, className, lineNumber);
         this.modifier = modifier;
         this.returnType = returnType;
+        inherited = false;
     }
 
     /**
@@ -59,7 +61,7 @@ public class MethodEntry extends ServiceEntry {
     }
 
     /**
-     * Retorna el tipo de retorno del metodo
+     * Retorna el tipo de retorno d return returnType;el metodo
      *
      * @return returnType
      */
@@ -126,7 +128,24 @@ public class MethodEntry extends ServiceEntry {
         }
     }
 
+    /**
+     * Requerido para el control de metodos heredados Los metodos que han sido
+     * heredados no deben ser controlados en las clases que los heredan
+     */
+    public void setInherited() {
+        inherited = true;
+    }
+
+    /**
+     * Control de sentencias del metodo Se realiza solo si el metodo en cuestion
+     * no ha sido heredado Los metodos heredados se controlan en las clases en
+     * las que fueron declarados
+     *
+     * @throws SemanticException
+     */
     public void checkMethod() throws SemanticException {
-        body.checkNode();
+        if (!inherited) {
+            body.checkNode();
+        }
     }
 }
