@@ -14,27 +14,20 @@ public abstract class ServiceEntry {
 
     protected String serviceName;
     protected String className;
+    protected SymbolTable symbolTable;
     protected int lineNumber;
     protected LinkedHashMap<String, ParameterEntry> parametersTable;
     protected LinkedHashMap<String, LocalVariableEntry> localVariablesTable;
     protected BlockNode body;
 
-    public ServiceEntry(String serviceName, String className, int lineNumber) {
+    public ServiceEntry(String serviceName, String className, SymbolTable symbolTable, int lineNumber) {
         this.serviceName = serviceName;
         this.className = className;
+        this.symbolTable = symbolTable;
         this.lineNumber = lineNumber;
         parametersTable = new LinkedHashMap<>();
         localVariablesTable = new LinkedHashMap<>();
         body = null;
-    }
-
-    /**
-     * Retorna el nombre de la clase en la que esta declarado el metodo
-     *
-     * @return className
-     */
-    public String getClassName() {
-        return className;
     }
 
     /**
@@ -44,16 +37,6 @@ public abstract class ServiceEntry {
      */
     public int getLineNumber() {
         return lineNumber;
-    }
-
-    /**
-     * Establece como parametros del metodo actual el diccionario pasado por
-     * parametro
-     *
-     * @param parametersTable
-     */
-    public void setParameters(LinkedHashMap<String, ParameterEntry> parametersTable) {
-        this.parametersTable = parametersTable;
     }
 
     /**
@@ -87,16 +70,6 @@ public abstract class ServiceEntry {
      */
     public ParameterEntry getParameterEntry(String parameterName) {
         return parametersTable.get(parameterName);
-    }
-
-    /**
-     * Establece como variables locales del metodo actual el diccionario pasado
-     * por parametro
-     *
-     * @param localVariablesTable
-     */
-    public void setLocalVariables(LinkedHashMap<String, LocalVariableEntry> localVariablesTable) {
-        this.localVariablesTable = localVariablesTable;
     }
 
     /**

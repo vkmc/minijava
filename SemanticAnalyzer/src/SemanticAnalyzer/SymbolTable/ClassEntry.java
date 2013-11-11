@@ -115,7 +115,7 @@ public class ClassEntry {
      * @param constructor
      */
     public void setConstructorEntry(String constructorName, int lineNumber) {
-        ConstructorEntry constructorEntry = new ConstructorEntry(constructorName, className, lineNumber);
+        ConstructorEntry constructorEntry = new ConstructorEntry(constructorName, className, symbolTable, lineNumber);
         this.constructor = constructorEntry;
     }
 
@@ -125,7 +125,7 @@ public class ClassEntry {
      */
     public void controlDefaultConstructor() {
         if (getConstructorEntry() == null) {
-            constructor = new ConstructorEntry(className, className, 0);
+            constructor = new ConstructorEntry(className, className, symbolTable, 0);
         }
     }
 
@@ -137,7 +137,7 @@ public class ClassEntry {
      * @param modificator modificador del metodo a insertar
      */
     public void addMethodEntry(String methodName, Type returnType, String modificator, int lineNumber) {
-        MethodEntry method = new MethodEntry(methodName, className, modificator, returnType, lineNumber);
+        MethodEntry method = new MethodEntry(methodName, className, modificator, returnType, symbolTable, lineNumber);
         methodsTable.put(methodName, method);
     }
 
@@ -271,16 +271,12 @@ public class ClassEntry {
      */
     private void addInheritedMethod(MethodEntry parentMethod) throws SemanticException {
         String parentMethodName = parentMethod.getName();
-        MethodEntry parentMethodClone = new MethodEntry(parentMethod.getName(), parentMethod.getClassName(), parentMethod.getModifier(), parentMethod.getReturnType(), -1);
-        parentMethodClone.setParameters(parentMethod.getParameters());
-        parentMethodClone.setLocalVariables(parentMethod.getLocalVariables());
-        parentMethodClone.setInherited();
-               
+
         if (instanceVariablesTable.get(parentMethodName) != null) {
             throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase padre tiene un metodo con el nombre de una variable de instancia de la clase actual.");
         }
 
-        methodsTable.put(parentMethodName, parentMethodClone);
+        methodsTable.put(parentMethodName, parentMethod);
     }
 
     /**

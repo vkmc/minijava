@@ -237,7 +237,7 @@ public class SymbolTable {
         if (controlledClasses.get(parent) == null) {
             controlInheritance(parent);
         }
-        
+
         aClass.controlInheritedMethods();
         controlledClasses.put(className, aClass);
     }

@@ -8,7 +8,7 @@ package SemanticAnalyzer.SymbolTable;
  */
 public class ConstructorEntry extends ServiceEntry {
 
-    public ConstructorEntry(String constructorName, String className, int lineNumber) {
-        super(constructorName, className, lineNumber);
+    public ConstructorEntry(String constructorName, String className, SymbolTable symbolTable, int lineNumber) {
+        super(constructorName, className, symbolTable, lineNumber);
     }
 }
