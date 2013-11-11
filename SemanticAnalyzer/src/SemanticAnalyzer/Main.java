@@ -24,7 +24,6 @@ public class Main {
             } catch (SemanticException | SyntacticException | LexicalException exc) {
                 System.err.println(exc);
             }
-
         }
     }
 }
