@@ -3,24 +3,18 @@ class A {
 
     var int a, b;
 
-    A() {
-    }
-    dynamic
+    A() {}
 
-    boolean methoda1() {
-    }
+    dynamic boolean methoda1() {}
 }
 
 class B extends A {
 
     var boolean a, b;
 
-    B() {
-    }
+    B() {}
 
-    static void main() {
-    }
+    static void main() {}
 
-    static boolean methoda1() {
-    }
+    static boolean methoda1() {} // diferente modificador
 }

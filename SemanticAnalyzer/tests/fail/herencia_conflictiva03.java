@@ -3,25 +3,18 @@ class A {
 
     var int a, b;
 
-    A() {
-    }
-    dynamic
+    A() {}
 
-    boolean methoda1(int a, int c) {
-    }
+    dynamic boolean methoda1(int a, int c) {}
 }
 
 class B extends A {
 
     var boolean a, b;
 
-    B() {
-    }
+    B() {}
 
-    static void main() {
-    }
-    dynamic
+    static void main() {}
 
-    boolean methoda1(int a, int b) {
-    }
+    dynamic boolean methoda1(int a, int b) {} // el segundo parametro es b, deberia ser c
 }

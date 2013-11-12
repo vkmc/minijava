@@ -3,25 +3,18 @@ class A {
 
     var int a, b;
 
-    A() {
-    }
-    dynamic
+    A() {}
 
-    boolean methoda1() {
-    }
+    dynamic boolean methoda1() {}
 }
 
 class B extends A {
 
     var boolean a, b;
 
-    B() {
-    }
+    B() {}
 
-    static void main() {
-    }
-    dynamic
+    static void main() {}
 
-    int methoda1() {
-    }
+    dynamic int methoda1() {} // diferente tipo de retorno
 }

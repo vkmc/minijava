@@ -1,29 +1,22 @@
 
-class A extends B {
+class A extends B {	// herencia circular
 
     var int a, b;
 
-    A() {
-    }
-    dynamic
+    A() {}
 
-    boolean methoda1() {
-    }
+    dynamic boolean methoda1() {}
 }
 
 class B extends A {
 
     var boolean a, b;
 
-    B() {
-    }
+    B() {}
 
-    static void main() {
-    }
-    dynamic
+    static void main() {}
 
-    boolean methoda1() {
-    }
+    dynamic boolean methoda1() {}
 }
 
 class C extends B {

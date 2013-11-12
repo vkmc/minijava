@@ -10,6 +10,5 @@ class A {
 
 class Objeto {
 
-    static void main() {
-    }
+    static void main() {}
 }
