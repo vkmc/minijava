@@ -2,9 +2,8 @@
 class A {
 
     var int n;
-    dynamic
-
-    int getN() {
+    
+    dynamic int getN() {
         return n;
     }
 }

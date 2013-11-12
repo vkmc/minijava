@@ -101,7 +101,7 @@ public class MethodCallNode extends PrimaryNode {
 
         if (methodEntry == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el metodo '" + idName + "' en la clase " + currentClass + ".");
-        } else if (currentMethodEntry.getModifier().equals("static")) {
+        } else if (methodEntry.getModifier().equals("dynamic") && currentMethodEntry.getModifier().equals("static")) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede hacerse una invocacion al metodo dinamico '" + idName + "' en la clase " + currentClass + " en el contexto del metodo estatico '" + currentMethod + "'.");
         } else {
             idType = symbolTable.getClassEntry(currentClass).getMethodEntry(idName).getReturnType();
@@ -141,19 +141,28 @@ public class MethodCallNode extends PrimaryNode {
      * al retorno de g(). Es decir, el retorno de g() debe ser de un tipo de
      * clase C tal que exista un metodo M en C.
      */
-    private void controlReturnType() {
+    private void controlReturnType() throws SemanticException {
         Type currentType = getExpressionType();
-        Type nextCallType = currentType;
+        Type nextType = currentType;
+        String nextId;
 
         for (CallNode nextCall : callList) {
-            nextCallType = nextCall.getExpressionType();
-            nextCallType.checkConformity(currentType);
+            nextType = nextCall.getExpressionType();
+            nextId = nextCall.getId().getLexeme();
+
+            if (symbolTable.getClassEntry(currentType.getTypeName()).getMethodEntry(nextId) == null) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El metodo '" + nextId + "' no es un metodo de la clase '" + currentType.getTypeName() + "'.");
+
+            }
+
+            nextType.checkConformity(currentType);
+            currentType = nextType;
         }
 
         // si no surge ningun error durante el control de conformidad de tipos
         // se le asigna al nodo actual el tipo del ultimo callnode en la lista
 
-        this.setExpressionType(nextCallType);
+        this.setExpressionType(nextType);
 
     }
 }

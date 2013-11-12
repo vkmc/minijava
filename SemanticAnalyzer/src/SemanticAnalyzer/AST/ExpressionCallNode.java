@@ -53,14 +53,21 @@ public class ExpressionCallNode extends PrimaryNode {
      * al retorno de g(). Es decir, el retorno de g() debe ser de un tipo de
      * clase C tal que exista un metodo M en C.
      */
-    private void controlReturnType() {
+    private void controlReturnType() throws SemanticException {
         Type currentType = getExpressionType();
         Type nextType;
+        String nextId;
 
         for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
-            nextType.checkConformity(currentType);
+            nextId = nextCall.getId().getLexeme();
 
+            if (symbolTable.getClassEntry(currentType.getTypeName()).getMethodEntry(nextId) == null) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El metodo '" + nextId + "' no es un metodo de la clase '" + currentType.getTypeName() + "'.");
+
+            }
+
+            nextType.checkConformity(currentType);
             currentType = nextType;
         }
 

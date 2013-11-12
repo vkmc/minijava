@@ -27,6 +27,15 @@ public class CallNode extends PrimaryNode {
         this.id = id;
         this.actualArgs = actualArgs; // actual arguments
     }
+    
+    /**
+     * Retorna el identificador asociado a la llamada
+     * 
+     * @return id
+     */
+    public Token getId() {
+        return id;
+    }
 
     @Override
     public void checkNode() throws SemanticException {

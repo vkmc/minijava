@@ -795,6 +795,7 @@ public class Parser {
             LinkedList<ExpressionNode> actualArgs = ArgsActuales();
             return new MethodCallNode(symbolTable, current, actualArgs, ListaLlamadas(), current);
         } else {
+            // Si la lista de llamadas es vacia, se trata de un Id
             return new IdMethodCallNode(symbolTable, current, ListaLlamadas(), current);
         }
     }
