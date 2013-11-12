@@ -43,6 +43,10 @@ public abstract class ServiceEntry {
     public int getLineNumber() {
         return lineNumber;
     }
+    
+    public String getClassName() {
+        return className;
+    }
 
     /**
      * Crea e inserta una nueva entrada de parametro en la tabla de parametros

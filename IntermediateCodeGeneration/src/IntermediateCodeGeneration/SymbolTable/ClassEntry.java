@@ -369,6 +369,19 @@ public class ClassEntry {
     }
 
     private void initVT() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ICG.GEN(".DATA");
+        if (methodsTable.isEmpty()) { 
+            ICG.GEN("VT_" + className + ": NOP");
+         } else {
+            ICG.GEN(".DATA");
+            String DWInstruction = "VT_" + className + ": DW";
+       
+            for (MethodEntry aMethod : methodsTable.values()) {
+                DWInstruction += "L_" + aMethod.getClassName() + "_" + aMethod.getName() + " ,";
+            }
+           
+            DWInstruction = DWInstruction.substring(0, DWInstruction.length() - 1); // Comma removal
+            ICG.GEN(DWInstruction);
+        }
     }
 }
