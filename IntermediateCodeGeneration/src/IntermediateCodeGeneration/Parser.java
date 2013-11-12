@@ -41,7 +41,7 @@ public class Parser {
         lookAhead = tokenizer.getToken();
         Inicial();
     }
-
+  
     /**
      * Compara el token encontrado con lo que se esperaba de acuerdo a la
      * gramatica. En caso de encontrar un token no esperado o el fin de linea

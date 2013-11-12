@@ -18,7 +18,7 @@ public class SymbolTable {
 
     private LinkedHashMap<String, ClassEntry> classTable;
     private LinkedHashMap<String, ClassEntry> controlledClasses;
-    private String currentClass, currentMethod;
+    private String currentClass, currentMethod, mainClass;
 
     /**
      * Constructor de la tabla de simbolos Crea las estructuras e inicializa los
@@ -280,6 +280,7 @@ public class SymbolTable {
         String main = null;
         for (String aClass : classes) {
             if (getClassEntry(aClass).hasMain()) {
+                mainClass = aClass;
                 return;
             }
         }
@@ -398,5 +399,15 @@ public class SymbolTable {
 
     private boolean typeExists(Type type) {
         return Type.isPrimitiveType(type) || classTable.get(type.getTypeName()) != null;
+    }
+    
+    /**
+     * Retorna el nombre de la clase que contiene el metodo principal     * 
+     * Por convencion, se elige la primer clase con el metodo main
+     * 
+     * @return mainClass
+     */
+    public String getMainClass() {
+        return mainClass;
     }
 }

@@ -15,6 +15,7 @@ public class MethodEntry extends ServiceEntry {
 
     private String modifier;
     private Type returnType;
+    private int offset;
 
     public MethodEntry(String methodName, String className, String modifier, Type returnType, SymbolTable symbolTable, int lineNumber) {
         super(methodName, className, symbolTable, lineNumber);
@@ -137,5 +138,9 @@ public class MethodEntry extends ServiceEntry {
         if (className.equals(symbolTable.getCurrentClass())) {
             body.checkNode();
         }
+    }
+
+    public int getOffset() {
+        return offset;
     }
 }
