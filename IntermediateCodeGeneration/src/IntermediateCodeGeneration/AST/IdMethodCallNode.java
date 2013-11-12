@@ -26,11 +26,13 @@ public class IdMethodCallNode extends PrimaryNode {
     protected Token id;
     protected Type idType;  // necesario para controlar las llamadas
     protected LinkedList<CallNode> callList;
+    private boolean staticMethod;
 
     public IdMethodCallNode(SymbolTable symbolTable, Token id, LinkedList<CallNode> callList, Token token) {
         super(symbolTable, token);
         this.id = id;
         this.callList = callList;
+        staticMethod = false;
     }
 
     @Override
@@ -165,6 +167,89 @@ public class IdMethodCallNode extends PrimaryNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!callList.isEmpty()) {
+            // id y lista de llamadas
+            generateCodeId(true);
+            generateCodeCalls();
+        } else {
+            // id
+            generateCodeId(false);
+        }
+    }
+
+    private void generateCodeCalls() throws SemanticException {
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+
+        Type callerType = idType;
+        for (CallNode call : callList) {
+            call.setCallerType(callerType);
+            call.setICG(ICG);
+
+            if (staticMethod) {
+                if (symbolTable.getClassEntry(idType.getTypeName()).getMethodEntry(call.getId().getLexeme()).getModifier().equals("dynamic")) {
+                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo estatico, el metodo '" + call.getId().getLexeme() + "' es dinamico.");
+                }
+
+                call.setVTToS();
+                return;
+            }
+
+            call.generateCode();
+            callerType = call.getCallReturnType();
+        }
+    }
+
+    private void generateCodeId(boolean checkClasses) throws SemanticException {
+        // Id
+        // Hacemos el LOAD de la variable correspondiente
+
+        ICG.GEN(".CODE");
+
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+        String idName = id.getLexeme();
+
+        LinkedHashMap<String, ParameterEntry> currentMethodParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameters();
+        LinkedHashMap<String, LocalVariableEntry> currentMethodLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariables();
+
+        if (currentMethodParameters.containsKey(idName)) {
+            // es un parametro del metodo actual
+            idType = currentMethodParameters.get(idName).getType();
+            int parameterOffset = currentMethodParameters.get(idName).getOffset();
+            ICG.GEN("LOAD", parameterOffset + 3, "Cargamos el parametro '" + idName + "'.");
+            // siempre es +3
+            // puntero de retorno, enlace dinamico y this
+        } else if (currentMethodLocalVariables.containsKey(idName)) {
+            // es una variable local del metodo actual
+            idType = currentMethodLocalVariables.get(idName).getType();
+            int localVariableOffset = currentMethodLocalVariables.get(idName).getOffset();
+            ICG.GEN("LOAD", localVariableOffset, "Cargamos la variable local '" + idName + "'.");
+        }
+
+        LinkedHashMap<String, InstanceVariableEntry> currentClassInstanceVariables = symbolTable.getClassEntry(currentClass).getInstanceVariables();
+
+        if (currentClassInstanceVariables.containsKey(idName)) {
+            // es una variable de instancia de la clase actual
+            // el control de si es un metodo estatico se realiza en el checkNode
+            idType = currentClassInstanceVariables.get(idName).getType();
+            int instanceVariableOffset = currentClassInstanceVariables.get(idName).getOffset();
+            ICG.GEN("LOAD", 3, "Apilamos el THIS para poder acceder al CIR.");
+            ICG.GEN("LOADREF", instanceVariableOffset, "Cargamos la variable de instancia '" + idName + "'.");
+        }
+
+        if (!checkClasses) {
+            return;
+        }
+
+        LinkedHashMap<String, ClassEntry> classes = symbolTable.getClasses();
+
+        if (classes.containsKey(idName)) {
+            // es una clase
+            Type aType = new ClassType(idName, symbolTable);
+            idType = aType;
+            ICG.GEN("PUSH VT_" + id.getLexeme());
+            staticMethod = true; // es una invocacion a un metodo estatico
+        }
     }
 }

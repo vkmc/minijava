@@ -41,7 +41,7 @@ public class Parser {
         lookAhead = tokenizer.getToken();
         Inicial();
     }
-  
+
     /**
      * Compara el token encontrado con lo que se esperaba de acuerdo a la
      * gramatica. En caso de encontrar un token no esperado o el fin de linea
@@ -788,6 +788,7 @@ public class Parser {
             LinkedList<ExpressionNode> actualArgs = ArgsActuales();
             return new MethodCallNode(symbolTable, current, actualArgs, ListaLlamadas(), current);
         } else {
+            // Si la lista de llamadas es vacia, se trata de un Id
             return new IdMethodCallNode(symbolTable, current, ListaLlamadas(), current);
         }
     }

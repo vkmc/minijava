@@ -21,11 +21,29 @@ public class CallNode extends PrimaryNode {
     // callReturnType representa el tipo de retorno del metodo - e.g. si method1() retorna un objeto de clase Clase
     protected Type callerType, callReturnType;
     protected LinkedList<ExpressionNode> actualArgs;
+    private boolean VTToS; // VT at top of stack
 
     public CallNode(SymbolTable symbolTable, Token id, LinkedList<ExpressionNode> actualArgs, Token token) {
         super(symbolTable, token);
         this.id = id;
         this.actualArgs = actualArgs; // actual arguments
+        VTToS = false;
+    }
+
+    public Token getId() {
+        return id;
+    }
+
+    public void setCallerType(Type callerType) {
+        this.callerType = callerType;
+    }
+
+    public Type getCallReturnType() {
+        return callReturnType;
+    }
+
+    public void setVTToS() {
+        VTToS = true;
     }
 
     @Override
@@ -89,16 +107,34 @@ public class CallNode extends PrimaryNode {
         }
     }
 
-    public void setCallerType(Type callerType) {
-        this.callerType = callerType;
-    }
-
-    public Type getCallReturnType() {
-        return callReturnType;
-    }
-
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Los controles sobre el metodo se realizan durante el checkNode()
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+
+        ICG.GEN(".CODE");
+
+        if (!callReturnType.getTypeName().equals("void")) {
+            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
+            ICG.GEN("SWAP", "Acomodamos el THIS haciendo un SWAP con RETVAL");
+        }
+
+        for (ExpressionNode expression : actualArgs) {
+            expression.setICG(ICG);
+            expression.generateCode();
+            ICG.GEN("SWAP", "Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
+        }
+
+        ICG.GEN(".CODE");
+        ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
+
+        if (!VTToS) {
+            ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
+        }
+
+        int offsetId = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(id.getLexeme()).getOffset();
+        ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + id.getLexeme() + "'.");
+        ICG.GEN("CALL", "Llamamos al metodo '" + id.getLexeme() + "'.");
     }
 }

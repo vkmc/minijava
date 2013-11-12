@@ -1,7 +1,8 @@
 package IntermediateCodeGeneration.AST;
 
-import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
+import IntermediateCodeGeneration.SymbolTable.ClassEntry;
+import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.SymbolTable.Type.VoidType;
 import IntermediateCodeGeneration.Token;
@@ -39,6 +40,23 @@ public class ReturnNode extends SentenceNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+        ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
+        MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentMethod);
+
+        int parametersCount = currentMethodEntry.getParameters().size();
+        int localVariablesCount = currentMethodEntry.getLocalVariables().size();
+
+        ICG.GEN(".CODE");
+        ICG.GEN("; Retorno vacio del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
+
+        if (localVariablesCount > 0) {
+            // El metodo tiene variables locales
+            ICG.GEN("FMEM" + localVariablesCount + "Liberamos el espacio usado por las variables locales del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+        }
+
+        ICG.GEN("STOREFP", "Actualizamos el FP para que apunte al RA del llamador");
+        ICG.GEN("RET", parametersCount + 1, "Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
     }
 }

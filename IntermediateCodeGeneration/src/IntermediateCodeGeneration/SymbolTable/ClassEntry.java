@@ -292,4 +292,8 @@ public class ClassEntry {
             method.checkMethod();
         }
     }
+
+    public int getInstanceVariablesCount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

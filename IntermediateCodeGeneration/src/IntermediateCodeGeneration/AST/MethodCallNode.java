@@ -1,6 +1,5 @@
 package IntermediateCodeGeneration.AST;
 
-import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
@@ -102,7 +101,7 @@ public class MethodCallNode extends PrimaryNode {
 
         if (methodEntry == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el metodo '" + idName + "' en la clase " + currentClass + ".");
-        } else if (currentMethodEntry.getModifier().equals("static")) {
+        } else if (methodEntry.getModifier().equals("dynamic") && currentMethodEntry.getModifier().equals("static")) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede hacerse una invocacion al metodo dinamico '" + idName + "' en la clase " + currentClass + " en el contexto del metodo estatico '" + currentMethod + "'.");
         } else {
             idType = symbolTable.getClassEntry(currentClass).getMethodEntry(idName).getReturnType();
@@ -142,24 +141,112 @@ public class MethodCallNode extends PrimaryNode {
      * al retorno de g(). Es decir, el retorno de g() debe ser de un tipo de
      * clase C tal que exista un metodo M en C.
      */
-    private void controlReturnType() {
+    private void controlReturnType() throws SemanticException {
         Type currentType = getExpressionType();
-        Type nextCallType = currentType;
+        Type nextType = currentType;
+        String nextId;
+
+        // HABRIA QUE CONTROLAR SI ES UN METODO DE SYSTEM?
 
         for (CallNode nextCall : callList) {
-            nextCallType = nextCall.getExpressionType();
-            nextCallType.checkConformity(currentType);
+            nextType = nextCall.getExpressionType();
+            nextId = nextCall.getId().getLexeme();
+
+            if (symbolTable.getClassEntry(currentType.getTypeName()).getMethodEntry(nextId) == null) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El metodo '" + nextId + "' no es un metodo de la clase '" + currentType.getTypeName() + "'.");
+            }
+
+            nextType.checkConformity(currentType);
+            currentType = nextType;
         }
 
         // si no surge ningun error durante el control de conformidad de tipos
         // se le asigna al nodo actual el tipo del ultimo callnode en la lista
 
-        this.setExpressionType(nextCallType);
+        this.setExpressionType(nextType);
 
     }
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = id.getLexeme();
+
+        ICG.GEN(".CODE");
+        ICG.GEN("LOAD", 3, "Apilamos el THIS para invocar al metodo '" + currentMethod + "'");
+
+        Type returnType;
+        String returnTypeName;
+
+        if (symbolTable.getClassEntry("System").getMethodEntry(currentMethod) != null) {
+            // Es un metodo de la clase System
+            returnType = symbolTable.getClassEntry("System").getMethodEntry(currentMethod).getReturnType();
+        } else {
+            returnType = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType();
+        }
+
+        returnTypeName = returnType.getTypeName();
+
+        if (!returnTypeName.equals("void")) {
+            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
+            ICG.GEN("SWAP", "Acomodamos el THIS haciendo un SWAP con RETVAL");
+        }
+
+        for (ExpressionNode actualArg : actualArgs) {
+            actualArg.setICG(ICG);
+            actualArg.generateCode();
+            ICG.GEN("SWAP", "Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
+        }
+
+        if (symbolTable.getClassEntry("System").getMethodEntry(currentMethod) != null) {
+            if (currentMethod.equals("read")) {
+                ICG.GEN("PUSH L_SYSTEM_READ");
+                ICG.GEN("CALL", "Llamada a 'read' de la clase System.");
+            } else if (currentMethod.equals("printI")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTI");
+                ICG.GEN("CALL", "Llamada a 'printI' de la clase System.");
+            } else if (currentMethod.equals("printC")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTC");
+                ICG.GEN("CALL", "Llamada a 'printC' de la clase System.");
+            } else if (currentMethod.equals("printB")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTB");
+                ICG.GEN("CALL", "Llamada a 'printB' de la clase System.");
+            } else if (currentMethod.equals("printS")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTS");
+                ICG.GEN("CALL", "Llamada a 'printS' de la clase System.");
+            } else if (currentMethod.equals("println")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTLN");
+                ICG.GEN("CALL", "Llamada a 'println' de la clase System.");
+            } else if (currentMethod.equals("printBln")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTBLN");
+                ICG.GEN("CALL", "Llamada a 'printBln' de la clase System.");
+            } else if (currentMethod.equals("printCln")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTCLN");
+                ICG.GEN("CALL", "Llamada a 'printCln' de la clase System.");
+            } else if (currentMethod.equals("printIln")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTILN");
+                ICG.GEN("CALL", "Llamada a 'printIln' de la clase System.");
+            } else if (currentMethod.equals("printSln")) {
+                ICG.GEN("PUSH L_SYSTEM_PRINTSLN");
+                ICG.GEN("CALL", "Llamada a 'printSln' de la clase System.");
+            }
+        } else {
+            ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + currentMethod + "'.");
+            ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
+
+            int offsetId = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getOffset();
+
+            ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + currentMethod + "'.");
+            ICG.GEN("CALL", "Llamamos al metodo '" + currentMethod + "'.");
+
+            Type callerType = returnType;
+
+            for (CallNode call : callList) {
+                call.setCallerType(callerType);
+                call.setICG(ICG);
+                call.generateCode();
+                callerType = call.getCallReturnType();
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
+import IntermediateCodeGeneration.SymbolTable.ClassEntry;
+import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
 
@@ -35,5 +37,34 @@ public class ReturnExpNode extends ReturnNode {
         }
 
         this.setSentenceType(expression.getExpressionType());
+    }
+
+    @Override
+    public void generateCode() throws SemanticException {
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+        ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
+        MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentMethod);
+
+        int parametersCount = currentMethodEntry.getParameters().size();
+        int localVariablesCount = currentMethodEntry.getLocalVariables().size();
+        int offsetRet = parametersCount + 1;
+
+        expression.setICG(ICG);
+        expression.generateCode();
+
+        ICG.GEN(".CODE");
+        ICG.GEN("; Retorno de expresion del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
+        offsetRet = offsetRet + 3; // parametros, variables locales, puntero de retorno, enlace dinamico y this.
+
+        ICG.GEN("STORE", offsetRet, "Almacenamos el retorno del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+
+        if (localVariablesCount > 0) {
+            // El metodo tiene variables locales
+            ICG.GEN("FMEM" + localVariablesCount + "Liberamos el espacio usado por las variables locales del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+        }
+
+        ICG.GEN("STOREFP", "Actualizamos el FP para que apunte al RA del llamador");
+        ICG.GEN("RET", parametersCount + 1, "Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
     }
 }

@@ -34,6 +34,17 @@ public class IfThenNode extends SentenceNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String label = ICG.generateLabel();
+
+        condition.setICG(ICG);
+        condition.generateCode();
+
+        ICG.GEN(".CODE");
+        ICG.GEN("BF lEndIfThen" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass());
+
+        sentenceIf.setICG(ICG);
+        sentenceIf.generateCode();
+
+        ICG.GEN("lEndIfThen" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass() + ": NOP");
     }
 }

@@ -30,4 +30,27 @@ public class IfThenElseNode extends IfThenNode {
         sentenceIf.checkNode();
         sentenceElse.checkNode();
     }
+
+    @Override
+    public void generateCode() throws SemanticException {
+        String label = ICG.generateLabel();
+
+        condition.setICG(ICG);
+        condition.generateCode();
+
+        ICG.GEN(".CODE");
+
+        ICG.GEN("BF lEndIf" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass());
+
+        sentenceIf.setICG(ICG);
+        sentenceIf.generateCode();
+
+        ICG.GEN("JUMP lEndElse" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass());
+        ICG.GEN("lEndIf" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass() + ": NOP");
+
+        sentenceElse.setICG(ICG);
+        sentenceElse.generateCode();
+
+        ICG.GEN("lEndElse" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass() + ": NOP");
+    }
 }

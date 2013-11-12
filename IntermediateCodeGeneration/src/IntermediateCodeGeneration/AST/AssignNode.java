@@ -1,8 +1,10 @@
 package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
+import IntermediateCodeGeneration.SymbolTable.ClassEntry;
 import IntermediateCodeGeneration.SymbolTable.InstanceVariableEntry;
 import IntermediateCodeGeneration.SymbolTable.LocalVariableEntry;
+import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.SymbolTable.ParameterEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
@@ -26,6 +28,10 @@ public class AssignNode extends SentenceNode {
         this.id = id;
 
         this.expression = expression;
+    }
+
+    public Token getId() {
+        return id;
     }
 
     @Override
@@ -86,5 +92,31 @@ public class AssignNode extends SentenceNode {
 
     @Override
     public void generateCode() throws SemanticException {
+        expression.setICG(ICG);
+        expression.generateCode();
+        int base = 0;
+
+        ICG.GEN(".CODE");
+
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+        ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
+        MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentMethod);
+
+        if (currentMethodEntry.getLocalVariableEntry(id.getLexeme()) != null) {
+            // el offset de una variable local comienza en 0 y decrece
+            int localVariableOffset = currentMethodEntry.getLocalVariableEntry(id.getLexeme()).getOffset();
+            ICG.GEN("STORE", localVariableOffset, "Asignacion. El lado izquierdo es una variable local del metodo '" + currentMethod + "'");
+        } else if (currentMethodEntry.getParameterEntry(id.getLexeme()) != null) {
+            // el offset de una variable local comienza en 0 y decrece
+            int parameterOffset = currentMethodEntry.getLocalVariableEntry(id.getLexeme()).getOffset();
+            ICG.GEN("STORE", parameterOffset, "Asignacion. El lado izquierdo es un parametro del metodo '" + currentMethod + "'");
+        } else if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null) {
+            ICG.GEN("LOAD", 3, "Asignacion. Apilamos THIS");
+            ICG.GEN("SWAP", "Asignacion. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");
+
+            int offsetInstanceVariable = currentClassEntry.getInstanceVariableEntry(id.getLexeme()).getOffset();
+            ICG.GEN("STOREREF", offsetInstanceVariable, "Asignacion. El lado izquierdo es una variable de instancia de la clase '" + currentClass + "'.");
+        }
     }
 }

@@ -41,9 +41,9 @@ public abstract class ExpressionNode {
     }
 
     public abstract void checkNode() throws SemanticException;
-    
+
     public abstract void generateCode() throws SemanticException;
-    
+
     public void setICG(ICGenerator ICG) {
         this.ICG = ICG;
     }

@@ -33,6 +33,22 @@ public class WhileNode extends SentenceNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String label = ICG.generateLabel();
+        String currentClass = symbolTable.getCurrentClass();
+        String currentMethod = symbolTable.getCurrentMethod();
+
+        ICG.GEN(".CODE");
+        ICG.GEN("lWhile" + label + "_" + currentMethod + "_" + currentClass + ": NOP");
+
+        condition.setICG(ICG);
+        condition.generateCode();
+
+        ICG.GEN("BF lEndWhile" + label + "_" + currentMethod + "_" + currentClass);
+
+        sentence.setICG(ICG);
+        sentence.generateCode();
+
+        ICG.GEN("JUMP lWhile" + label + "_" + currentMethod + "_" + currentClass);
+        ICG.GEN("lEndWhile" + label + "_" + currentMethod + "_" + currentClass + ": NOP");
     }
 }

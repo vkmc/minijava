@@ -27,6 +27,13 @@ public class SimpleSentenceNode extends SentenceNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        expression.setICG(ICG);
+        expression.generateCode();
+
+        if (getSentenceType().getTypeName().equals("void")) {
+            // Si la sentencia es void, no es necesario hacer un POP
+        } else {
+            ICG.GEN("POP", "Desapilamos el resultado de la expresion");
+        }
     }
 }

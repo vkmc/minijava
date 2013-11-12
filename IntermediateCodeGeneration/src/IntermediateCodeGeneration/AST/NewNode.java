@@ -1,6 +1,5 @@
 package IntermediateCodeGeneration.AST;
 
-import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
@@ -125,6 +124,38 @@ public class NewNode extends PrimaryNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ICG.GEN(".CODE");
+        ICG.GEN("RMEM", 1, "Llamada al constructor de la clase '" + id.getLexeme() + "'. Se reserva memoria para la referencia al nuevo CIR");
+
+        int instanceVariablesCount = symbolTable.getClassEntry(id.getLexeme()).getInstanceVariablesCount() + 1;
+
+        ICG.GEN("PUSH", instanceVariablesCount, "Se apila la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT.");
+        ICG.GEN("PUSH lsimple_malloc", "Se apila la direccion de la rutina para reservar memoria en el heap");
+        ICG.GEN("CALL", "Se invoca a la rutina en el tope de la pila (lsimple_malloc)");
+        ICG.GEN("DUP", "Se duplica la referencia al nuevo CIR para el STOREREF.");
+        ICG.GEN("PUSH VT_" + id.getLexeme(), "Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR");
+        ICG.GEN("STOREREF", 0, "Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT");
+        ICG.GEN("DUP", "Se duplica el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila");
+
+        for (ExpressionNode actualArg : actualArgs) {
+            actualArg.setICG(ICG);
+            actualArg.generateCode();
+
+            ICG.GEN(".CODE");
+            ICG.GEN("SWAP", "Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
+        }
+
+        ICG.GEN(".CODE");
+        ICG.GEN("PUSH lMet" + id.getLexeme() + "_" + id.getLexeme(), "Se apila la direccion del constructor de la clase '" + id.getLexeme() + "'.");
+        ICG.GEN("CALL", "Se invoca a la rutina del constructor de la clase '" + id.getLexeme() + "'");
+
+        Type callerType = idType;
+        for (CallNode call : callList) {
+            call.setCallerType(callerType);
+            call.setICG(ICG);
+            call.generateCode();
+            callerType = call.getCallReturnType();
+        }
+
     }
 }

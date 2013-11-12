@@ -237,15 +237,15 @@ public class ICGenerator {
         // Simple init heap.
         GEN("L_SIMPLE_INIT_HEAP: RET", 0, "Inicializacion simplificada del .heap");
     }
-    
+
     /**
-     * Genera un numero de etiqueta
-     * Usado en las estructuras condicionales y de repeticion
-     * 
+     * Genera un numero de etiqueta Usado en las estructuras condicionales y de
+     * repeticion
+     *
      * @return labelNumber
      */
-    public int generateLabel() {
+    public String generateLabel() {
         labelNumber++;
-        return labelNumber;
+        return "" + labelNumber;
     }
 }

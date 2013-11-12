@@ -35,6 +35,7 @@ public class ThisNode extends PrimaryNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ICG.GEN(".CODE");
+        ICG.GEN("LOAD", 3, "Apilamos THIS");
     }
 }

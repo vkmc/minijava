@@ -69,6 +69,39 @@ public class BinaryExpressionNode extends ExpressionNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        left.setICG(ICG);
+        left.generateCode();
+
+        right.setICG(ICG);
+        right.generateCode();
+
+        ICG.GEN(".CODE");
+
+        if (operator.getLexeme().equals("+")) {
+            ICG.GEN("ADD");
+        } else if (operator.getLexeme().equals("-")) {
+            ICG.GEN("SUB");
+        } else if (operator.getLexeme().equals("*")) {
+            ICG.GEN("MUL");
+        } else if (operator.getLexeme().equals("/")) {
+            ICG.GEN("DIV");
+        } else if (operator.getLexeme().equals("%")) {
+            ICG.GEN("MOD");
+        } else if (operator.getLexeme().equals("&&")) {
+            ICG.GEN("AND");
+        } else if (operator.getLexeme().equals("||")) {
+            ICG.GEN("OR");
+        } else if (operator.getLexeme().equals("==")) {
+            ICG.GEN("EQ");
+        } else if (operator.getLexeme().equals("<")) {
+            ICG.GEN("LT");
+        } else if (operator.getLexeme().equals(">")) {
+            ICG.GEN("GT");
+        } else if (operator.getLexeme().equals("<=")) {
+            ICG.GEN("LE");
+        } else if (operator.getLexeme().equals(">=")) {
+            ICG.GEN("GE");
+        }
+
     }
 }

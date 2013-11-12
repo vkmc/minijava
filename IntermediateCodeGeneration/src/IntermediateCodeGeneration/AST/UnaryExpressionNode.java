@@ -45,6 +45,17 @@ public class UnaryExpressionNode extends ExpressionNode {
 
     @Override
     public void generateCode() throws SemanticException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        right.setICG(ICG);
+        right.generateCode();
+
+        ICG.GEN(".CODE");
+
+        if (operator.getLexeme().equals("+")) {
+            // No se agrega ninguna instruccion
+        } else if (operator.getLexeme().equals("-")) {
+            ICG.GEN("NEG");
+        } else if (operator.getLexeme().equals("!")) {
+            ICG.GEN("NOT");
+        }
     }
 }

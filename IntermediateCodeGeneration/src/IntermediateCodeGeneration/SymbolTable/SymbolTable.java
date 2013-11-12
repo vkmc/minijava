@@ -402,23 +402,22 @@ public class SymbolTable {
     private boolean typeExists(Type type) {
         return Type.isPrimitiveType(type) || classTable.get(type.getTypeName()) != null;
     }
-    
+
     /**
-     * Retorna el nombre de la clase que contiene el metodo principal     * 
-     * Por convencion, se elige la primer clase con el metodo main
-     * 
+     * Retorna el nombre de la clase que contiene el metodo principal * Por
+     * convencion, se elige la primer clase con el metodo main
+     *
      * @return mainClass
      */
     public String getMainClass() {
         return mainClass;
     }
-    
+
     /**
-     * Establece el handler de generacion de codigo
-     * con el handler pasado por parametro
-     * Esto es realizado durante la declaracion de sentencias
-     * 
-     * @param ICG 
+     * Establece el handler de generacion de codigo con el handler pasado por
+     * parametro Esto es realizado durante la declaracion de sentencias
+     *
+     * @param ICG
      */
     public void setICG(ICGenerator ICG) {
         this.ICG = ICG;
