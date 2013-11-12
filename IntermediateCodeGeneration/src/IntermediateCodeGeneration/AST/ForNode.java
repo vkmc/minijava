@@ -31,7 +31,7 @@ public class ForNode extends SentenceNode {
         condition.checkNode();
 
         if (!condition.getExpressionType().getTypeName().equals("boolean")) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La condicion debe ser de tipo boolean. Se encontro: " + condition.getExpressionType().getTypeName() + " .");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La condicion de la sentencia for debe ser de tipo boolean. Se encontro una expresion de tipo " + condition.getExpressionType().getTypeName() + " .");
         }
 
         increment.checkNode();

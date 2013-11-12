@@ -28,7 +28,7 @@ public class ReturnExpNode extends ReturnNode {
 
         if (!expression.getExpressionType().checkConformity(symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType())) {
             if (symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType().getTypeName().equals("void")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No es posible hacer un retorno en un metodo void.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un método de tipo void no puede retornar un valor.");
             }
 
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo de la expresion retornada no es conforme al tipo de retorno del metodo actual. El tipo de la expresion retornada es '" + expression.getExpressionType().getTypeName() + "' y el tipo de retorno del metodo es '" + symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType().getTypeName() + "'.");

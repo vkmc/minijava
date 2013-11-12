@@ -244,7 +244,7 @@ public class ClassEntry {
             String parentMethodName = parentMethod.getName();
 
             if (parentMethodName.equals(className)) {
-                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase padre tiene un metodo con el nombre de la clase actual.");
+                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase " + parent + " tiene un metodo con el mismo nombre que su subclase " + className + ".");
             }
 
             if (methodsTable.get(parentMethodName) != null) {
@@ -273,7 +273,7 @@ public class ClassEntry {
         String parentMethodName = parentMethod.getName();
 
         if (instanceVariablesTable.get(parentMethodName) != null) {
-            throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase padre tiene un metodo con el nombre de una variable de instancia de la clase actual.");
+            throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase " + parent + " tiene un metodo con el mismo nombre que la variable de instancia " + parentMethodName + " de su subclase " + className + ".");
         }
 
         methodsTable.put(parentMethodName, parentMethod);
