@@ -139,8 +139,4 @@ public class MethodEntry extends ServiceEntry {
             body.checkNode();
         }
     }
-
-    public int getOffset() {
-        return offset;
-    }
 }

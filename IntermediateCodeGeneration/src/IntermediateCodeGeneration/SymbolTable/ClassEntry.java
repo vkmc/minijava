@@ -23,6 +23,7 @@ public class ClassEntry {
     private LinkedHashMap<String, InstanceVariableEntry> instanceVariablesTable;
     private LinkedHashMap<String, MethodEntry> methodsTable;
     private SymbolTable symbolTable;
+    private int instanceVariablesICG;
 
     public ClassEntry(String className, SymbolTable symbolTable, int lineNumber) {
         this.className = className;
@@ -34,6 +35,7 @@ public class ClassEntry {
         constructor = null;
         instanceVariablesTable = new LinkedHashMap<>();
         methodsTable = new LinkedHashMap<>();
+        instanceVariablesICG = 0;
     }
 
     /**
@@ -295,5 +297,65 @@ public class ClassEntry {
 
     public int getInstanceVariablesCount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void setMethodOffset() {
+        // Methods
+        if (parent.equals("Object")) {
+            int i = 0;
+            for (MethodEntry m : methodsTable.values()) {
+                m.setOffset(i);
+                m.setLocalVariablesOffset();
+                m.setParametersOffset();
+                i++;
+            }
+        } else {
+            if (!className.equals("Object")) {
+                int baseOffset = symbolTable.getClassEntry(parent).getMethods().size();
+                int i = 0;
+                for (MethodEntry m : methodsTable.values()) {
+                    if (m.getOffset() != -1) {
+                        // Si no es un método heredado.
+
+                        m.setOffset(baseOffset + i);
+                        m.setLocalVariablesOffset();
+                        m.setParametersOffset();
+                        i++;
+                    }
+                }
+            }
+        }
+    }
+    
+    public void setConstructorOffset() {
+        constructor.setLocalVariablesOffset();
+        constructor.setParametersOffset();
+    }
+    
+    public void setInstanceVariablesOffset() {
+        if (parent.equals("Object")) {
+            int i = 1;
+            for (InstanceVariableEntry iv : instanceVariablesTable.values()) {
+                iv.setOffset(i);
+                i++;
+            }
+            setInstanceVariablesICG(instanceVariablesTable.size());
+        } else {
+            int baseOffset = symbolTable.getClassEntry(parent).getInstanceVariablesICG();
+            int i = 1;
+            for (InstanceVariableEntry iv : instanceVariablesTable.values()) {
+                iv.setOffset(baseOffset+i);
+                i++;
+            }
+            setInstanceVariablesICG(baseOffset + instanceVariablesTable.size());
+        }  
+    }
+    
+    public int getInstanceVariablesICG() {
+        return instanceVariablesICG;
+    }
+    
+    public void setInstanceVariablesICG(int n) {
+        instanceVariablesICG = n;
     }
 }

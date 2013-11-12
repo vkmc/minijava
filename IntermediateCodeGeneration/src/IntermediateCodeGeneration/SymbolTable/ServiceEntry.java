@@ -16,6 +16,7 @@ public abstract class ServiceEntry {
     protected String className;
     protected SymbolTable symbolTable;
     protected int lineNumber;
+    protected int offset;
     protected LinkedHashMap<String, ParameterEntry> parametersTable;
     protected LinkedHashMap<String, LocalVariableEntry> localVariablesTable;
     protected BlockNode body;
@@ -28,6 +29,7 @@ public abstract class ServiceEntry {
         parametersTable = new LinkedHashMap<>();
         localVariablesTable = new LinkedHashMap<>();
         body = null;
+        offset = -1;
     }
 
     /**
@@ -112,5 +114,29 @@ public abstract class ServiceEntry {
      */
     public void setBody(BlockNode body) {
         this.body = body;
+    }
+    
+    public int getOffset() {
+        return offset;
+    }
+    
+    public void setOffset(int o) {
+        offset = o;
+    }
+    
+    public void setLocalVariablesOffset() {
+        int i = 0;
+        for (LocalVariableEntry v : localVariablesTable.values()) {
+            v.setOffset(i);
+            i--;
+        }
+    }
+    
+    public void setParametersOffset() {
+        int i = parametersTable.size();
+        for (ParameterEntry v : parametersTable.values()) {
+            v.setOffset(i);
+            i--;
+        }
     }
 }
