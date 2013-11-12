@@ -26,7 +26,7 @@ public class ThisNode extends PrimaryNode {
         String currentMethod = symbolTable.getCurrentMethod();
 
         if (symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getModifier().equals("static")) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede usarse la palabra reservada 'this' en el contexto de un metodo estatico.");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No se puede hacer referencia al objeto actual usando la palabra reservada 'this' en el contexto de un metodo estatico.");
         } else {
             Type classType = new ClassType(currentClass, symbolTable);
             this.setExpressionType(classType);

@@ -189,7 +189,7 @@ public class Parser {
 
 
         if (methodName.equals(currentClass)) {
-            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El metodo no puede tener el mismo nombre que la clase.");
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El metodo " + methodName + " no puede tener el mismo nombre que su clase.");
         } else if (classEntry.getMethodEntry(methodName) != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un metodo " + methodName + " declarado en la clase " + currentClass);
         } else {
@@ -209,7 +209,7 @@ public class Parser {
         String currentClass = symbolTable.getCurrentClass();
         ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
         if (!currentClass.equals(constructorName)) {
-            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El nombre del constructor no corresponde al nombre de la clase.");
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El nombre del constructor " + constructorName + " no corresponde al nombre de la clase.");
         } else if (classEntry.getConstructorEntry() != null) {
             throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Ya existe un constructor en la clase " + currentClass + ".");
         } else {

@@ -26,7 +26,7 @@ public class WhileNode extends SentenceNode {
         condition.checkNode();
         String aType = condition.getExpressionType().getTypeName();
         if (!aType.equals("boolean")) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo de la condicion para la sentencia While no es valido. Se esperaba una condicion de tipo boolean, se encontro tipo " + aType);
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La condicion de la sentencia while debe ser de tipo boolean. Se encontro una expresion de tipo " + aType);
         }
         sentence.checkNode();
     }
