@@ -30,6 +30,11 @@ public class CallNode extends PrimaryNode {
         VTToS = false;
     }
 
+   /**
+     * Retorna el identificador asociado a la llamada
+     * 
+     * @return id
+     */
     public Token getId() {
         return id;
     }

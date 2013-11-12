@@ -1,6 +1,5 @@
 package IntermediateCodeGeneration.AST;
 
-import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
