@@ -1,5 +1,6 @@
 package IntermediateCodeGeneration.AST;
 
+import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
@@ -120,5 +121,10 @@ public class NewNode extends PrimaryNode {
         // se le asigna al nodo actual el tipo del ultimo callnode en la lista
         this.setExpressionType(currentType);
 
+    }
+
+    @Override
+    public void generateCode() throws SemanticException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -1,5 +1,6 @@
 package IntermediateCodeGeneration.AST;
 
+import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.SymbolTable.Type.VoidType;
@@ -34,5 +35,10 @@ public class ReturnNode extends SentenceNode {
 
         Type aType = new VoidType();
         this.setSentenceType(aType);
+    }
+
+    @Override
+    public void generateCode() throws SemanticException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

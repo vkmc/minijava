@@ -42,4 +42,9 @@ public class UnaryExpressionNode extends ExpressionNode {
             setExpressionType(aType);
         }
     }
+
+    @Override
+    public void generateCode() throws SemanticException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

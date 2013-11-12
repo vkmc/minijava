@@ -1,5 +1,6 @@
 package IntermediateCodeGeneration.AST;
 
+import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
@@ -22,5 +23,10 @@ public class LiteralNode extends PrimaryNode {
 
     @Override
     public void checkNode() {
+    }
+
+    @Override
+    public void generateCode() throws SemanticException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

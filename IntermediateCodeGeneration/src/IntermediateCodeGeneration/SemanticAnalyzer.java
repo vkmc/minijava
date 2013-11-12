@@ -13,15 +13,18 @@ public class SemanticAnalyzer {
 
     private Parser parser;
     private SymbolTable symbolTable;
+    private ICGenerator ICG;
 
-    public SemanticAnalyzer(String fileName) {
-        parser = new Parser(fileName);
+    public SemanticAnalyzer(String input, String output) {
+        parser = new Parser(input);
         symbolTable = parser.getSymbolTable();
+        ICG = new ICGenerator(output);
     }
 
     public void checkSemantics() throws LexicalException, SyntacticException, SemanticException {
         parser.analize();
         declarationCheck();
+        ICG.setup(symbolTable);
         sentencesCheck();
         System.out.println("El analizador semantico termino exitosamente");
     }
@@ -35,6 +38,7 @@ public class SemanticAnalyzer {
     }
 
     private void sentencesCheck() throws SemanticException {
+        symbolTable.setICG(ICG);
         symbolTable.sentenceCheck();
     }
 }

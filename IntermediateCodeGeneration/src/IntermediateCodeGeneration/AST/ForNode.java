@@ -42,4 +42,9 @@ public class ForNode extends SentenceNode {
 
         sentence.checkNode();
     }
+
+    @Override
+    public void generateCode() throws SemanticException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -1,5 +1,6 @@
 package IntermediateCodeGeneration.AST;
 
+import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
@@ -14,6 +15,7 @@ import IntermediateCodeGeneration.SymbolTable.SymbolTable;
 public abstract class ExpressionNode {
 
     protected SymbolTable symbolTable;
+    protected ICGenerator ICG;
     protected Type expressionType;
     protected Token token;
 
@@ -39,4 +41,10 @@ public abstract class ExpressionNode {
     }
 
     public abstract void checkNode() throws SemanticException;
+    
+    public abstract void generateCode() throws SemanticException;
+    
+    public void setICG(ICGenerator ICG) {
+        this.ICG = ICG;
+    }
 }

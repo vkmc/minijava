@@ -83,4 +83,8 @@ public class AssignNode extends SentenceNode {
 
         throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre '" + idName + "' en la tabla de simbolos.");
     }
+
+    @Override
+    public void generateCode() throws SemanticException {
+    }
 }

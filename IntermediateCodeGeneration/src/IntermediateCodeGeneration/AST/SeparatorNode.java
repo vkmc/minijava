@@ -1,5 +1,6 @@
 package IntermediateCodeGeneration.AST;
 
+import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
 
@@ -15,5 +16,10 @@ public class SeparatorNode extends SentenceNode {
 
     @Override
     public void checkNode() {
+    }
+
+    @Override
+    public void generateCode() throws SemanticException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

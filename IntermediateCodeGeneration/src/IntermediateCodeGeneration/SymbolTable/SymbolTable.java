@@ -1,5 +1,6 @@
 package IntermediateCodeGeneration.SymbolTable;
 
+import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.*;
 import java.util.Collection;
@@ -18,6 +19,7 @@ public class SymbolTable {
 
     private LinkedHashMap<String, ClassEntry> classTable;
     private LinkedHashMap<String, ClassEntry> controlledClasses;
+    private ICGenerator ICG;
     private String currentClass, currentMethod, mainClass;
 
     /**
@@ -409,5 +411,16 @@ public class SymbolTable {
      */
     public String getMainClass() {
         return mainClass;
+    }
+    
+    /**
+     * Establece el handler de generacion de codigo
+     * con el handler pasado por parametro
+     * Esto es realizado durante la declaracion de sentencias
+     * 
+     * @param ICG 
+     */
+    public void setICG(ICGenerator ICG) {
+        this.ICG = ICG;
     }
 }

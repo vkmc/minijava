@@ -13,17 +13,18 @@ public class Main {
      *
      * @param args
      */
-    public static void main(String[] args) throws SemanticException {
-        if (args.length == 0 || args.length > 1) {
-            System.err.println("Cantidad de argumentos invalida.");
-            System.err.println("Uso: java -jar SemanticAnalyzer.jar <IN_FILE>");
-        } else {
-            SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(args[0]);
-            try {
-                semanticAnalyzer.checkSemantics();
-            } catch (SemanticException | SyntacticException | LexicalException exc) {
-                System.err.println(exc);
-            }
+    public static void main(String[] args) {
+        if (args.length != 2) {
+            System.err.println("Cantidad de argumentos inválida.");
+            System.err.println("Uso: java -jar ICG.jar <IN_FILE> [<OUT_FILE>]");
+            return;
+        }
+
+        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(args[0], args[1]);
+        try {
+            semanticAnalyzer.checkSemantics();
+        } catch (SemanticException | SyntacticException | LexicalException exc) {
+            System.err.println(exc);
         }
     }
 }
