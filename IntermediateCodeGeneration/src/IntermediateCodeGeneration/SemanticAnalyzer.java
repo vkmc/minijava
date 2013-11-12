@@ -26,14 +26,15 @@ public class SemanticAnalyzer {
         declarationCheck();
         ICG.setup(symbolTable);
         sentencesCheck();
-        System.out.println("El analizador semantico termino exitosamente");
+        ICG.generateOutput();
     }
 
     private void declarationCheck() throws SemanticException {
         symbolTable.declarationCheckInheritance();
-        symbolTable.consolidateInheritance();
         symbolTable.declarationCheckReturnType();
         symbolTable.declarationCheckVariables();
+        symbolTable.consolidateInheritance();
+        symbolTable.consolidateConstructors();
         symbolTable.declarationCheckMainExistence();
     }
 

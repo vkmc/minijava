@@ -184,8 +184,9 @@ public class SymbolTable {
     }
 
     /**
-     * Consolidacion de herencia Se efectua, de ser posible, la herencia por
-     * copia entre las clases que tienen una relacion "es un"
+     * Consolidacion de herencia
+     * Se efectua, de ser posible, la herencia por copia entre las clases
+     * que tienen una relacion "es un"
      *
      * @throws SemanticException
      */
@@ -198,6 +199,22 @@ public class SymbolTable {
                 // control de herencia
                 // consolidacion de herencia
                 controlInheritance(aClass.getName());
+            }
+        }
+    }
+    
+    /**
+     * Consolidacion de constructores
+     * Se inicializan los offsets de los parametros y variables locales de los constructores
+     */
+    public void consolidateConstructors() {
+        Collection<ClassEntry> classes = classTable.values();
+
+        for (ClassEntry aClass : classes) {
+
+            if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
+                // consolidacion de constructores (solo offsets)
+                aClass.setConstructorOffset();
             }
         }
     }
@@ -372,6 +389,7 @@ public class SymbolTable {
         for (ClassEntry aClass : classes) {
             if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
                 currentClass = aClass.getName();
+                aClass.setICG(ICG);
                 aClass.checkClass();
             }
         }
@@ -414,8 +432,7 @@ public class SymbolTable {
     }
 
     /**
-     * Establece el handler de generacion de codigo con el handler pasado por
-     * parametro Esto es realizado durante la declaracion de sentencias
+     * Establece el handler de generacion de codigo intermedio
      *
      * @param ICG
      */

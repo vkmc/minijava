@@ -1,5 +1,6 @@
 package IntermediateCodeGeneration.SymbolTable;
 
+import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import java.util.Collection;
@@ -23,7 +24,8 @@ public class ClassEntry {
     private LinkedHashMap<String, InstanceVariableEntry> instanceVariablesTable;
     private LinkedHashMap<String, MethodEntry> methodsTable;
     private SymbolTable symbolTable;
-    private int instanceVariablesICG;
+    private ICGenerator ICG;
+    private int instanceVariablesCount; // cantidad de variables de instancia en total (contando heredadas)
 
     public ClassEntry(String className, SymbolTable symbolTable, int lineNumber) {
         this.className = className;
@@ -35,7 +37,7 @@ public class ClassEntry {
         constructor = null;
         instanceVariablesTable = new LinkedHashMap<>();
         methodsTable = new LinkedHashMap<>();
-        instanceVariablesICG = 0;
+        instanceVariablesCount = 0;
     }
 
     /**
@@ -226,11 +228,30 @@ public class ClassEntry {
      */
     public void controlInheritedMethods() throws SemanticException {
 
-        if (!parent.equals("Object") && !inheritanceControl) {
+        if (parent.equals("Object") && !inheritanceControl) {
+            // el padre es Object, por lo que no hay nada que heredar
+            // simplemente establecemos los offsets correspondientes
+
+            // offsets de los metodos
+            setMethodOffset(0);
+
+            // offsets de las variables de instancia
+            instanceVariablesCount = instanceVariablesTable.size();
+            setInstanceVariablesOffset(0);
+
+            inheritanceControl = true;
+        } else if (!parent.equals("Object") && !inheritanceControl) {
             // Las variables de instancia no se heredan
             // Ver documentacoin
             inheritMethods();
             inheritanceControl = true;
+
+            int offsetBaseMethods = symbolTable.getClassEntry(parent).getMethods().size() - 1;
+            setMethodOffset(offsetBaseMethods);
+
+            int offsetBaseVariables = symbolTable.getClassEntry(parent).getInstanceVariablesCount();
+            setInstanceVariablesOffset(offsetBaseVariables);
+
         }
     }
 
@@ -250,15 +271,21 @@ public class ClassEntry {
             }
 
             if (methodsTable.get(parentMethodName) != null) {
-                // Se encontro el nombre
+                // Se encontro el nombre    
                 // Controlar si el metodo fue redefinido
                 MethodEntry redefinedMethod = methodsTable.get(parentMethodName);
                 redefinedMethod.compareModifier(parentMethod);
                 redefinedMethod.compareReturnType(parentMethod);
                 redefinedMethod.compareParameters(parentMethod);
+                
+                redefinedMethod.setOffset(parentMethod.getOffset());
+                redefinedMethod.setParametersOffset();
+                redefinedMethod.setLocalVariablesOffset();   
             } else {
                 // Se hereda el metodo
                 addInheritedMethod(parentMethod);
+                MethodEntry inheritedMethod = methodsTable.get(parentMethodName);
+                inheritedMethod.setOffset(parentMethod.getOffset());
             }
         }
     }
@@ -282,80 +309,66 @@ public class ClassEntry {
     }
 
     /**
+     * Establece el handler de generacion de codigo intermedio
+     *
+     * @param ICG
+     */
+    public void setICG(ICGenerator ICG) {
+        this.ICG = ICG;
+    }
+
+    /**
      * Control de sentencias de la clase
      *
      * @param symbolTable
      */
     public void checkClass() throws SemanticException {
         Collection<MethodEntry> methods = methodsTable.values();
+        
+        initVT();
 
         for (MethodEntry method : methods) {
             symbolTable.setCurrentMethod(method.getName());
+            method.setICG(ICG);
             method.checkMethod();
         }
     }
 
-    public int getInstanceVariablesCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    public void setMethodOffset() {
-        // Methods
-        if (parent.equals("Object")) {
-            int i = 0;
-            for (MethodEntry m : methodsTable.values()) {
-                m.setOffset(i);
-                m.setLocalVariablesOffset();
-                m.setParametersOffset();
-                i++;
-            }
-        } else {
-            if (!className.equals("Object")) {
-                int baseOffset = symbolTable.getClassEntry(parent).getMethods().size();
-                int i = 0;
-                for (MethodEntry m : methodsTable.values()) {
-                    if (m.getOffset() != -1) {
-                        // Si no es un método heredado.
-
-                        m.setOffset(baseOffset + i);
-                        m.setLocalVariablesOffset();
-                        m.setParametersOffset();
-                        i++;
-                    }
-                }
+    public void setMethodOffset(int baseOffset) {
+        int offset = 0;
+        for (MethodEntry aMethod : methodsTable.values()) {
+            if (aMethod.getOffset() == -1) {    // no es un metodo heredado (controlado en su respectiva clase)
+                aMethod.setOffset(baseOffset + offset);
+                aMethod.setLocalVariablesOffset();
+                aMethod.setParametersOffset();
+                offset++;
             }
         }
     }
-    
+
+    public void setInstanceVariablesOffset(int baseOffset) {
+        int offset = 1;
+        for (InstanceVariableEntry anInstanceVariable : instanceVariablesTable.values()) {
+            anInstanceVariable.setOffset(baseOffset + offset);
+            offset++;
+        }
+        instanceVariablesCount = baseOffset + instanceVariablesTable.size();
+    }
+
     public void setConstructorOffset() {
         constructor.setLocalVariablesOffset();
         constructor.setParametersOffset();
     }
-    
-    public void setInstanceVariablesOffset() {
-        if (parent.equals("Object")) {
-            int i = 1;
-            for (InstanceVariableEntry iv : instanceVariablesTable.values()) {
-                iv.setOffset(i);
-                i++;
-            }
-            setInstanceVariablesICG(instanceVariablesTable.size());
-        } else {
-            int baseOffset = symbolTable.getClassEntry(parent).getInstanceVariablesICG();
-            int i = 1;
-            for (InstanceVariableEntry iv : instanceVariablesTable.values()) {
-                iv.setOffset(baseOffset+i);
-                i++;
-            }
-            setInstanceVariablesICG(baseOffset + instanceVariablesTable.size());
-        }  
+
+    /**
+     * Retorna el total de variables de instancia propias
+     * @return 
+     */
+    public int getInstanceVariablesCount() {
+        return instanceVariablesCount;
     }
-    
-    public int getInstanceVariablesICG() {
-        return instanceVariablesICG;
-    }
-    
-    public void setInstanceVariablesICG(int n) {
-        instanceVariablesICG = n;
+
+    private void initVT() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

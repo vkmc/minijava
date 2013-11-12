@@ -1,5 +1,6 @@
 package IntermediateCodeGeneration.SymbolTable;
 
+import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import java.util.Collection;
@@ -15,7 +16,6 @@ public class MethodEntry extends ServiceEntry {
 
     private String modifier;
     private Type returnType;
-    private int offset;
 
     public MethodEntry(String methodName, String className, String modifier, Type returnType, SymbolTable symbolTable, int lineNumber) {
         super(methodName, className, symbolTable, lineNumber);

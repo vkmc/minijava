@@ -1,7 +1,9 @@
 package IntermediateCodeGeneration.SymbolTable;
 
 import IntermediateCodeGeneration.AST.BlockNode;
+import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 
 /**
@@ -15,6 +17,7 @@ public abstract class ServiceEntry {
     protected String serviceName;
     protected String className;
     protected SymbolTable symbolTable;
+    protected ICGenerator ICG;
     protected int lineNumber;
     protected int offset;
     protected LinkedHashMap<String, ParameterEntry> parametersTable;
@@ -115,28 +118,57 @@ public abstract class ServiceEntry {
     public void setBody(BlockNode body) {
         this.body = body;
     }
-    
+
+    /**
+     * Retorna el offset del metodo
+     *
+     * @return offset
+     */
     public int getOffset() {
         return offset;
     }
-    
-    public void setOffset(int o) {
-        offset = o;
+
+    /**
+     * Establece el valor pasado por parametro como offset del metodo
+     *
+     * @param offset
+     */
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
-    
+
+    /**
+     * Establece el offset de las variables locales del metodo actual
+     */
     public void setLocalVariablesOffset() {
-        int i = 0;
-        for (LocalVariableEntry v : localVariablesTable.values()) {
-            v.setOffset(i);
-            i--;
+        Collection<LocalVariableEntry> localVariables = localVariablesTable.values();
+        int localVariableOffset = 0;
+
+        for (LocalVariableEntry aLocalVariable : localVariables) {
+            aLocalVariable.setOffset(localVariableOffset);
+            localVariableOffset--;
         }
     }
-    
+
+    /**
+     * Establece el offset de los parametros del metodo actual
+     */
     public void setParametersOffset() {
-        int i = parametersTable.size();
-        for (ParameterEntry v : parametersTable.values()) {
-            v.setOffset(i);
-            i--;
+        Collection<ParameterEntry> parameters = parametersTable.values();
+        int parameterOffset = parameters.size();
+
+        for (ParameterEntry aParameter : parametersTable.values()) {
+            aParameter.setOffset(parameterOffset);
+            parameterOffset--;
         }
+    }
+
+    /**
+     * Establece el handler de generacion de codigo intermedio
+     *
+     * @param ICG
+     */
+    public void setICG(ICGenerator ICG) {
+        this.ICG = ICG;
     }
 }
