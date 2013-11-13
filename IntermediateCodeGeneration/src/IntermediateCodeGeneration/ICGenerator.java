@@ -83,10 +83,10 @@ public class ICGenerator {
         GEN("VT_Object: NOP");
 
         // System class VT.
-        GEN("VT_SYSTEM: DW L_SYSTEM_CTOR, L_SYSTEM_PRINTI, "
-                + "L_SYSTEM_READ, L_SYSTEM_PRINTC, L_SYSTEM_PRINTB, "
-                + "L_SYSTEM_PRINTS, L_SYSTEM_PRINTLN, L_SYSTEM_PRINTBLN, "
-                + "L_SYSTEM_PRINTCLN, L_SYSTEM_PRINTILN, L_SYSTEM_PRINTSLN ");
+        GEN("VT_System: DW L_MET_System_Ctor, L_MET_System_read, "
+                + "L_MET_System_printI, L_MET_System_printC, L_MET_System_printB, "
+                + "L_MET_System_printS, L_MET_System_println, L_MET_System_printBln, "
+                + "L_MET_System_printCln, L_MET_System_printIln, L_MET_System_printSln ");
 
         GEN(".CODE");
         GEN("PUSH L_SIMPLE_INIT_HEAP", "Inicializamos el heap");
@@ -95,12 +95,12 @@ public class ICGenerator {
         // Main method.
         String mainClass = symbolTable.getMainClass();
         GEN("RMEM", 1, "Reservamos memoria para el this");
-        GEN("PUSH L_" + mainClass + "_MAIN", "Apilamos el label del main de la Clase Principal del Programa"); //PUSH VT_A (Si A es la clase Ppal del programa)
+        GEN("PUSH L_" + mainClass + "_main", "Apilamos el label del main de la Clase Principal del Programa"); //PUSH VT_A (Si A es la clase Ppal del programa)
         GEN("CALL");
         GEN("HALT");
 
         // System class constructor.
-        GEN("L_SYSTEM_CTOR: NOP", "Constructor de system");
+        GEN("L_MET_System_Ctor: NOP", "Constructor de system");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -109,7 +109,7 @@ public class ICGenerator {
 
         // System methods.
         // System.read()
-        GEN("L_SYSTEM_READ: NOP");
+        GEN("L_MET_System_read: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -119,7 +119,7 @@ public class ICGenerator {
         GEN("RET", 1);
 
         // System.printi()
-        GEN("L_SYSTEM_PRINTI: NOP");
+        GEN("L_MET_System_printI: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -129,7 +129,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printc()
-        GEN("L_SYSTEM_PRINTC: NOP");
+        GEN("L_MET_System_printC: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -139,7 +139,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printb()
-        GEN("L_SYSTEM_PRINTB: NOP");
+        GEN("L_MET_System_printB: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -149,7 +149,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.prints()
-        GEN("L_SYSTEM_PRINTS: NOP");
+        GEN("L_MET_System_printS: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -159,7 +159,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.println()
-        GEN("L_SYSTEM_PRINTLN: NOP");
+        GEN("L_MET_System_println: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -168,7 +168,7 @@ public class ICGenerator {
         GEN("RET", 1);
 
         // System.printbln()
-        GEN("L_SYSTEM_PRINTBLN: NOP");
+        GEN("L_MET_System_printBln: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -179,7 +179,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printcln()
-        GEN("L_SYSTEM_PRINTCLN: NOP");
+        GEN("L_MET_System_printCln: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -190,7 +190,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printiln()
-        GEN("L_SYSTEM_PRINTILN: NOP");
+        GEN("L_MET_System_printIln: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -201,7 +201,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printsln()
-        GEN("L_SYSTEM_PRINTSLN: NOP");
+        GEN("L_MET_System_printSln: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");

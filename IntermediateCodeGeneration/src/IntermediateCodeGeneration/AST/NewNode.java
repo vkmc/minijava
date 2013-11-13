@@ -152,7 +152,7 @@ public class NewNode extends PrimaryNode {
         }
 
         ICG.GEN(".CODE");
-        ICG.GEN("PUSH L_" + id.getLexeme() + "_" + id.getLexeme(), "Se apila la direccion del constructor de la clase '" + id.getLexeme() + "'.");
+        ICG.GEN("PUSH L_MET_" + id.getLexeme() + "_" + id.getLexeme(), "Se apila la direccion del constructor de la clase '" + id.getLexeme() + "'.");
         ICG.GEN("CALL", "Se invoca a la rutina del constructor de la clase '" + id.getLexeme() + "'");
 
         Type callerType = idType;

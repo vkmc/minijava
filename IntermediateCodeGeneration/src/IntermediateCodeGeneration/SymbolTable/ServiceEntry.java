@@ -201,7 +201,8 @@ public abstract class ServiceEntry {
     public void checkService() throws SemanticException {
         if (className.equals(symbolTable.getCurrentClass())) {
             ICG.GEN(".CODE");
-            ICG.GEN("L_" + className + "_" + serviceName + ": LOADFP", "Se guarda el enlace dinamico al RA llamador");
+            ICG.GEN("; Inicializacion CI del servicio '"+ serviceName + "' de clase '"+ className +"'");
+            ICG.GEN("L_MET_" + className + "_" + serviceName + ": LOADFP", "Se guarda el enlace dinamico al RA llamador");
             ICG.GEN("LOADSP", "Se apila el lugar a donde comienza el RA de la unidad");
             ICG.GEN("STOREFP", "Se actualiza el FP con el valor del tope de la pila");
 

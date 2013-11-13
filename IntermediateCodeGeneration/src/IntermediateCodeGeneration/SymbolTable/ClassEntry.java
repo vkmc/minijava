@@ -383,10 +383,10 @@ public class ClassEntry {
             String DWInstruction = "VT_" + className + ": DW ";
             Collection<MethodEntry> methods = methodsTable.values();
             for (MethodEntry aMethod : methods) {
-                DWInstruction += "L_" + aMethod.getClassName() + "_" + aMethod.getName() + " ,";
+                DWInstruction += "L_MET_" + aMethod.getClassName() + "_" + aMethod.getName() + ", ";
             }
 
-            DWInstruction = DWInstruction.substring(0, DWInstruction.length() - 1); // Comma removal
+            DWInstruction = DWInstruction.substring(0, DWInstruction.length() - 2); // Comma removal
             ICG.GEN(DWInstruction);
         }
     }
