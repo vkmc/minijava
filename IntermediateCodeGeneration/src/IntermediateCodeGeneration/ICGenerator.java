@@ -80,30 +80,22 @@ public class ICGenerator {
         GEN(".DATA");
 
         // Object class doesn't have methods so it isn't necessary to create a VT for it.
+        GEN("VT_Object: NOP");
 
         // System class VT.
         GEN("VT_SYSTEM: DW L_SYSTEM_CTOR, L_SYSTEM_PRINTI, "
                 + "L_SYSTEM_READ, L_SYSTEM_PRINTC, L_SYSTEM_PRINTB, "
                 + "L_SYSTEM_PRINTS, L_SYSTEM_PRINTLN, L_SYSTEM_PRINTBLN, "
                 + "L_SYSTEM_PRINTCLN, L_SYSTEM_PRINTILN, L_SYSTEM_PRINTSLN ");
+
         GEN(".CODE");
-        GEN("PUSH L_SIMPLE_INIT_HEAP", "inicializacion de heap");
+        GEN("PUSH L_SIMPLE_INIT_HEAP", "Inicializamos el heap");
         GEN("CALL");
-        GEN("PUSH L_SIMPLE_MALLOC");
-        GEN("CALL");
-
-        String mainClass = symbolTable.getMainClass();
-
-        //GEN("PUSH VT_" + mainClass);
-        int offsetMainMethod = symbolTable.getClassEntry(mainClass).getMethodEntry("main").getOffset();
-        //GEN("LOAD" + offsetMainMethod.toString());
-
-        GEN("PUSH L_" + mainClass + "_MAIN");
-        GEN("CALL");
-        GEN("HALT");
 
         // Main method.
-        GEN("PUSH L_" + mainClass + "_MAIN", "Se apila el label del main de la Clase Principal del Programa"); //PUSH VT_A (Si A es la clase Ppal del programa)
+        String mainClass = symbolTable.getMainClass();
+        GEN("RMEM", 1, "Reservamos memoria para el this");
+        GEN("PUSH L_" + mainClass + "_MAIN", "Apilamos el label del main de la Clase Principal del Programa"); //PUSH VT_A (Si A es la clase Ppal del programa)
         GEN("CALL");
         GEN("HALT");
 

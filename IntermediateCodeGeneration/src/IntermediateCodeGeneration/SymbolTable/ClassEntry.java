@@ -327,7 +327,7 @@ public class ClassEntry {
      */
     public void checkClass() throws SemanticException {
         initVT();
-        
+
         constructor.setICG(ICG);
         constructor.checkService();
 
