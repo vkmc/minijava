@@ -104,7 +104,7 @@ public class NewNode extends PrimaryNode {
      * al retorno de g(). Es decir, el retorno de g() debe ser de un tipo de
      * clase C tal que exista un metodo M en C.
      */
-  private void controlReturnType() throws SemanticException {
+    private void controlReturnType() throws SemanticException {
         Type currentType = getExpressionType();
         Type nextType;
         String nextId;

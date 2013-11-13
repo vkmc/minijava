@@ -28,13 +28,13 @@ public class ReturnNode extends SentenceNode {
     public void checkNode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
         String currentService = symbolTable.getCurrentService();
-        
+
         ConstructorEntry currentConstructorEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
         MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
-        
+
         if (currentConstructorEntry.getName().equals(currentService)) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un constructor no puede tener un retorno.");
-        }  
+        }
 
         String returnType = currentMethodEntry.getReturnType().getTypeName();
 

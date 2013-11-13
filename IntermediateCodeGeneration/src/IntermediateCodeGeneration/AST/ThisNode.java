@@ -27,9 +27,9 @@ public class ThisNode extends PrimaryNode {
     public void checkNode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
         String currentService = symbolTable.getCurrentService();
-        
+
         MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
-        
+
         if (currentMethodEntry != null && currentMethodEntry.getModifier().equals("static")) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No se puede hacer referencia al objeto actual usando la palabra reservada 'this' en el contexto de un metodo estatico.");
         } else {

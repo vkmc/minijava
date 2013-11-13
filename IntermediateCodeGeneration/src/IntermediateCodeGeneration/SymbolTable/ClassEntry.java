@@ -327,7 +327,7 @@ public class ClassEntry {
      */
     public void checkClass() throws SemanticException {
         initVT();
-        
+
         // lo tratamos como un metodo por cuestiones de uniformidad
         symbolTable.setCurrentService(constructor.getName());
         constructor.setICG(ICG);

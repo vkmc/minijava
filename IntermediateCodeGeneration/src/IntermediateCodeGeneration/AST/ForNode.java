@@ -74,12 +74,12 @@ public class ForNode extends SentenceNode {
         Token incrementValue = init.getId();
 
         String currentClass = symbolTable.getCurrentClass();
-        String currentService = symbolTable.getCurrentService();        
+        String currentService = symbolTable.getCurrentService();
         ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
         MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentService);
         ConstructorEntry currentConstructorEntry = currentClassEntry.getConstructorEntry();
         ServiceEntry currentServiceEntry;
-        
+
         if (currentMethodEntry != null) {
             currentServiceEntry = currentMethodEntry;
         } else if (currentConstructorEntry != null) {

@@ -100,13 +100,13 @@ public class IdMethodCallNode extends PrimaryNode {
         String idName = id.getLexeme();
         LinkedHashMap<String, ParameterEntry> currentServiceParameters;
         LinkedHashMap<String, LocalVariableEntry> currentServiceLocalVariables;
-        
+
         MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
         ConstructorEntry currentConstructorEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
-        
+
         if (currentMethodEntry != null) {
-        currentServiceParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getParameters();
-        currentServiceLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getLocalVariables();
+            currentServiceParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getParameters();
+            currentServiceLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getLocalVariables();
         } else if (currentConstructorEntry != null) {
             currentServiceParameters = currentConstructorEntry.getParameters();
             currentServiceLocalVariables = currentConstructorEntry.getLocalVariables();
@@ -233,10 +233,10 @@ public class IdMethodCallNode extends PrimaryNode {
         String idName = id.getLexeme();
         LinkedHashMap<String, ParameterEntry> currentServiceParameters;
         LinkedHashMap<String, LocalVariableEntry> currentServiceLocalVariables;
-        
+
         MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
         ConstructorEntry currentConstructorEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
-        
+
         if (currentMethodEntry != null) {
             currentServiceParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getParameters();
             currentServiceLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getLocalVariables();
@@ -245,7 +245,7 @@ public class IdMethodCallNode extends PrimaryNode {
             currentServiceLocalVariables = currentConstructorEntry.getLocalVariables();
         } else {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No esta definido el servicio '" + currentService + "' en la clase actual.");
-        }        
+        }
 
         if (currentServiceParameters.containsKey(idName)) {
             // es un parametro del metodo actual

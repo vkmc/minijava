@@ -286,7 +286,7 @@ public class SymbolTable {
     public void declarationCheckVariables() throws SemanticException {
         declarationCheckInstanceVariables();
         declarationCheckParameters();
-        declarationCheckLocalVars();        
+        declarationCheckLocalVars();
     }
 
     /**

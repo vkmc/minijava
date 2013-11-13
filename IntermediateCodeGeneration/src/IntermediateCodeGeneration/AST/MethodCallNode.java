@@ -93,7 +93,7 @@ public class MethodCallNode extends PrimaryNode {
         String currentClass = symbolTable.getCurrentClass();
         String currentService = symbolTable.getCurrentService();
         String idName = id.getLexeme();
-        
+
         if (currentClass.equals(idName)) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede realizarse una llamada a un constructor.");
         }

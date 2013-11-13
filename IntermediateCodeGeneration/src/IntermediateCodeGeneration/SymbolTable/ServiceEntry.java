@@ -35,10 +35,10 @@ public abstract class ServiceEntry {
         body = null;
         offset = -1;
     }
-    
+
     /**
      * Retorna el nombre del servicio
-     * 
+     *
      * @return serviceName
      */
     public String getName() {
@@ -47,13 +47,13 @@ public abstract class ServiceEntry {
 
     /**
      * Retorna el nombre de la clase en la que esta declarado el servicio
-     * @return 
+     *
+     * @return
      */
     public String getClassName() {
         return className;
     }
-    
-    
+
     /**
      * Retorna el numero de linea en la que esta declarado el servicio
      *
