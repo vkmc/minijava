@@ -108,6 +108,15 @@ public class ICGenerator {
         GEN("RET", 1);
 
         // System methods.
+        // System.read()
+        GEN("L_MET_System_read: NOP");
+        GEN("LOADFP");
+        GEN("LOADSP");
+        GEN("STOREFP");
+        GEN("READ");
+        GEN("STORE", 4);
+        GEN("STOREFP");
+        GEN("RET", 1);
         
         // System.printi()
         GEN("L_MET_System_printI: NOP");
@@ -118,16 +127,6 @@ public class ICGenerator {
         GEN("IPRINT");
         GEN("STOREFP");
         GEN("RET", 2);
-        
-        // System.read()
-        GEN("L_SYSTEM_READ: NOP");
-        GEN("LOADFP");
-        GEN("LOADSP");
-        GEN("STOREFP");
-        GEN("READ");
-        GEN("STORE", 4);
-        GEN("STOREFP");
-        GEN("RET", 1);
 
         // System.printc()
         GEN("L_MET_System_printC: NOP");
