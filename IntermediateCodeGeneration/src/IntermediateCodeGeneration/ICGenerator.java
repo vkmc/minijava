@@ -95,7 +95,7 @@ public class ICGenerator {
         // Main method.
         String mainClass = symbolTable.getMainClass();
         GEN("RMEM", 1, "Reservamos memoria para el this");
-        GEN("PUSH L_" + mainClass + "_main", "Apilamos el label del main de la Clase Principal del Programa"); //PUSH VT_A (Si A es la clase Ppal del programa)
+        GEN("PUSH L_MET_" + mainClass + "_main", "Apilamos el label del main de la Clase Principal del Programa"); //PUSH VT_A (Si A es la clase Ppal del programa)
         GEN("CALL");
         GEN("HALT");
 
