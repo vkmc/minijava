@@ -108,7 +108,7 @@ public class ICGenerator {
         GEN("HALT");
 
         // System class constructor.
-        GEN("L_CTOR_SYSTEM: NOP", "Constructor de system");
+        GEN("L_SYSTEM_CTOR: NOP", "Constructor de system");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");

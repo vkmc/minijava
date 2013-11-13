@@ -1,7 +1,5 @@
 package IntermediateCodeGeneration.SymbolTable;
 
-import IntermediateCodeGeneration.SemanticException;
-
 /**
  * Representacion de la entrada de constructor
  *
