@@ -105,7 +105,7 @@ public class MethodEntry extends ServiceEntry {
         Iterator<ParameterEntry> parameters = parametersTable.values().iterator();
 
         if (inheritedParameters.size() != parametersTable.size()) {
-            throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La cantidad de parametros del metodo '" + aMethod.getName() + "' de la clase padre '" + aMethod.getClassName() + "' es diferente a la cantidad de parametros del metodo '" + serviceName + "' de la clase hija '" + className + ".\nEn la clase padre la cantidad de parametros del metodo es " + inheritedParameters.size() + " y en la clase hija es " + parametersTable.size() +".");
+            throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La cantidad de parametros del metodo '" + aMethod.getName() + "' de la clase padre '" + aMethod.getClassName() + "' es diferente a la cantidad de parametros del metodo '" + serviceName + "' de la clase hija '" + className + ".\nEn la clase padre la cantidad de parametros del metodo es " + inheritedParameters.size() + " y en la clase hija es " + parametersTable.size() + ".");
         }
 
         for (ParameterEntry inheritedParameter : inheritedParameters) {

@@ -14,13 +14,13 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-//        if (args.length != 2) {
-//            System.err.println("Cantidad de argumentos inválida.");
-//            System.err.println("Uso: java -jar ICG.jar <IN_FILE> [<OUT_FILE>]");
-//            return;
-//        }
+        if (args.length != 2) {
+            System.err.println("Cantidad de argumentos inválida.");
+            System.err.println("Uso: java -jar ICG.jar <IN_FILE> [<OUT_FILE>]");
+            return;
+        }
 
-        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer("/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/success/clase_atributo.java", "/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/success/clase_atributo.txt");
+        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(args[0], args[1]);
         try {
             semanticAnalyzer.checkSemantics();
         } catch (SemanticException | SyntacticException | LexicalException exc) {

@@ -295,7 +295,6 @@ public class SymbolTable {
      */
     public void declarationCheckMainExistence() throws SemanticException {
         Set<String> classes = classTable.keySet();
-        String main = null;
         for (String aClass : classes) {
             if (getClassEntry(aClass).hasMain()) {
                 mainClass = aClass;
@@ -336,15 +335,27 @@ public class SymbolTable {
         for (ClassEntry aClass : classes) {
 
             if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
+                ConstructorEntry aConstructor = aClass.getConstructorEntry();
+
+                Collection<ParameterEntry> parameters = aConstructor.getParameters().values();
+
+                for (ParameterEntry aParameter : parameters) {
+                    Type aType = aParameter.getType();
+                    if (!typeExists(aType)) {
+                        throw new SemanticException("Linea: " + aParameter.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " del parametro " + aParameter.getVariableName() + " en el constructor '" + aConstructor + "' no existe.");
+                    }
+                }
+
+
                 Collection<MethodEntry> methods = aClass.getMethods().values();
 
                 for (MethodEntry aMethod : methods) {
-                    Collection<ParameterEntry> parameters = aMethod.getParameters().values();
+                    parameters = aMethod.getParameters().values();
 
                     for (ParameterEntry aParameter : parameters) {
                         Type aType = aParameter.getType();
                         if (!typeExists(aType)) {
-                            throw new SemanticException("Linea: " + aParameter.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " del parametro " + aParameter.getVariableName() + " no existe.");
+                            throw new SemanticException("Linea: " + aParameter.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " del parametro " + aParameter.getVariableName() + " en el metodo '" + aMethod + "' no existe.");
                         }
                     }
                 }
@@ -363,15 +374,26 @@ public class SymbolTable {
         for (ClassEntry aClass : classes) {
 
             if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
+                ConstructorEntry aConstructor = aClass.getConstructorEntry();
+
+                Collection<LocalVariableEntry> localVariables = aConstructor.getLocalVariables().values();
+
+                for (LocalVariableEntry aLocalVariable : localVariables) {
+                    Type aType = aLocalVariable.getType();
+                    if (!typeExists(aType)) {
+                        throw new SemanticException("Linea: " + aLocalVariable.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " de la variable local " + aLocalVariable.getVariableName() + " en el constructor '" + aConstructor + "' no existe.");
+                    }
+                }
+
                 Collection<MethodEntry> methods = aClass.getMethods().values();
 
                 for (MethodEntry aMethod : methods) {
-                    Collection<LocalVariableEntry> localVariables = aMethod.getLocalVariables().values();
+                    localVariables = aMethod.getLocalVariables().values();
 
                     for (LocalVariableEntry aLocalVariable : localVariables) {
                         Type aType = aLocalVariable.getType();
                         if (!typeExists(aType)) {
-                            throw new SemanticException("Linea: " + aLocalVariable.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " de la variable local " + aLocalVariable.getVariableName() + " no existe.");
+                            throw new SemanticException("Linea: " + aLocalVariable.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " de la variable local " + aLocalVariable.getVariableName() + " en el metodo '" + aMethod + "' no existe.");
                         }
                     }
                 }
