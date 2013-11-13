@@ -293,7 +293,7 @@ public class IdMethodCallNode extends PrimaryNode {
             // es una clase
             Type aType = new ClassType(idName, symbolTable);
             idType = aType;
-            ICG.GEN("PUSH VT_" + id.getLexeme());
+            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el this ficticio");
             staticMethod = true; // es una invocacion a un metodo estatico
         }
     }
