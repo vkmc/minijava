@@ -2,6 +2,7 @@ package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.ClassEntry;
+import IntermediateCodeGeneration.SymbolTable.ConstructorEntry;
 import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
@@ -26,14 +27,21 @@ public class ReturnExpNode extends ReturnNode {
         expression.checkNode();
 
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentService = symbolTable.getCurrentService();
+        
+        ConstructorEntry currentConstructorEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
+        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
+        
+        if (currentConstructorEntry.getName().equals(currentService)) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un constructor no puede tener un retorno.");
+        }        
 
-        if (!expression.getExpressionType().checkConformity(symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType())) {
-            if (symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType().getTypeName().equals("void")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un método de tipo void no puede retornar un valor.");
+        if (!expression.getExpressionType().checkConformity(currentMethodEntry.getReturnType())) {
+            if (currentMethodEntry.getReturnType().getTypeName().equals("void")) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un metodo de tipo void no puede retornar un valor.");
             }
 
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo de la expresion retornada no es conforme al tipo de retorno del metodo actual. El tipo de la expresion retornada es '" + expression.getExpressionType().getTypeName() + "' y el tipo de retorno del metodo es '" + symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType().getTypeName() + "'.");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El tipo de la expresion retornada no es conforme al tipo de retorno del metodo actual. El tipo de la expresion retornada es '" + expression.getExpressionType().getTypeName() + "' y el tipo de retorno del metodo es '" + symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getReturnType().getTypeName() + "'.");
         }
 
         this.setSentenceType(expression.getExpressionType());
@@ -42,7 +50,7 @@ public class ReturnExpNode extends ReturnNode {
     @Override
     public void generateCode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentMethod = symbolTable.getCurrentService();
         ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
         MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentMethod);
 

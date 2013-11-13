@@ -4,8 +4,10 @@ import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.ClassEntry;
+import IntermediateCodeGeneration.SymbolTable.ConstructorEntry;
 import IntermediateCodeGeneration.SymbolTable.InstanceVariableEntry;
 import IntermediateCodeGeneration.SymbolTable.LocalVariableEntry;
+import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.SymbolTable.ParameterEntry;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
 import IntermediateCodeGeneration.SymbolTable.Type.ClassType;
@@ -94,20 +96,32 @@ public class IdMethodCallNode extends PrimaryNode {
 
     private void checkId(boolean checkClasses) throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentService = symbolTable.getCurrentService();
         String idName = id.getLexeme();
+        LinkedHashMap<String, ParameterEntry> currentServiceParameters;
+        LinkedHashMap<String, LocalVariableEntry> currentServiceLocalVariables;
+        
+        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
+        ConstructorEntry currentConstructorEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
+        
+        if (currentMethodEntry != null) {
+        currentServiceParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getParameters();
+        currentServiceLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getLocalVariables();
+        } else if (currentConstructorEntry != null) {
+            currentServiceParameters = currentConstructorEntry.getParameters();
+            currentServiceLocalVariables = currentConstructorEntry.getLocalVariables();
+        } else {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No esta definido el servicio '" + currentService + "' en la clase actual.");
+        }
 
-        LinkedHashMap<String, ParameterEntry> currentMethodParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameters();
-        LinkedHashMap<String, LocalVariableEntry> currentMethodLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariables();
-
-        if (currentMethodParameters.containsKey(idName)) {
+        if (currentServiceParameters.containsKey(idName)) {
             // es un parametro del metodo actual
-            idType = currentMethodParameters.get(idName).getType();
+            idType = currentServiceParameters.get(idName).getType();
             this.setExpressionType(idType);
             return;
-        } else if (currentMethodLocalVariables.containsKey(idName)) {
+        } else if (currentServiceLocalVariables.containsKey(idName)) {
             // es una variable local del metodo actual
-            idType = currentMethodLocalVariables.get(idName).getType();
+            idType = currentServiceLocalVariables.get(idName).getType();
             setExpressionType(idType);
             return;
         }
@@ -117,7 +131,7 @@ public class IdMethodCallNode extends PrimaryNode {
         if (currentClassInstanceVariables.containsKey(idName)) {
             // es una variable de instancia de la clase actual
 
-            if (symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getModifier().equals("static")) {
+            if (currentMethodEntry != null && currentMethodEntry.getModifier().equals("static")) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede usarse una variable de instancia en un metodo estatico.");
             }
 
@@ -187,7 +201,7 @@ public class IdMethodCallNode extends PrimaryNode {
 
     private void generateCodeCalls() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentMethod = symbolTable.getCurrentService();
 
         Type callerType = idType;
         for (CallNode call : callList) {
@@ -215,23 +229,35 @@ public class IdMethodCallNode extends PrimaryNode {
         ICG.GEN(".CODE");
 
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentService = symbolTable.getCurrentService();
         String idName = id.getLexeme();
+        LinkedHashMap<String, ParameterEntry> currentServiceParameters;
+        LinkedHashMap<String, LocalVariableEntry> currentServiceLocalVariables;
+        
+        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
+        ConstructorEntry currentConstructorEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
+        
+        if (currentMethodEntry != null) {
+            currentServiceParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getParameters();
+            currentServiceLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService).getLocalVariables();
+        } else if (currentConstructorEntry != null) {
+            currentServiceParameters = currentConstructorEntry.getParameters();
+            currentServiceLocalVariables = currentConstructorEntry.getLocalVariables();
+        } else {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No esta definido el servicio '" + currentService + "' en la clase actual.");
+        }        
 
-        LinkedHashMap<String, ParameterEntry> currentMethodParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameters();
-        LinkedHashMap<String, LocalVariableEntry> currentMethodLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariables();
-
-        if (currentMethodParameters.containsKey(idName)) {
+        if (currentServiceParameters.containsKey(idName)) {
             // es un parametro del metodo actual
-            idType = currentMethodParameters.get(idName).getType();
-            int parameterOffset = currentMethodParameters.get(idName).getOffset();
+            idType = currentServiceParameters.get(idName).getType();
+            int parameterOffset = currentServiceParameters.get(idName).getOffset();
             ICG.GEN("LOAD", parameterOffset + 3, "Cargamos el parametro '" + idName + "'.");
             // siempre es +3
             // puntero de retorno, enlace dinamico y this
-        } else if (currentMethodLocalVariables.containsKey(idName)) {
+        } else if (currentServiceLocalVariables.containsKey(idName)) {
             // es una variable local del metodo actual
-            idType = currentMethodLocalVariables.get(idName).getType();
-            int localVariableOffset = currentMethodLocalVariables.get(idName).getOffset();
+            idType = currentServiceLocalVariables.get(idName).getType();
+            int localVariableOffset = currentServiceLocalVariables.get(idName).getOffset();
             ICG.GEN("LOAD", localVariableOffset, "Cargamos la variable local '" + idName + "'.");
         }
 

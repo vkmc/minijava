@@ -23,15 +23,6 @@ public class MethodEntry extends ServiceEntry {
     }
 
     /**
-     * Retorna el nombre del metodo
-     *
-     * @return serviceName
-     */
-    public String getName() {
-        return serviceName;
-    }
-
-    /**
      * Establece el modificador del metodo
      *
      * @param modifier modificador del metodo

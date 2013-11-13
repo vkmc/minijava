@@ -2,6 +2,7 @@ package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.ClassEntry;
+import IntermediateCodeGeneration.SymbolTable.ConstructorEntry;
 import IntermediateCodeGeneration.SymbolTable.InstanceVariableEntry;
 import IntermediateCodeGeneration.SymbolTable.LocalVariableEntry;
 import IntermediateCodeGeneration.SymbolTable.MethodEntry;
@@ -37,7 +38,7 @@ public class AssignNode extends SentenceNode {
     @Override
     public void checkNode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentMethod = symbolTable.getCurrentService();
 
         checkId();
         expression.checkNode();
@@ -58,19 +59,31 @@ public class AssignNode extends SentenceNode {
 
     private void checkId() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentService = symbolTable.getCurrentService();
         String idName = id.getLexeme();
+        LinkedHashMap<String, ParameterEntry> currentServiceParameters;
+        LinkedHashMap<String, LocalVariableEntry> currentServiceLocalVariables;
 
-        LinkedHashMap<String, ParameterEntry> currentMethodParameters = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameters();
-        LinkedHashMap<String, LocalVariableEntry> currentMethodLocalVariables = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariables();
+        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
+        ConstructorEntry currentConstructorEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
 
-        if (currentMethodParameters.containsKey(idName)) {
+        if (currentMethodEntry != null) {
+            currentServiceParameters = currentMethodEntry.getParameters();
+            currentServiceLocalVariables = currentMethodEntry.getLocalVariables();
+        } else if (currentConstructorEntry != null) {
+            currentServiceParameters = currentConstructorEntry.getParameters();
+            currentServiceLocalVariables = currentConstructorEntry.getLocalVariables();
+        } else {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No esta definido el servicio '" + currentService + "' en la clase actual.");
+        }
+
+        if (currentServiceParameters.containsKey(idName)) {
             // es un parametro del metodo actual
-            idType = currentMethodParameters.get(idName).getType();
+            idType = currentServiceParameters.get(idName).getType();
             return;
-        } else if (currentMethodLocalVariables.containsKey(idName)) {
+        } else if (currentServiceLocalVariables.containsKey(idName)) {
             // es una variable local del metodo actual
-            idType = currentMethodLocalVariables.get(idName).getType();
+            idType = currentServiceLocalVariables.get(idName).getType();
             return;
         }
 
@@ -79,7 +92,7 @@ public class AssignNode extends SentenceNode {
         if (currentClassInstanceVariables.containsKey(idName)) {
             // es una variable de instancia de la clase actual
 
-            if (symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getModifier().equals("static")) {
+            if (currentMethodEntry != null && currentMethodEntry.getModifier().equals("static")) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede usarse la variable de instancia '" + idName + "' en un metodo estatico.");
             }
 
@@ -94,29 +107,50 @@ public class AssignNode extends SentenceNode {
     public void generateCode() throws SemanticException {
         expression.setICG(ICG);
         expression.generateCode();
-        int base = 0;
 
         ICG.GEN(".CODE");
 
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentService = symbolTable.getCurrentService();
+
         ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
-        MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentMethod);
+        MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentService);
+        ConstructorEntry currentConstructorEntry = currentClassEntry.getConstructorEntry();
 
-        if (currentMethodEntry.getLocalVariableEntry(id.getLexeme()) != null) {
-            // el offset de una variable local comienza en 0 y decrece
-            int localVariableOffset = currentMethodEntry.getLocalVariableEntry(id.getLexeme()).getOffset();
-            ICG.GEN("STORE", localVariableOffset, "Asignacion. El lado izquierdo es una variable local del metodo '" + currentMethod + "'");
-        } else if (currentMethodEntry.getParameterEntry(id.getLexeme()) != null) {
-            // el offset de una variable local comienza en 0 y decrece
-            int parameterOffset = currentMethodEntry.getLocalVariableEntry(id.getLexeme()).getOffset();
-            ICG.GEN("STORE", parameterOffset, "Asignacion. El lado izquierdo es un parametro del metodo '" + currentMethod + "'");
-        } else if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null) {
-            ICG.GEN("LOAD", 3, "Asignacion. Apilamos THIS");
-            ICG.GEN("SWAP", "Asignacion. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");
+        if (currentMethodEntry != null) {
 
-            int offsetInstanceVariable = currentClassEntry.getInstanceVariableEntry(id.getLexeme()).getOffset();
-            ICG.GEN("STOREREF", offsetInstanceVariable, "Asignacion. El lado izquierdo es una variable de instancia de la clase '" + currentClass + "'.");
+            if (currentMethodEntry.getLocalVariableEntry(id.getLexeme()) != null) {
+                // el offset de una variable local comienza en 0 y decrece
+                int localVariableOffset = currentMethodEntry.getLocalVariableEntry(id.getLexeme()).getOffset();
+                ICG.GEN("STORE", localVariableOffset, "Asignacion. El lado izquierdo es una variable local del metodo '" + currentService + "'");
+            } else if (currentMethodEntry.getParameterEntry(id.getLexeme()) != null) {
+                // el offset de una variable local comienza en 0 y decrece
+                int parameterOffset = currentMethodEntry.getParameterEntry(id.getLexeme()).getOffset();
+                ICG.GEN("STORE", parameterOffset, "Asignacion. El lado izquierdo es un parametro del metodo '" + currentService + "'");
+            } else if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null) {
+                ICG.GEN("LOAD", 3, "Asignacion. Apilamos THIS");
+                ICG.GEN("SWAP", "Asignacion. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");
+
+                int offsetInstanceVariable = currentClassEntry.getInstanceVariableEntry(id.getLexeme()).getOffset();
+                ICG.GEN("STOREREF", offsetInstanceVariable, "Asignacion. El lado izquierdo es una variable de instancia de la clase '" + currentClass + "'.");
+            }
+
+        } else if (currentConstructorEntry != null) {
+            if (currentConstructorEntry.getLocalVariableEntry(id.getLexeme()) != null) {
+                // el offset de una variable local comienza en 0 y decrece
+                int localVariableOffset = currentConstructorEntry.getLocalVariableEntry(id.getLexeme()).getOffset();
+                ICG.GEN("STORE", localVariableOffset, "Asignacion. El lado izquierdo es una variable local del metodo '" + currentService + "'");
+            } else if (currentConstructorEntry.getParameterEntry(id.getLexeme()) != null) {
+                // el offset de una variable local comienza en 0 y decrece
+                int parameterOffset = currentConstructorEntry.getParameterEntry(id.getLexeme()).getOffset();
+                ICG.GEN("STORE", parameterOffset, "Asignacion. El lado izquierdo es un parametro del metodo '" + currentService + "'");
+            } else if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null) {
+                ICG.GEN("LOAD", 3, "Asignacion. Apilamos THIS");
+                ICG.GEN("SWAP", "Asignacion. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");
+
+                int offsetInstanceVariable = currentClassEntry.getInstanceVariableEntry(id.getLexeme()).getOffset();
+                ICG.GEN("STOREREF", offsetInstanceVariable, "Asignacion. El lado izquierdo es una variable de instancia de la clase '" + currentClass + "'.");
+            }
         }
     }
 }

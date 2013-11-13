@@ -1,12 +1,14 @@
 package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
+import IntermediateCodeGeneration.SymbolTable.LocalVariableEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.SymbolTable.ParameterEntry;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 /**
@@ -89,20 +91,20 @@ public class MethodCallNode extends PrimaryNode {
         // o bien es un metodo de alguna clase ancestro de la clase actual
         // si es un constructor, ocurrira un error
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentService = symbolTable.getCurrentService();
         String idName = id.getLexeme();
-
+        
         if (currentClass.equals(idName)) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede realizarse una llamada a un constructor.");
         }
 
         MethodEntry methodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(idName);
-        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod);
+        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
 
         if (methodEntry == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el metodo '" + idName + "' en la clase " + currentClass + ".");
         } else if (methodEntry.getModifier().equals("dynamic") && currentMethodEntry.getModifier().equals("static")) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede hacerse una invocacion al metodo dinamico '" + idName + "' en la clase " + currentClass + " en el contexto del metodo estatico '" + currentMethod + "'.");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede hacerse una invocacion al metodo dinamico '" + idName + "' en la clase " + currentClass + " en el contexto del metodo estatico '" + currentService + "'.");
         } else {
             idType = symbolTable.getClassEntry(currentClass).getMethodEntry(idName).getReturnType();
             setExpressionType(idType);

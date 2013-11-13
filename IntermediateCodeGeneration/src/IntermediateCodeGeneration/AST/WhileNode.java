@@ -35,20 +35,20 @@ public class WhileNode extends SentenceNode {
     public void generateCode() throws SemanticException {
         String label = ICG.generateLabel();
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentMethod = symbolTable.getCurrentService();
 
         ICG.GEN(".CODE");
-        ICG.GEN("lWhile" + label + "_" + currentMethod + "_" + currentClass + ": NOP");
+        ICG.GEN("L_WHILE_" + label + "_" + currentMethod + "_" + currentClass + ": NOP");
 
         condition.setICG(ICG);
         condition.generateCode();
 
-        ICG.GEN("BF lEndWhile" + label + "_" + currentMethod + "_" + currentClass);
+        ICG.GEN("BF L_ENDWHILE_" + label + "_" + currentMethod + "_" + currentClass);
 
         sentence.setICG(ICG);
         sentence.generateCode();
 
-        ICG.GEN("JUMP lWhile" + label + "_" + currentMethod + "_" + currentClass);
-        ICG.GEN("lEndWhile" + label + "_" + currentMethod + "_" + currentClass + ": NOP");
+        ICG.GEN("JUMP L_WHILE_" + label + "_" + currentMethod + "_" + currentClass);
+        ICG.GEN("L_ENDWHILE_" + label + "_" + currentMethod + "_" + currentClass + ": NOP");
     }
 }

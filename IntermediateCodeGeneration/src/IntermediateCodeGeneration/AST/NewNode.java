@@ -104,20 +104,26 @@ public class NewNode extends PrimaryNode {
      * al retorno de g(). Es decir, el retorno de g() debe ser de un tipo de
      * clase C tal que exista un metodo M en C.
      */
-    private void controlReturnType() {
+  private void controlReturnType() throws SemanticException {
         Type currentType = getExpressionType();
         Type nextType;
+        String nextId;
 
         for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
-            // TIRAR EXCEPCION SI NO HAY CONFORMIDAD
-            nextType.checkConformity(currentType);
+            nextId = nextCall.getId().getLexeme();
 
+            if (symbolTable.getClassEntry(currentType.getTypeName()).getMethodEntry(nextId) == null) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El metodo '" + nextId + "' no es un metodo de la clase '" + currentType.getTypeName() + "'.");
+            }
+
+            nextType.checkConformity(currentType);
             currentType = nextType;
         }
 
         // si no surge ningun error durante el control de conformidad de tipos
         // se le asigna al nodo actual el tipo del ultimo callnode en la lista
+
         this.setExpressionType(currentType);
 
     }
@@ -130,7 +136,7 @@ public class NewNode extends PrimaryNode {
         int instanceVariablesCount = symbolTable.getClassEntry(id.getLexeme()).getInstanceVariablesCount() + 1;
 
         ICG.GEN("PUSH", instanceVariablesCount, "Se apila la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT.");
-        ICG.GEN("PUSH lsimple_malloc", "Se apila la direccion de la rutina para reservar memoria en el heap");
+        ICG.GEN("PUSH L_SIMPLE_MALLOC", "Se apila la direccion de la rutina para reservar memoria en el heap");
         ICG.GEN("CALL", "Se invoca a la rutina en el tope de la pila (lsimple_malloc)");
         ICG.GEN("DUP", "Se duplica la referencia al nuevo CIR para el STOREREF.");
         ICG.GEN("PUSH VT_" + id.getLexeme(), "Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR");
@@ -146,7 +152,7 @@ public class NewNode extends PrimaryNode {
         }
 
         ICG.GEN(".CODE");
-        ICG.GEN("PUSH lMet" + id.getLexeme() + "_" + id.getLexeme(), "Se apila la direccion del constructor de la clase '" + id.getLexeme() + "'.");
+        ICG.GEN("PUSH L_" + id.getLexeme() + "_" + id.getLexeme(), "Se apila la direccion del constructor de la clase '" + id.getLexeme() + "'.");
         ICG.GEN("CALL", "Se invoca a la rutina del constructor de la clase '" + id.getLexeme() + "'");
 
         Type callerType = idType;

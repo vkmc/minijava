@@ -327,12 +327,14 @@ public class ClassEntry {
      */
     public void checkClass() throws SemanticException {
         initVT();
-
+        
+        // lo tratamos como un metodo por cuestiones de uniformidad
+        symbolTable.setCurrentService(constructor.getName());
         constructor.setICG(ICG);
         constructor.checkService();
 
         for (MethodEntry method : methodsTable.values()) {
-            symbolTable.setCurrentMethod(method.getName());
+            symbolTable.setCurrentService(method.getName());
             method.setICG(ICG);
             method.checkService();
         }

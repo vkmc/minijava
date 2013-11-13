@@ -2,6 +2,7 @@ package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.ClassEntry;
+import IntermediateCodeGeneration.SymbolTable.ConstructorEntry;
 import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.SymbolTable.Type.VoidType;
@@ -26,9 +27,16 @@ public class ReturnNode extends SentenceNode {
     @Override
     public void checkNode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentService = symbolTable.getCurrentService();
+        
+        ConstructorEntry currentConstructorEntry = symbolTable.getClassEntry(currentClass).getConstructorEntry();
+        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
+        
+        if (currentConstructorEntry.getName().equals(currentService)) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un constructor no puede tener un retorno.");
+        }  
 
-        String returnType = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType().getTypeName();
+        String returnType = currentMethodEntry.getReturnType().getTypeName();
 
         if (!returnType.equals("void")) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba retornar una expresion de tipo " + returnType + ".");
@@ -41,7 +49,7 @@ public class ReturnNode extends SentenceNode {
     @Override
     public void generateCode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentMethod = symbolTable.getCurrentService();
         ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
         MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentMethod);
 

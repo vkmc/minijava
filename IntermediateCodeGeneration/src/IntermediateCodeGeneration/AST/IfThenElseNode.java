@@ -40,17 +40,17 @@ public class IfThenElseNode extends IfThenNode {
 
         ICG.GEN(".CODE");
 
-        ICG.GEN("BF lEndIf" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass());
+        ICG.GEN("BF L_ENDIF_" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass());
 
         sentenceIf.setICG(ICG);
         sentenceIf.generateCode();
 
-        ICG.GEN("JUMP lEndElse" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass());
-        ICG.GEN("lEndIf" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass() + ": NOP");
+        ICG.GEN("JUMP L_ENDELSE_" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass());
+        ICG.GEN("L_ENDIF_" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass() + ": NOP");
 
         sentenceElse.setICG(ICG);
         sentenceElse.generateCode();
 
-        ICG.GEN("lEndElse" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass() + ": NOP");
+        ICG.GEN("L_ENDELSE_" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass() + ": NOP");
     }
 }

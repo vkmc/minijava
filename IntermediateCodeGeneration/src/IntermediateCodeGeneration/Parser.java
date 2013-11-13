@@ -176,7 +176,7 @@ public class Parser {
         match("id");
 
         String methodName = currentToken.getLexeme();
-        symbolTable.setCurrentMethod(methodName);
+        symbolTable.setCurrentService(methodName);
         String currentClass = symbolTable.getCurrentClass();
         ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
 
@@ -198,7 +198,7 @@ public class Parser {
     private void Ctor() throws LexicalException, SyntacticException, SemanticException {
         match("id");
         String constructorName = currentToken.getLexeme();
-        symbolTable.setCurrentMethod(constructorName);
+        symbolTable.setCurrentService(constructorName);
         String currentClass = symbolTable.getCurrentClass();
         ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
         if (!currentClass.equals(constructorName)) {
@@ -260,7 +260,7 @@ public class Parser {
         match("id");
         String parameterName = currentToken.getLexeme();
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentMethod = symbolTable.getCurrentService();
         ServiceEntry serviceEntry; // Can be a constructor or a method. 
 
         if (currentMethod.equals(currentClass)) {
@@ -367,7 +367,7 @@ public class Parser {
                 }
             } else if (from.equals("method")) {
                 // Declaración de variable local.
-                String currentMethod = symbolTable.getCurrentMethod();
+                String currentMethod = symbolTable.getCurrentService();
                 ServiceEntry serviceEntry = classEntry.getMethodEntry(currentMethod);
                 if (serviceEntry.getParameterEntry(variableName) != null) {
                     throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de un parametro con el nombre " + variableName + " en el metodo " + currentMethod + " de la clase " + currentClass);
@@ -380,7 +380,7 @@ public class Parser {
 
             } else if (from.equals("constructor")) {
                 // Declaración de variable local.
-                String currentConstructor = symbolTable.getCurrentMethod();
+                String currentConstructor = symbolTable.getCurrentService();
                 ServiceEntry serviceEntry = classEntry.getConstructorEntry();
                 if (serviceEntry.getParameterEntry(variableName) != null) {
                     throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe mas de un parametro con el nombre " + variableName + " en el constructor " + currentConstructor + " de la clase " + currentClass);

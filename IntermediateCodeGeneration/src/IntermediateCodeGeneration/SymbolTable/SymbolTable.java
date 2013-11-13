@@ -20,7 +20,7 @@ public class SymbolTable {
     private LinkedHashMap<String, ClassEntry> classTable;
     private LinkedHashMap<String, ClassEntry> controlledClasses;
     private ICGenerator ICG;
-    private String currentClass, currentMethod, mainClass;
+    private String currentClass, currentService, mainClass;
 
     /**
      * Constructor de la tabla de simbolos Crea las estructuras e inicializa los
@@ -30,7 +30,7 @@ public class SymbolTable {
         classTable = new LinkedHashMap<>();
         controlledClasses = new LinkedHashMap<>();
         currentClass = null;
-        currentMethod = null;
+        currentService = null;
     }
 
     // Inicializacion
@@ -147,10 +147,10 @@ public class SymbolTable {
     /**
      * Establece el metodo actual
      *
-     * @param methodName nombre del metodo actual
+     * @param serviceName nombre del metodo actual
      */
-    public void setCurrentMethod(String methodName) {
-        currentMethod = methodName;
+    public void setCurrentService(String serviceName) {
+        currentService = serviceName;
     }
 
     /**
@@ -158,8 +158,8 @@ public class SymbolTable {
      *
      * @return
      */
-    public String getCurrentMethod() {
-        return currentMethod;
+    public String getCurrentService() {
+        return currentService;
     }
 
     // Controles   

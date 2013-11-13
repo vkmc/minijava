@@ -116,7 +116,7 @@ public class CallNode extends PrimaryNode {
     public void generateCode() throws SemanticException {
         // Los controles sobre el metodo se realizan durante el checkNode()
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentMethod();
+        String currentMethod = symbolTable.getCurrentService();
 
         ICG.GEN(".CODE");
 

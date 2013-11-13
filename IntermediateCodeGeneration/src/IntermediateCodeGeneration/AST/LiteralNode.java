@@ -32,10 +32,10 @@ public class LiteralNode extends PrimaryNode {
             String label = ICG.generateLabel();
 
             ICG.GEN(".DATA");
-            ICG.GEN("lString" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass() + ": DW " + literal.getLexeme() + ", 0");
+            ICG.GEN("lString" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass() + ": DW " + literal.getLexeme() + ", 0");
 
             ICG.GEN(".CODE");
-            ICG.GEN("PUSH lString" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass(), "Apilamos el label del String '" + literal.getLexeme() + "'.");
+            ICG.GEN("PUSH lString" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass(), "Apilamos el label del String '" + literal.getLexeme() + "'.");
         } else if (literal.getLexeme().equals("true")) {
             ICG.GEN(".CODE");
             ICG.GEN("PUSH 1", "Apilamos 'true'");

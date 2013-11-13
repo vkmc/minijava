@@ -40,11 +40,11 @@ public class IfThenNode extends SentenceNode {
         condition.generateCode();
 
         ICG.GEN(".CODE");
-        ICG.GEN("BF lEndIfThen" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass());
+        ICG.GEN("BF L_ENDIFTHEN_" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass());
 
         sentenceIf.setICG(ICG);
         sentenceIf.generateCode();
 
-        ICG.GEN("lEndIfThen" + label + "_" + symbolTable.getCurrentMethod() + "_" + symbolTable.getCurrentClass() + ": NOP");
+        ICG.GEN("L_ENDIFTHEN_" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass() + ": NOP");
     }
 }
