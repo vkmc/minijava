@@ -1,14 +1,12 @@
 package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
-import IntermediateCodeGeneration.SymbolTable.LocalVariableEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.SymbolTable.ParameterEntry;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 /**
@@ -177,21 +175,12 @@ public class MethodCallNode extends PrimaryNode {
         ICG.GEN(".CODE");
         ICG.GEN("LOAD", 3, "Apilamos el THIS para invocar al metodo '" + currentMethod + "'");
 
-        Type returnType;
-        String returnTypeName;
-
-        if (symbolTable.getClassEntry("System").getMethodEntry(currentMethod) != null) {
-            // Es un metodo de la clase System
-            returnType = symbolTable.getClassEntry("System").getMethodEntry(currentMethod).getReturnType();
-        } else {
-            returnType = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType();
-        }
-
-        returnTypeName = returnType.getTypeName();
+        Type returnType = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType();
+        String returnTypeName = returnType.getTypeName();
 
         if (!returnTypeName.equals("void")) {
-            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
-            ICG.GEN("SWAP", "Acomodamos el THIS haciendo un SWAP con RETVAL");
+            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+            ICG.GEN("SWAP", "Acomodamos el THIS haciendo un SWAP con RETVAL.");
         }
 
         for (ExpressionNode actualArg : actualArgs) {
@@ -200,55 +189,24 @@ public class MethodCallNode extends PrimaryNode {
             ICG.GEN("SWAP", "Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
         }
 
-        if (symbolTable.getClassEntry("System").getMethodEntry(currentMethod) != null) {
-            if (currentMethod.equals("read")) {
-                ICG.GEN("PUSH L_SYSTEM_READ");
-                ICG.GEN("CALL", "Llamada a 'read' de la clase System.");
-            } else if (currentMethod.equals("printI")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTI");
-                ICG.GEN("CALL", "Llamada a 'printI' de la clase System.");
-            } else if (currentMethod.equals("printC")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTC");
-                ICG.GEN("CALL", "Llamada a 'printC' de la clase System.");
-            } else if (currentMethod.equals("printB")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTB");
-                ICG.GEN("CALL", "Llamada a 'printB' de la clase System.");
-            } else if (currentMethod.equals("printS")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTS");
-                ICG.GEN("CALL", "Llamada a 'printS' de la clase System.");
-            } else if (currentMethod.equals("println")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTLN");
-                ICG.GEN("CALL", "Llamada a 'println' de la clase System.");
-            } else if (currentMethod.equals("printBln")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTBLN");
-                ICG.GEN("CALL", "Llamada a 'printBln' de la clase System.");
-            } else if (currentMethod.equals("printCln")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTCLN");
-                ICG.GEN("CALL", "Llamada a 'printCln' de la clase System.");
-            } else if (currentMethod.equals("printIln")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTILN");
-                ICG.GEN("CALL", "Llamada a 'printIln' de la clase System.");
-            } else if (currentMethod.equals("printSln")) {
-                ICG.GEN("PUSH L_SYSTEM_PRINTSLN");
-                ICG.GEN("CALL", "Llamada a 'printSln' de la clase System.");
-            }
+        if (!currentClass.equals(id.getLexeme()) && symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getModifier().equals("static")) {
+            ICG.GEN("PUSH VT_" + currentClass);
         } else {
             ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + currentMethod + "'.");
             ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
+        }
 
-            int offsetId = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getOffset();
+        int offsetId = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getOffset();
 
-            ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + currentMethod + "'.");
-            ICG.GEN("CALL", "Llamamos al metodo '" + currentMethod + "'.");
+        ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + currentMethod + "'.");
+        ICG.GEN("CALL", "Llamamos al metodo '" + currentMethod + "'.");
 
-            Type callerType = returnType;
-
-            for (CallNode call : callList) {
-                call.setCallerType(callerType);
-                call.setICG(ICG);
-                call.generateCode();
-                callerType = call.getCallReturnType();
-            }
+        Type callerType = returnType;
+        for (CallNode call : callList) {
+            call.setCallerType(callerType);
+            call.setICG(ICG);
+            call.generateCode();
+            callerType = call.getCallReturnType();
         }
     }
 }
