@@ -184,9 +184,8 @@ public class SymbolTable {
     }
 
     /**
-     * Consolidacion de herencia
-     * Se efectua, de ser posible, la herencia por copia entre las clases
-     * que tienen una relacion "es un"
+     * Consolidacion de herencia Se efectua, de ser posible, la herencia por
+     * copia entre las clases que tienen una relacion "es un"
      *
      * @throws SemanticException
      */
@@ -202,10 +201,10 @@ public class SymbolTable {
             }
         }
     }
-    
+
     /**
-     * Consolidacion de constructores
-     * Se inicializan los offsets de los parametros y variables locales de los constructores
+     * Consolidacion de constructores Se inicializan los offsets de los
+     * parametros y variables locales de los constructores
      */
     public void consolidateConstructors() {
         Collection<ClassEntry> classes = classTable.values();

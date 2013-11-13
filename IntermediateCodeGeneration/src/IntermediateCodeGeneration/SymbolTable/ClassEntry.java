@@ -1,5 +1,7 @@
 package IntermediateCodeGeneration.SymbolTable;
 
+import IntermediateCodeGeneration.AST.BlockNode;
+import IntermediateCodeGeneration.AST.SentenceNode;
 import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
@@ -130,6 +132,7 @@ public class ClassEntry {
     public void controlDefaultConstructor() {
         if (getConstructorEntry() == null) {
             constructor = new ConstructorEntry(className, className, symbolTable, 0);
+            constructor.setBody(new BlockNode(symbolTable, new LinkedList<SentenceNode>(), null));
         }
     }
 
@@ -277,10 +280,10 @@ public class ClassEntry {
                 redefinedMethod.compareModifier(parentMethod);
                 redefinedMethod.compareReturnType(parentMethod);
                 redefinedMethod.compareParameters(parentMethod);
-                
+
                 redefinedMethod.setOffset(parentMethod.getOffset());
                 redefinedMethod.setParametersOffset();
-                redefinedMethod.setLocalVariablesOffset();   
+                redefinedMethod.setLocalVariablesOffset();
             } else {
                 // Se hereda el metodo
                 addInheritedMethod(parentMethod);
@@ -324,6 +327,7 @@ public class ClassEntry {
      */
     public void checkClass() throws SemanticException {
         initVT();
+
         constructor.setICG(ICG);
         constructor.checkService();
 
@@ -362,7 +366,8 @@ public class ClassEntry {
 
     /**
      * Retorna el total de variables de instancia propias
-     * @return 
+     *
+     * @return
      */
     public int getInstanceVariablesCount() {
         return instanceVariablesCount;
@@ -370,16 +375,15 @@ public class ClassEntry {
 
     private void initVT() {
         ICG.GEN(".DATA");
-        if (methodsTable.isEmpty()) { 
+        if (methodsTable.isEmpty()) {
             ICG.GEN("VT_" + className + ": NOP");
-         } else {
-            ICG.GEN(".DATA");
-            String DWInstruction = "VT_" + className + ": DW";
-       
-            for (MethodEntry aMethod : methodsTable.values()) {
+        } else {
+            String DWInstruction = "VT_" + className + ": DW ";
+            Collection<MethodEntry> methods = methodsTable.values();
+            for (MethodEntry aMethod : methods) {
                 DWInstruction += "L_" + aMethod.getClassName() + "_" + aMethod.getName() + " ,";
             }
-           
+
             DWInstruction = DWInstruction.substring(0, DWInstruction.length() - 1); // Comma removal
             ICG.GEN(DWInstruction);
         }

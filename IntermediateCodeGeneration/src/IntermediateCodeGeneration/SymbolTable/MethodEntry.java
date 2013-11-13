@@ -1,6 +1,5 @@
 package IntermediateCodeGeneration.SymbolTable;
 
-import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import java.util.Collection;
