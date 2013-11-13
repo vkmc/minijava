@@ -126,17 +126,4 @@ public class MethodEntry extends ServiceEntry {
             }
         }
     }
-
-    /**
-     * Control de sentencias del metodo Se realiza solo si el metodo en cuestion
-     * no ha sido heredado Los metodos heredados se controlan en las clases en
-     * las que fueron declarados
-     *
-     * @throws SemanticException
-     */
-    public void checkMethod() throws SemanticException {
-        if (className.equals(symbolTable.getCurrentClass())) {
-            body.checkNode();
-        }
-    }
 }

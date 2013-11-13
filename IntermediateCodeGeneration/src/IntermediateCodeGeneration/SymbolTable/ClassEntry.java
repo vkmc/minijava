@@ -323,14 +323,13 @@ public class ClassEntry {
      * @param symbolTable
      */
     public void checkClass() throws SemanticException {
-        Collection<MethodEntry> methods = methodsTable.values();
-        
         initVT();
+        constructor.checkService();
 
-        for (MethodEntry method : methods) {
+        for (MethodEntry method : methodsTable.values()) {
             symbolTable.setCurrentMethod(method.getName());
             method.setICG(ICG);
-            method.checkMethod();
+            method.checkService();
         }
     }
 

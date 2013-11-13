@@ -2,6 +2,7 @@ package IntermediateCodeGeneration.SymbolTable;
 
 import IntermediateCodeGeneration.AST.BlockNode;
 import IntermediateCodeGeneration.ICGenerator;
+import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -174,5 +175,36 @@ public abstract class ServiceEntry {
      */
     public void setICG(ICGenerator ICG) {
         this.ICG = ICG;
+    }
+    
+    /**
+     * Control de sentencias del servicio. Se realiza solo si el servicio en cuestion
+     * no ha sido heredado Los servicios heredados se controlan en las clases en
+     * las que fueron declarados
+     *
+     * @throws SemanticException
+     */
+    public void checkService() throws SemanticException {
+          if (className.equals(symbolTable.getCurrentClass())) {
+            ICG.GEN(".CODE");
+            ICG.GEN("L_" + className + "_" + serviceName + "LOADFP", "Se guarda el enlace dinamico al RA llamador");
+            ICG.GEN("LOADSP", "Se apila el lugar a donde comienza el RA de la unidad");
+            ICG.GEN("STOREFP", "Se actualiza el FP con el valor del tope de la pila"); 
+            
+            int localVariables = localVariablesTable.size();
+            if (localVariables > 0) {
+               ICG.GEN("RMEM", localVariables, "Reservamos espacio para las variables locales del metodo '" + serviceName + "'");
+            }
+            body.checkNode();
+            body.setICG(ICG);
+            body.generateCode();
+            
+            if (localVariables > 0) {
+                ICG.GEN("FMEM", localVariables , "Liberamos espacio para las variables locales del metodo '" + serviceName + "'");
+            }
+
+            ICG.GEN("STOREFP ; actualizar el FP para que apunte al RA del llamador");
+            ICG.GEN("RET", parametersTable.size() + 1);
+        }
     }
 }
