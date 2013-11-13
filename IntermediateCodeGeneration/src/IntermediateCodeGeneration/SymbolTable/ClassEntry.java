@@ -209,7 +209,7 @@ public class ClassEntry {
      */
     public boolean hasMain() throws SemanticException {
         MethodEntry main = methodsTable.get("main");
-        if (main != null) {
+        if (main != null && main.getClassName().equals(className)) {
             if (!main.getModifier().equals("static")) {
                 throw new SemanticException("Linea: " + main.getLineNumber() + " - Error semantico: El metodo main debe ser estatico");
             }

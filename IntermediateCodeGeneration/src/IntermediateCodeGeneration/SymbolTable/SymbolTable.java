@@ -284,9 +284,9 @@ public class SymbolTable {
      * @throws SemanticException
      */
     public void declarationCheckVariables() throws SemanticException {
-        declarationCheckLocalVars();
-        declarationCheckParameters();
         declarationCheckInstanceVariables();
+        declarationCheckParameters();
+        declarationCheckLocalVars();        
     }
 
     /**
