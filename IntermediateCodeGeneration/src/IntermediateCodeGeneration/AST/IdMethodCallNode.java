@@ -200,25 +200,34 @@ public class IdMethodCallNode extends PrimaryNode {
     }
 
     private void generateCodeCalls() throws SemanticException {
-        String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentService();
-
         Type callerType = idType;
+        boolean firstCall = true;
+        
         for (CallNode call : callList) {
             call.setCallerType(callerType);
             call.setICG(ICG);
 
-            if (staticMethod) {
-                if (symbolTable.getClassEntry(idType.getTypeName()).getMethodEntry(call.getId().getLexeme()).getModifier().equals("dynamic")) {
+            if (firstCall && staticMethod) {
+                if (id.getLexeme().equals("System")) {
+                    call.setSystem(true);
+                } else if (symbolTable.getClassEntry(idType.getTypeName()).getMethodEntry(call.getId().getLexeme()).getModifier().equals("dynamic")) {
                     throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo estatico, el metodo '" + call.getId().getLexeme() + "' es dinamico.");
+                } else {
+                    call.setVT(true);
+                    call.setStatic(true, id.getLexeme());
+                    // VT de la clase actual para metodos estaticos
                 }
-
-                call.setVTToS();
-                return;
+            } else if (firstCall && !staticMethod) { 
+                if (!symbolTable.getClassEntry(idType.getTypeName()).getMethodEntry(call.getId().getLexeme()).getModifier().equals("static")) {
+                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo dinamico, el metodo '" + call.getId().getLexeme() + "' es estatico.");
+                }
             }
 
             call.generateCode();
+            call.setVT(false);
+            call.setSystem(false);
             callerType = call.getCallReturnType();
+            firstCall = false;
         }
     }
 

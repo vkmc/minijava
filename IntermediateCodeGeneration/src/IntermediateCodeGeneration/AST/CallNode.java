@@ -21,13 +21,15 @@ public class CallNode extends PrimaryNode {
     // callReturnType representa el tipo de retorno del metodo - e.g. si method1() retorna un objeto de clase Clase
     protected Type callerType, callReturnType;
     protected LinkedList<ExpressionNode> actualArgs;
-    private boolean VTToS; // VT at top of stack
+    private boolean VT, isSystem, isStatic; // VT en Pila, es metodo estatico, es metodo de System
+    private String staticMethodClass;
 
     public CallNode(SymbolTable symbolTable, Token id, LinkedList<ExpressionNode> actualArgs, Token token) {
         super(symbolTable, token);
         this.id = id;
         this.actualArgs = actualArgs; // actual arguments
-        VTToS = false;
+        VT = false; isStatic = false; isSystem = false;
+        staticMethodClass = null;
     }
 
     /**
@@ -47,8 +49,17 @@ public class CallNode extends PrimaryNode {
         return callReturnType;
     }
 
-    public void setVTToS() {
-        VTToS = true;
+    public void setVT(boolean VT) {
+        this.VT = VT;
+    }
+    
+    public void setStatic(boolean isStatic, String staticMethodClass) {
+        this.isStatic = isStatic;
+        this.staticMethodClass = staticMethodClass;
+    }
+    
+    public void setSystem(boolean isSystem) {
+        this.isSystem = isSystem;
     }
 
     @Override
@@ -132,9 +143,16 @@ public class CallNode extends PrimaryNode {
         }
 
         ICG.GEN(".CODE");
-        ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
+        
+        if (isSystem) {
+            ICG.GEN("PUSH L_MET_System_" + id.getLexeme());
+	    ICG.GEN("CALL", "Llamada al metodo '" + id.getLexeme()+ "' de System.");
+        } else if (isStatic) {
+            ICG.GEN("PUSH VT_" + staticMethodClass);
+        }
 
-        if (!VTToS) {
+        if (!VT) {
+            ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
             ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
         }
 
