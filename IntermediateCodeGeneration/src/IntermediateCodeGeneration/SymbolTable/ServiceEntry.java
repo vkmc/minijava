@@ -35,18 +35,32 @@ public abstract class ServiceEntry {
         body = null;
         offset = -1;
     }
+    
+    /**
+     * Retorna el nombre del servicio
+     * 
+     * @return serviceName
+     */
+    public String getName() {
+        return serviceName;
+    }
 
     /**
-     * Retorna el numero de linea de la declaracion del metodo
+     * Retorna el nombre de la clase en la que esta declarado el servicio
+     * @return 
+     */
+    public String getClassName() {
+        return className;
+    }
+    
+    
+    /**
+     * Retorna el numero de linea en la que esta declarado el servicio
      *
      * @return lineNumber
      */
     public int getLineNumber() {
         return lineNumber;
-    }
-
-    public String getClassName() {
-        return className;
     }
 
     /**
