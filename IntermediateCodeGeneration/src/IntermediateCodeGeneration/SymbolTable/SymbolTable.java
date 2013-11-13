@@ -271,7 +271,7 @@ public class SymbolTable {
                 for (MethodEntry aMethod : methods) {
                     Type returnType = aMethod.getReturnType();
                     if (!typeExists(returnType)) {
-                        throw new SemanticException("Linea: " + aMethod.getLineNumber() + " - Error semantico: El tipo de retorno del metodo no existe.");
+                        throw new SemanticException("Linea: " + aMethod.getLineNumber() + " - Error semantico: El tipo de retorno " + returnType.getTypeName() + " del metodo " + aMethod.getName() + " no existe.");
                     }
                 }
             }
@@ -303,7 +303,7 @@ public class SymbolTable {
                 return;
             }
         }
-        throw new SemanticException("Error semantico: El metodo main no fue declarado en ninguna de las clases.");
+        throw new SemanticException("Error semantico: El metodo 'main' no fue declarado en ninguna de las clases.");
     }
 
     /**
@@ -320,7 +320,7 @@ public class SymbolTable {
             for (InstanceVariableEntry anInstanceVar : instanceVariables) {
                 Type aType = anInstanceVar.getType();
                 if (!typeExists(aType)) {
-                    throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: El tipo de la variable de instancia no existe.");
+                    throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " de la variable de instancia " + anInstanceVar.getVariableName() + " no existe.");
                 }
             }
         }
@@ -345,7 +345,7 @@ public class SymbolTable {
                     for (ParameterEntry aParameter : parameters) {
                         Type aType = aParameter.getType();
                         if (!typeExists(aType)) {
-                            throw new SemanticException("Linea: " + aParameter.getLineNumber() + " - Error semantico: El tipo del parametro no existe.");
+                            throw new SemanticException("Linea: " + aParameter.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " del parametro " + aParameter.getVariableName() + " no existe.");
                         }
                     }
                 }
@@ -372,7 +372,7 @@ public class SymbolTable {
                     for (LocalVariableEntry aLocalVariable : localVariables) {
                         Type aType = aLocalVariable.getType();
                         if (!typeExists(aType)) {
-                            throw new SemanticException("Linea: " + aLocalVariable.getLineNumber() + " - Error semantico: El tipo de la variable local no existe.");
+                            throw new SemanticException("Linea: " + aLocalVariable.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " de la variable local " + aLocalVariable.getVariableName() + " no existe.");
                         }
                     }
                 }
