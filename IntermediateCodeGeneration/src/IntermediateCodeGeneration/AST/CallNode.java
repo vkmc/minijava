@@ -28,7 +28,9 @@ public class CallNode extends PrimaryNode {
         super(symbolTable, token);
         this.id = id;
         this.actualArgs = actualArgs; // actual arguments
-        VT = false; isStatic = false; isSystem = false;
+        VT = false;
+        isStatic = false;
+        isSystem = false;
         staticMethodClass = null;
     }
 
@@ -52,12 +54,12 @@ public class CallNode extends PrimaryNode {
     public void setVT(boolean VT) {
         this.VT = VT;
     }
-    
+
     public void setStatic(boolean isStatic, String staticMethodClass) {
         this.isStatic = isStatic;
         this.staticMethodClass = staticMethodClass;
     }
-    
+
     public void setSystem(boolean isSystem) {
         this.isSystem = isSystem;
     }
@@ -143,21 +145,24 @@ public class CallNode extends PrimaryNode {
         }
 
         ICG.GEN(".CODE");
-        
+
         if (isSystem) {
             ICG.GEN("PUSH L_MET_System_" + id.getLexeme());
-	    ICG.GEN("CALL", "Llamada al metodo '" + id.getLexeme()+ "' de System.");
-        } else if (isStatic) {
-            ICG.GEN("PUSH VT_" + staticMethodClass);
-        }
+            ICG.GEN("CALL", "Llamada al metodo '" + id.getLexeme() + "' de System.");
+        } else {
 
-        if (!VT) {
-            ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
-            ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
-        }
+            if (isStatic) {
+                ICG.GEN("PUSH VT_" + staticMethodClass);
+            }
 
-        int offsetId = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(id.getLexeme()).getOffset();
-        ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + id.getLexeme() + "'.");
-        ICG.GEN("CALL", "Llamamos al metodo '" + id.getLexeme() + "'.");
+            if (!VT) {
+                ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
+                ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
+            }
+
+            int offsetId = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(id.getLexeme()).getOffset();
+            ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + id.getLexeme() + "'.");
+            ICG.GEN("CALL", "Llamamos al metodo '" + id.getLexeme() + "'.");
+        }
     }
 }
