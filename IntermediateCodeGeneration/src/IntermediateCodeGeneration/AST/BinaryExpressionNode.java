@@ -93,6 +93,8 @@ public class BinaryExpressionNode extends ExpressionNode {
             ICG.GEN("OR");
         } else if (operator.getLexeme().equals("==")) {
             ICG.GEN("EQ");
+        } else if (operator.getLexeme().equals("!=")) {
+            ICG.GEN("NE");
         } else if (operator.getLexeme().equals("<")) {
             ICG.GEN("LT");
         } else if (operator.getLexeme().equals(">")) {
