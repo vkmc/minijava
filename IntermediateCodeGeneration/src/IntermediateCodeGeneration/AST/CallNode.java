@@ -150,14 +150,13 @@ public class CallNode extends PrimaryNode {
             ICG.GEN("PUSH L_MET_System_" + id.getLexeme());
             ICG.GEN("CALL", "Llamada al metodo '" + id.getLexeme() + "' de System.");
         } else {
-
             if (isStatic) {
                 ICG.GEN("PUSH VT_" + staticMethodClass);
             }
 
             if (!VT) {
-                ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
-                ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
+                ICG.GEN("DUP", "NODO CALL Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
+                ICG.GEN("LOADREF", 0, "NODO CALL El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
             }
 
             int offsetId = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(id.getLexeme()).getOffset();

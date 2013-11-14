@@ -192,8 +192,8 @@ public class MethodCallNode extends PrimaryNode {
         if (!currentClass.equals(id.getLexeme()) && symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getModifier().equals("static")) {
             ICG.GEN("PUSH VT_" + currentClass);
         } else {
-            ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + currentMethod + "'.");
-            ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
+            ICG.GEN("DUP", "NODO METHOD CALL Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + currentMethod + "'.");
+            ICG.GEN("LOADREF", 0, "NODO METHOD CALL El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
         }
 
         int offsetId = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getOffset();
