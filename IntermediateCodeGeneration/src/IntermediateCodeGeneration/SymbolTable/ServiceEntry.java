@@ -203,19 +203,19 @@ public abstract class ServiceEntry {
             ICG.GEN(".CODE");
 
             if (serviceName.equals(className)) {
-                ICG.GEN("; Inicializacion del CI del constructor '" + serviceName + "' de clase '" + className + "'");
-                ICG.GEN("L_CTOR_" + className + "_" + serviceName + ": LOADFP", "Se guarda el enlace dinamico al RA llamador");
+                ICG.GEN("; INICIALIZAMOS EL CI DEL CONSTRUCTOR '" + serviceName + "' DE LA CLASE '" + className + "'");
+                ICG.GEN("L_CTOR_" + className + "_" + serviceName + ": LOADFP", "Guardamos el ED al RA llamador");
             } else {
-                ICG.GEN("; Inicializacion del CI del metodo '" + serviceName + "' de clase '" + className + "'");
-                ICG.GEN("L_MET_" + className + "_" + serviceName + ": LOADFP", "Se guarda el enlace dinamico al RA llamador");
+                ICG.GEN("; INICIALIZAMOS EL CI DEL METODO '" + serviceName + "' DE LA CLASE '" + className + "'");
+                ICG.GEN("L_MET_" + className + "_" + serviceName + ": LOADFP", "Guardamos el ED al RA llamador");
             }
 
-            ICG.GEN("LOADSP", "Se apila el lugar a donde comienza el RA de la unidad");
-            ICG.GEN("STOREFP", "Se actualiza el FP con el valor del tope de la pila");
+            ICG.GEN("LOADSP", "Apilamos la locación donde empieza el RA de la unidad");
+            ICG.GEN("STOREFP", "Actualizamos el FP con el valor del tope de la pila");
 
             int localVariables = localVariablesTable.size();
             if (localVariables > 0) {
-                ICG.GEN("RMEM", localVariables, "Reservamos espacio para las variables locales del metodo '" + serviceName + "'");
+                ICG.GEN("RMEM", localVariables, "Reservamos memoria para las variables locales del metodo '" + serviceName + "'");
             }
 
             body.checkNode();
@@ -223,11 +223,11 @@ public abstract class ServiceEntry {
             body.generateCode();
 
             if (localVariables > 0) {
-                ICG.GEN("FMEM", localVariables, "Liberamos espacio para las variables locales del metodo '" + serviceName + "'");
+                ICG.GEN("FMEM", localVariables, "Liberamos la memoria de las variables locales del metodo '" + serviceName + "'");
             }
 
-            ICG.GEN("STOREFP ; actualizar el FP para que apunte al RA del llamador");
-            ICG.GEN("RET", parametersTable.size() + 1);
+            ICG.GEN("STOREFP ; Se actualiza el FP para que apunte al RA del llamador");
+            ICG.GEN("RET", parametersTable.size() + 1, "Retornamos de la unidad");
         }
     }
 }
