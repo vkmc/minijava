@@ -117,7 +117,7 @@ public class ICGenerator {
         GEN("STORE", 4);
         GEN("STOREFP");
         GEN("RET", 1);
-        
+
         // System.printi()
         GEN("L_MET_System_printI: NOP");
         GEN("LOADFP");

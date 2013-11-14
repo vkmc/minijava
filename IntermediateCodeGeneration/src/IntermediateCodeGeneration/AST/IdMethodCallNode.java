@@ -202,24 +202,24 @@ public class IdMethodCallNode extends PrimaryNode {
     private void generateCodeCalls() throws SemanticException {
         Type callerType = idType;
         boolean firstCall = true;
-        
+
         for (CallNode call : callList) {
             call.setCallerType(callerType);
             call.setICG(ICG);
-            
+
             MethodEntry currentMethodCall = symbolTable.getClassEntry(idType.getTypeName()).getMethodEntry(call.getId().getLexeme());
 
             if (firstCall && staticMethod) {
                 if (id.getLexeme().equals("System")) {
                     call.setSystem(true);
                 } else if (!symbolTable.getCurrentClass().equals(call.getId().getLexeme()) && currentMethodCall.getModifier().equals("dynamic")) {
-                        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo estatico, el metodo '" + call.getId().getLexeme() + "' es dinamico.");
+                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo estatico, el metodo '" + call.getId().getLexeme() + "' es dinamico.");
                 } else {
                     call.setVT(true);
                     call.setStatic(true, id.getLexeme());
                     // VT de la clase actual para metodos estaticos
                 }
-            } else if (firstCall && !staticMethod) { 
+            } else if (firstCall && !staticMethod) {
                 if (!symbolTable.getCurrentClass().equals(call.getId().getLexeme()) && currentMethodCall.getModifier().equals("static")) {
                     throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo dinamico, el metodo '" + call.getId().getLexeme() + "' es estatico.");
                 }
@@ -265,11 +265,13 @@ public class IdMethodCallNode extends PrimaryNode {
             ICG.GEN("LOAD", parameterOffset + 3, "Cargamos el parametro '" + idName + "'.");
             // siempre es +3
             // puntero de retorno, enlace dinamico y this
+            return;
         } else if (currentServiceLocalVariables.containsKey(idName)) {
             // es una variable local del metodo actual
             idType = currentServiceLocalVariables.get(idName).getType();
             int localVariableOffset = currentServiceLocalVariables.get(idName).getOffset();
             ICG.GEN("LOAD", localVariableOffset, "Cargamos la variable local '" + idName + "'.");
+            return;
         }
 
         LinkedHashMap<String, InstanceVariableEntry> currentClassInstanceVariables = symbolTable.getClassEntry(currentClass).getInstanceVariables();
