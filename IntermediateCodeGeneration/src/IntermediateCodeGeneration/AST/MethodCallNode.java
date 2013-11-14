@@ -190,7 +190,7 @@ public class MethodCallNode extends PrimaryNode {
         returnTypeName = returnType.getTypeName();
 
         if (!returnTypeName.equals("void")) {
-            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
+            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + id.getLexeme() + "' de la clase '" + currentClass + "'");
             ICG.GEN("SWAP", "Acomodamos el THIS haciendo un SWAP con RETVAL");
         }
 
@@ -235,20 +235,19 @@ public class MethodCallNode extends PrimaryNode {
         } else {
             ICG.GEN("DUP", "Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + currentMethod + "'.");
             ICG.GEN("LOADREF", 0, "El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
+        }
+        int offsetId = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getOffset();
 
-            int offsetId = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getOffset();
+        ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + currentMethod + "'.");
+        ICG.GEN("CALL", "Llamamos al metodo '" + currentMethod + "'.");
 
-            ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + currentMethod + "'.");
-            ICG.GEN("CALL", "Llamamos al metodo '" + currentMethod + "'.");
+        Type callerType = returnType;
 
-            Type callerType = returnType;
-
-            for (CallNode call : callList) {
-                call.setCallerType(callerType);
-                call.setICG(ICG);
-                call.generateCode();
-                callerType = call.getCallReturnType();
-            }
+        for (CallNode call : callList) {
+            call.setCallerType(callerType);
+            call.setICG(ICG);
+            call.generateCode();
+            callerType = call.getCallReturnType();
         }
     }
 }

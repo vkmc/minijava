@@ -212,8 +212,10 @@ public class IdMethodCallNode extends PrimaryNode {
             if (firstCall && staticMethod) {
                 if (id.getLexeme().equals("System")) {
                     call.setSystem(true);
-                } else if (!symbolTable.getCurrentClass().equals(call.getId().getLexeme()) && currentMethodCall.getModifier().equals("dynamic")) {
-                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo estatico, el metodo '" + call.getId().getLexeme() + "' es dinamico.");
+                } else if (!symbolTable.getCurrentClass().equals(call.getId().getLexeme())) {
+                    if (currentMethodCall.getModifier().equals("dynamic")) {
+                        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo estatico, el metodo '" + call.getId().getLexeme() + "' es dinamico.");
+                    }
                 } else {
                     call.setVT(true);
                     call.setStatic(true, id.getLexeme());

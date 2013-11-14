@@ -134,7 +134,7 @@ public class CallNode extends PrimaryNode {
         ICG.GEN(".CODE");
 
         if (!callReturnType.getTypeName().equals("void")) {
-            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
+            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + id.getLexeme() + "' de la clase '" + currentClass + "'");
             ICG.GEN("SWAP", "Acomodamos el THIS haciendo un SWAP con RETVAL");
         }
 
