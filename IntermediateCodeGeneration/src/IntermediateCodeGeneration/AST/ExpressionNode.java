@@ -32,14 +32,6 @@ public abstract class ExpressionNode {
         this.expressionType = expressionType;
     }
 
-    public SymbolTable getSymbolTable() {
-        return symbolTable; // para que?? al cuete >:o
-    }
-
-    public void setSymbolTable(SymbolTable symbolTable) {
-        this.symbolTable = symbolTable;
-    }
-
     public abstract void checkNode() throws SemanticException;
 
     public abstract void generateCode() throws SemanticException;

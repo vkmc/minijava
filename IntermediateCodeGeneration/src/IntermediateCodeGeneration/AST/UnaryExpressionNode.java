@@ -18,8 +18,8 @@ public class UnaryExpressionNode extends ExpressionNode {
     private Token operator;
     private ExpressionNode right;
 
-    public UnaryExpressionNode(SymbolTable systemTable, Token operator, ExpressionNode expression, Token token) {
-        super(systemTable, token);
+    public UnaryExpressionNode(SymbolTable symbolTable, Token operator, ExpressionNode expression, Token token) {
+        super(symbolTable, token);
         this.operator = operator;
         right = expression;
     }

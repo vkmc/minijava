@@ -19,8 +19,8 @@ public class ReturnNode extends SentenceNode {
 
     protected Token returnToken;
 
-    public ReturnNode(SymbolTable systemTable, Token token) {
-        super(systemTable, token);
+    public ReturnNode(SymbolTable symbolTable, Token token) {
+        super(symbolTable, token);
         returnToken = token;
     }
 

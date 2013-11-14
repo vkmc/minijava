@@ -1,9 +1,7 @@
 package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
-import IntermediateCodeGeneration.SymbolTable.ConstructorEntry;
 import IntermediateCodeGeneration.SymbolTable.MethodEntry;
-import IntermediateCodeGeneration.SymbolTable.ServiceEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.*;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;

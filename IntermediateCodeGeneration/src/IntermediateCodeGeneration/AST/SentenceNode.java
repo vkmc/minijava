@@ -19,8 +19,8 @@ public abstract class SentenceNode {
     protected Type sentenceType;
     protected Token token;
 
-    public SentenceNode(SymbolTable systemTable, Token token) {
-        this.symbolTable = systemTable;
+    public SentenceNode(SymbolTable symbolTable, Token token) {
+        this.symbolTable = symbolTable;
         this.token = token;
     }
 
@@ -30,14 +30,6 @@ public abstract class SentenceNode {
 
     public void setSentenceType(Type sentenceType) {
         this.sentenceType = sentenceType;
-    }
-
-    public SymbolTable getSymbolTable() {
-        return symbolTable;
-    }
-
-    public void setSymbolTable(SymbolTable symbolTable) {
-        this.symbolTable = symbolTable;
     }
 
     public abstract void checkNode() throws SemanticException;

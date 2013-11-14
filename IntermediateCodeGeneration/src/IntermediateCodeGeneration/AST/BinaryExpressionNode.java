@@ -17,11 +17,11 @@ public class BinaryExpressionNode extends ExpressionNode {
     protected ExpressionNode left;
     protected ExpressionNode right;
 
-    public BinaryExpressionNode(SymbolTable symbolTable, Token op, ExpressionNode exp1, ExpressionNode exp2, Token token) {
+    public BinaryExpressionNode(SymbolTable symbolTable, Token operator, ExpressionNode leftExpression, ExpressionNode rightExpression, Token token) {
         super(symbolTable, token);
-        operator = op;
-        left = exp1;
-        right = exp2;
+        this.operator = operator;
+        left = leftExpression;
+        right = rightExpression;
     }
 
     @Override

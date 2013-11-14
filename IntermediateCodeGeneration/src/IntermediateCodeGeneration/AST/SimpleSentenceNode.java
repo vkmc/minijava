@@ -14,8 +14,8 @@ public class SimpleSentenceNode extends SentenceNode {
 
     protected ExpressionNode expression;
 
-    public SimpleSentenceNode(SymbolTable systemTable, ExpressionNode expression, Token token) {
-        super(systemTable, token);
+    public SimpleSentenceNode(SymbolTable symbolTable, ExpressionNode expression, Token token) {
+        super(symbolTable, token);
         this.expression = expression;
     }
 

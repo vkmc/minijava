@@ -15,8 +15,8 @@ public class WhileNode extends SentenceNode {
     protected ExpressionNode condition;
     protected SentenceNode sentence;
 
-    public WhileNode(SymbolTable systemTable, ExpressionNode condition, SentenceNode sentence, Token token) {
-        super(systemTable, token);
+    public WhileNode(SymbolTable symbolTable, ExpressionNode condition, SentenceNode sentence, Token token) {
+        super(symbolTable, token);
         this.condition = condition;
         this.sentence = sentence;
     }

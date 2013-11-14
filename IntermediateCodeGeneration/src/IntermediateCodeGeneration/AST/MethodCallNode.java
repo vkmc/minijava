@@ -146,8 +146,6 @@ public class MethodCallNode extends PrimaryNode {
         Type nextType = currentType;
         String nextId;
 
-        // HABRIA QUE CONTROLAR SI ES UN METODO DE SYSTEM?
-
         for (CallNode nextCall : callList) {
             nextType = nextCall.getExpressionType();
             nextId = nextCall.getId().getLexeme();
