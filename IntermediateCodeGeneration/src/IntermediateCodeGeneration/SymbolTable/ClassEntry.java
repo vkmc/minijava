@@ -249,7 +249,7 @@ public class ClassEntry {
             inheritMethods();
             inheritanceControl = true;
 
-            int offsetBaseMethods = symbolTable.getClassEntry(parent).getMethods().size() - 1;
+            int offsetBaseMethods = symbolTable.getClassEntry(parent).getMethods().size();
             setMethodOffset(offsetBaseMethods);
 
             int offsetBaseVariables = symbolTable.getClassEntry(parent).getInstanceVariablesCount();

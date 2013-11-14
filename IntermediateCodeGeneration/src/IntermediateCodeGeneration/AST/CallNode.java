@@ -129,7 +129,6 @@ public class CallNode extends PrimaryNode {
     public void generateCode() throws SemanticException {
         // Los controles sobre el metodo se realizan durante el checkNode()
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentService();
 
         ICG.GEN(".CODE");
 
@@ -155,13 +154,13 @@ public class CallNode extends PrimaryNode {
             }
 
             if (!VT) {
-                ICG.GEN("DUP", "NODO CALL Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
-                ICG.GEN("LOADREF", 0, "NODO CALL El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
+                ICG.GEN("DUP", "CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + id.getLexeme() + "'.");
+                ICG.GEN("LOADREF", 0, "CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
             }
 
             int offsetId = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(id.getLexeme()).getOffset();
-            ICG.GEN("LOADREF", offsetId, "Recuperamos la direccion del metodo '" + id.getLexeme() + "'.");
-            ICG.GEN("CALL", "Llamamos al metodo '" + id.getLexeme() + "'.");
+            ICG.GEN("LOADREF", offsetId, "CallNode. Recuperamos la direccion del metodo '" + id.getLexeme() + "'.");
+            ICG.GEN("CALL", "CallNode. Llamamos al metodo '" + id.getLexeme() + "'.");
         }
     }
 }
