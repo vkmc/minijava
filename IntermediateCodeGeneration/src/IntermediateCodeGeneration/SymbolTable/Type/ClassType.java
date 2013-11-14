@@ -2,6 +2,7 @@ package IntermediateCodeGeneration.SymbolTable.Type;
 
 import IntermediateCodeGeneration.SymbolTable.ClassEntry;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
+import static IntermediateCodeGeneration.SymbolTable.Type.Type.isPrimitiveType;
 
 /**
  * Representacion de los tipos de datos definidos por el programador
@@ -20,8 +21,9 @@ public class ClassType extends Type {
 
     @Override
     public boolean checkConformity(Type type) {
-        // El tipo A (quien recibe el mensaje) conforma B el tipo pasado por parametro
-
+        // el parametro tiene que conformar al que reccibe 
+        // parametro subtypo
+        // this supertypo
         boolean conforms = false;
 
         if (isPrimitiveType(type)) {
@@ -33,10 +35,20 @@ public class ClassType extends Type {
             // Un tipo primitivo no puede conformar con uno de tipo clase
             return false;
         }
+        if (isPrimitiveType(this)) {
+            // El unico tipo primitivo que puede conformar con un tipo clase
+            // es null
+            if (this.getTypeName().equals("null")) {
+                return true;
+            }
+            // Un tipo primitivo no puede conformar con uno de tipo clase
+            return false;
+        }
 
         ClassEntry subtypeClass = symbolTable.getClassEntry(type.getTypeName());
         ClassEntry supertypeClass = symbolTable.getClassEntry(this.getTypeName());
         String subtypeName = subtypeClass.getName();
+       
         String supertypeName = supertypeClass.getName();
 
         if (subtypeName.equals("Object") && (supertypeName.equals("Object"))) {
