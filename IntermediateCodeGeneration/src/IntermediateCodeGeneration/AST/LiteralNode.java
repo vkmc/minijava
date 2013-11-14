@@ -55,6 +55,9 @@ public class LiteralNode extends PrimaryNode {
                 ICG.GEN(".CODE");
                 ICG.GEN("PUSH 0", "Apilamos 'false'");
             }
+        } else {
+             ICG.GEN(".CODE");
+             ICG.GEN("PUSH " + literal.getLexeme());
         }
 
 //        if (expressionType.getTypeName().equals("String")) {
