@@ -126,6 +126,7 @@ public class AssignNode extends SentenceNode {
             } else if (currentMethodEntry.getParameterEntry(id.getLexeme()) != null) {
                 // el offset de una variable local comienza en 0 y decrece
                 int parameterOffset = currentMethodEntry.getParameterEntry(id.getLexeme()).getOffset();
+                System.out.println(parameterOffset + 3);
                 ICG.GEN("STORE", parameterOffset, "Asignacion. El lado izquierdo es un parametro del metodo '" + currentService + "'");
             } else if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null) {
                 ICG.GEN("LOAD", 3, "Asignacion. Apilamos THIS");
@@ -143,7 +144,7 @@ public class AssignNode extends SentenceNode {
             } else if (currentConstructorEntry.getParameterEntry(id.getLexeme()) != null) {
                 // el offset de una variable local comienza en 0 y decrece
                 int parameterOffset = currentConstructorEntry.getParameterEntry(id.getLexeme()).getOffset();
-                ICG.GEN("STORE", parameterOffset, "Asignacion. El lado izquierdo es un parametro del metodo '" + currentService + "'");
+                ICG.GEN("STORE", parameterOffset + 3, "Asignacion. El lado izquierdo es un parametro del metodo '" + currentService + "'");
             } else if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null) {
                 ICG.GEN("LOAD", 3, "Asignacion. Apilamos THIS");
                 ICG.GEN("SWAP", "Asignacion. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");
