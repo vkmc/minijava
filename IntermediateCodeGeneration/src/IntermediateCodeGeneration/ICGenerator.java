@@ -89,13 +89,13 @@ public class ICGenerator {
                 + "L_MET_System_printCln, L_MET_System_printIln, L_MET_System_printSln ");
 
         GEN(".CODE");
-        GEN("PUSH L_SIMPLE_INIT_HEAP", "Inicializamos el heap");
+        GEN("PUSH L_SIMPLE_INIT_HEAP");
         GEN("CALL");
 
         // Main method.
         String mainClass = symbolTable.getMainClass();
-        GEN("RMEM", 1, "Reservamos memoria para el this");
-        GEN("PUSH L_MET_" + mainClass + "_main", "Apilamos el label del main de la Clase Principal del Programa"); //PUSH VT_A (Si A es la clase Ppal del programa)
+        GEN("RMEM", 1);
+        GEN("PUSH L_MET_" + mainClass + "_main");
         GEN("CALL");
         GEN("HALT");
 
@@ -212,19 +212,19 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // Simple malloc.
-        GEN("L_SIMPLE_MALLOC: LOADFP", "Inicializacion unidad");
+        GEN("L_SIMPLE_MALLOC: LOADFP");
         GEN("LOADSP");
-        GEN("STOREFP", "Finaliza inicializacion del RA");
-        GEN("LOADHL", "hl");
-        GEN("DUP", "hl");
-        GEN("PUSH", 1, "1");
-        GEN("ADD", "hl+1");
-        GEN("STORE", 4, "Guarda resultado (puntero a la base del bloque)");
-        GEN("LOAD", 3, "Carga cantidad de celdas a alojar (parametro) ");
-        GEN("ADD");
-        GEN("STOREHL", "Mueve el heap limit (hl)");
         GEN("STOREFP");
-        GEN("RET", 1, "Retorna eliminando el parametro");
+        GEN("LOADHL");
+        GEN("DUP");
+        GEN("PUSH", 1);
+        GEN("ADD");
+        GEN("STORE", 4);
+        GEN("LOAD", 3);
+        GEN("ADD");
+        GEN("STOREHL");
+        GEN("STOREFP");
+        GEN("RET", 1);
 
         // Simple init heap.
         GEN("L_SIMPLE_INIT_HEAP: RET", 0, "Inicializacion simplificada del .heap");
