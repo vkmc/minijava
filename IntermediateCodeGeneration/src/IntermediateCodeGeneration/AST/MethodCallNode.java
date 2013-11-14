@@ -97,12 +97,12 @@ public class MethodCallNode extends PrimaryNode {
         }
 
         MethodEntry methodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(idName);
-        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
-
+        MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);      
+        
         if (methodEntry == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el metodo '" + idName + "' en la clase " + currentClass + ".");
-        } else if (methodEntry.getModifier().equals("dynamic") && currentMethodEntry.getModifier().equals("static")) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede hacerse una invocacion al metodo dinamico '" + idName + "' en la clase " + currentClass + " en el contexto del metodo estatico '" + currentService + "'.");
+        } else if (methodEntry.getModifier().equals("dynamic") && currentMethodEntry != null && currentMethodEntry.getModifier().equals("static")) {                
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede hacerse una invocacion al metodo dinamico '" + idName + "' en la clase " + currentClass + " en el contexto del metodo estatico '" + currentService + "'.");
         } else {
             idType = symbolTable.getClassEntry(currentClass).getMethodEntry(idName).getReturnType();
             setExpressionType(idType);
