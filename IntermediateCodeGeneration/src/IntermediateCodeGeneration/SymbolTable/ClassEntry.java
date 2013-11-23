@@ -28,6 +28,7 @@ public class ClassEntry {
     private SymbolTable symbolTable;
     private ICGenerator ICG;
     private int instanceVariablesCount; // cantidad de variables de instancia en total (contando heredadas)
+    private int classNumber; 
 
     public ClassEntry(String className, SymbolTable symbolTable, int lineNumber) {
         this.className = className;
@@ -378,9 +379,9 @@ public class ClassEntry {
     private void initVT() {
         ICG.GEN(".DATA");
         if (methodsTable.isEmpty()) {
-            ICG.GEN("VT_" + className + ": NOP");
+            ICG.GEN("VT_" + className + classNumber + ": NOP");
         } else {
-            String DWInstruction = "VT_" + className + ": DW ";
+            String DWInstruction = "VT_" + className + classNumber + ": DW ";
             Collection<MethodEntry> methods = methodsTable.values();
             for (MethodEntry aMethod : methods) {
                 DWInstruction += "L_MET_" + aMethod.getClassName() + "_" + aMethod.getName() + ", ";
@@ -390,4 +391,8 @@ public class ClassEntry {
             ICG.GEN(DWInstruction);
         }
     }
+    
+    public void setClassNumber(int n) {
+        classNumber = n;
+    } 
 }

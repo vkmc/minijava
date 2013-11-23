@@ -21,6 +21,7 @@ public class SymbolTable {
     private LinkedHashMap<String, ClassEntry> controlledClasses;
     private ICGenerator ICG;
     private String currentClass, currentService, mainClass;
+    private int lastClassNumber;
 
     /**
      * Constructor de la tabla de simbolos Crea las estructuras e inicializa los
@@ -31,6 +32,7 @@ public class SymbolTable {
         controlledClasses = new LinkedHashMap<>();
         currentClass = null;
         currentService = null;
+        lastClassNumber = 0;
     }
 
     // Inicializacion
@@ -48,7 +50,8 @@ public class SymbolTable {
     private void addClassObject() {
         ClassEntry Object = new ClassEntry("Object", this, 0);
         Object.setParent(null); // El padre de Object es null
-
+        Object.setClassNumber(lastClassNumber);
+        lastClassNumber++;
         classTable.put("Object", Object);
 
         controlledClasses.put("Object", Object);
@@ -60,7 +63,8 @@ public class SymbolTable {
     private void addClassSystem() {
         ClassEntry System = new ClassEntry("System", null, 0);
         System.setParent("Object");
-
+        System.setClassNumber(lastClassNumber);
+        lastClassNumber++;
         classTable.put("System", System);
 
 
@@ -123,6 +127,8 @@ public class SymbolTable {
      */
     public void addClassEntry(String className, int lineNumber) {
         ClassEntry aClass = new ClassEntry(className, this, lineNumber);
+        aClass.setClassNumber(lastClassNumber);
+        lastClassNumber++;
         classTable.put(className, aClass);
     }
 

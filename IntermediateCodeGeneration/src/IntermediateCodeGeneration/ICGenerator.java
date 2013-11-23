@@ -80,10 +80,10 @@ public class ICGenerator {
         GEN(".DATA");
 
         // Object class doesn't have methods so it isn't necessary to create a VT for it.
-        GEN("VT_Object: NOP");
+        GEN("VT_Object0: NOP");
 
         // System class VT.
-        GEN("VT_System: DW L_MET_System_Ctor, L_MET_System_read, "
+        GEN("VT_System1: DW L_MET_System_Ctor, L_MET_System_read, "
                 + "L_MET_System_printI, L_MET_System_printC, L_MET_System_printB, "
                 + "L_MET_System_printS, L_MET_System_println, L_MET_System_printBln, "
                 + "L_MET_System_printCln, L_MET_System_printIln, L_MET_System_printSln ");
