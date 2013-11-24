@@ -26,6 +26,7 @@ public class SemanticAnalyzer {
         declarationCheck();
         ICG.setup(symbolTable);
         sentencesCheck();
+        //symbolTable.printOffsets();
         ICG.generateOutput();
     }
 

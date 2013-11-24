@@ -109,25 +109,27 @@ public class CallNode extends PrimaryNode {
         String currentClass = symbolTable.getCurrentClass();
         String callerTypeName = callerType.getTypeName();
         Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(callerTypeName).getMethodEntry(id.getLexeme()).getParameters().values();
-        int index = 0, counter = 1;
+        
 
         if (formalArgs.size() != actualArgs.size()) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
-
+        
+        int index = 0;
         for (ParameterEntry formalArg : formalArgs) {
             actualArgs.get(index).checkNode();
             if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType())) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + counter + ") no conforma con el tipo del argumento formal."
-                        + " El tipo del argumento actual es " + actualArgs.get(counter).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
+                int position = index + 1;
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + position + ") no conforma con el tipo del argumento formal."
+                        + " El tipo del argumento actual es " + actualArgs.get(index).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
             }
             index++;
-            counter++;
         }
     }
 
     @Override
     public void generateCode() throws SemanticException {
+       
         // Los controles sobre el metodo se realizan durante el checkNode()
         String currentClass = symbolTable.getCurrentClass();
 
@@ -161,6 +163,7 @@ public class CallNode extends PrimaryNode {
             }
 
             int offsetId = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(id.getLexeme()).getOffset();
+            System.out.println(id.getLexeme() + " " + offsetId + " caller type: " + callerType.getTypeName());
             ICG.GEN("LOADREF", offsetId, "CallNode. Recuperamos la direccion del metodo '" + id.getLexeme() + "'.");
             ICG.GEN("CALL", "CallNode. Llamamos al metodo '" + id.getLexeme() + "'.");
         }

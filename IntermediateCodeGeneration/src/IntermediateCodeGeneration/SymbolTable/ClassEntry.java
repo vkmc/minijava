@@ -402,5 +402,6 @@ public class ClassEntry {
     
     public void setClassNumber(int n) {
         classNumber = n;
-    } 
+    }
 }
+
