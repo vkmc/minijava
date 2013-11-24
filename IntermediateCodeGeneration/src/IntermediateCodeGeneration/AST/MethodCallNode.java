@@ -1,6 +1,7 @@
 package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
+import IntermediateCodeGeneration.SymbolTable.ClassEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.MethodEntry;
@@ -188,7 +189,8 @@ public class MethodCallNode extends PrimaryNode {
         }
 
         if (!currentClass.equals(id.getLexeme()) && symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getModifier().equals("static")) {
-            ICG.GEN("PUSH VT_" + currentClass);
+            ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
+            ICG.GEN("PUSH VT_" + currentClass + classEntry.getClassNumber());
         } else {
             ICG.GEN("DUP", "MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + currentMethod + "'.");
             ICG.GEN("LOADREF", 0, "MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");

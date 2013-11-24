@@ -466,4 +466,8 @@ public class SymbolTable {
     public void setICG(ICGenerator ICG) {
         this.ICG = ICG;
     }
+    
+    public int getLastClassNumber() {
+        return lastClassNumber;
+    }
 }

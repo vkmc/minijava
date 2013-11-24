@@ -1,6 +1,7 @@
 package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
+import IntermediateCodeGeneration.SymbolTable.ClassEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.ParameterEntry;
@@ -139,7 +140,8 @@ public class NewNode extends PrimaryNode {
         ICG.GEN("PUSH L_SIMPLE_MALLOC", "Apilamos la direccion de la rutina para reservar memoria en el heap");
         ICG.GEN("CALL", "Invocamos a la rutina en el tope de la pila (lsimple_malloc)");
         ICG.GEN("DUP", "Duplicamos la referencia al nuevo CIR para el STOREREF.");
-        ICG.GEN("PUSH VT_" + id.getLexeme(), "Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR");
+        ClassEntry classEntry = symbolTable.getClassEntry(id.getLexeme());
+        ICG.GEN("PUSH VT_" + id.getLexeme() + classEntry.getClassNumber(), "Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR");
         ICG.GEN("STOREREF", 0, "Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT");
         ICG.GEN("DUP", "Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila");
 
@@ -152,7 +154,8 @@ public class NewNode extends PrimaryNode {
         }
 
         ICG.GEN(".CODE");
-        ICG.GEN("PUSH L_CTOR_" + id.getLexeme() + "_" + id.getLexeme(), "Apilamos la direccion del constructor de la clase '" + id.getLexeme() + "'.");
+        classEntry = symbolTable.getClassEntry(id.getLexeme());
+        ICG.GEN("PUSH L_CTOR_" + id.getLexeme() + classEntry.getClassNumber() + "_" + id.getLexeme(), "Apilamos la direccion del constructor de la clase '" + id.getLexeme() + "'.");
         ICG.GEN("CALL", "Invocamos la rutina del constructor de la clase '" + id.getLexeme() + "'");
 
         Type callerType = idType;

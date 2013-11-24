@@ -123,6 +123,7 @@ public class ClassEntry {
      */
     public void setConstructorEntry(String constructorName, int lineNumber) {
         ConstructorEntry constructorEntry = new ConstructorEntry(constructorName, className, symbolTable, lineNumber);
+        constructorEntry.setClassNumber(classNumber);
         this.constructor = constructorEntry;
     }
 
@@ -133,6 +134,7 @@ public class ClassEntry {
     public void controlDefaultConstructor() {
         if (getConstructorEntry() == null) {
             constructor = new ConstructorEntry(className, className, symbolTable, 0);
+            constructor.setClassNumber(classNumber);
             constructor.setBody(new BlockNode(symbolTable, new LinkedList<SentenceNode>(), null));
         }
     }
@@ -146,6 +148,7 @@ public class ClassEntry {
      */
     public void addMethodEntry(String methodName, Type returnType, String modificator, int lineNumber) {
         MethodEntry method = new MethodEntry(methodName, className, modificator, returnType, symbolTable, lineNumber);
+        method.setClassNumber(classNumber);
         methodsTable.put(methodName, method);
     }
 
@@ -308,7 +311,7 @@ public class ClassEntry {
         if (instanceVariablesTable.get(parentMethodName) != null) {
             throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: La clase " + parent + " tiene un metodo con el mismo nombre que la variable de instancia " + parentMethodName + " de su subclase " + className + ".");
         }
-
+        parentMethod.setClassNumber(symbolTable.getClassEntry(parentMethod.getClassName()).getClassNumber()); // Seteo el número de clase del padre.
         methodsTable.put(parentMethodName, parentMethod);
     }
 
@@ -384,13 +387,18 @@ public class ClassEntry {
             String DWInstruction = "VT_" + className + classNumber + ": DW ";
             Collection<MethodEntry> methods = methodsTable.values();
             for (MethodEntry aMethod : methods) {
-                DWInstruction += "L_MET_" + aMethod.getClassName() + "_" + aMethod.getName() + ", ";
+                int methodClassNumber = symbolTable.getClassEntry(aMethod.getClassName()).getClassNumber();
+                DWInstruction += "L_MET_" + aMethod.getClassName() + methodClassNumber + "_" + aMethod.getName() + aMethod.getOffset() + ", ";
             }
 
             DWInstruction = DWInstruction.substring(0, DWInstruction.length() - 2); // Comma removal
             ICG.GEN(DWInstruction);
         }
     }
+    
+    public int getClassNumber() {
+        return classNumber;
+    } 
     
     public void setClassNumber(int n) {
         classNumber = n;

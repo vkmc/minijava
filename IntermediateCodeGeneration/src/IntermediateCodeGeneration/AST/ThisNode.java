@@ -16,8 +16,8 @@ public class ThisNode extends PrimaryNode {
 
     protected Token thisToken;
 
-    public ThisNode(SymbolTable systemTable, Token token) {
-        super(systemTable, token);
+    public ThisNode(SymbolTable symbolTable, Token token) {
+        super(symbolTable, token);
         thisToken = token;
     }
 

@@ -1,6 +1,7 @@
 package IntermediateCodeGeneration.AST;
 
 import IntermediateCodeGeneration.SemanticException;
+import IntermediateCodeGeneration.SymbolTable.ClassEntry;
 import IntermediateCodeGeneration.SymbolTable.ParameterEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
@@ -146,11 +147,12 @@ public class CallNode extends PrimaryNode {
         ICG.GEN(".CODE");
 
         if (isSystem) {
-            ICG.GEN("PUSH L_MET_System_" + id.getLexeme());
+            ICG.GEN("PUSH L_MET_System1_" + id.getLexeme());
             ICG.GEN("CALL", "Llamada al metodo '" + id.getLexeme() + "' de System.");
         } else {
             if (isStatic) {
-                ICG.GEN("PUSH VT_" + staticMethodClass);
+                ClassEntry classEntry = symbolTable.getClassEntry(staticMethodClass);
+                ICG.GEN("PUSH VT_" + staticMethodClass + classEntry.getClassNumber());
             }
 
             if (!VT) {

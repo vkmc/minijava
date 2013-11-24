@@ -24,6 +24,7 @@ public abstract class ServiceEntry {
     protected LinkedHashMap<String, ParameterEntry> parametersTable;
     protected LinkedHashMap<String, LocalVariableEntry> localVariablesTable;
     protected BlockNode body;
+    protected int classNumber;
 
     public ServiceEntry(String serviceName, String className, SymbolTable symbolTable, int lineNumber) {
         this.serviceName = serviceName;
@@ -204,10 +205,10 @@ public abstract class ServiceEntry {
 
             if (serviceName.equals(className)) {
                 ICG.GEN("; INICIALIZAMOS EL CI DEL CONSTRUCTOR '" + serviceName + "' DE LA CLASE '" + className + "'");
-                ICG.GEN("L_CTOR_" + className + "_" + serviceName + ": LOADFP", "Guardamos el ED al RA llamador");
+                ICG.GEN("L_CTOR_" + className + classNumber + "_" + serviceName + ": LOADFP", "Guardamos el ED al RA llamador");
             } else {
                 ICG.GEN("; INICIALIZAMOS EL CI DEL METODO '" + serviceName + "' DE LA CLASE '" + className + "'");
-                ICG.GEN("L_MET_" + className + "_" + serviceName + ": LOADFP", "Guardamos el ED al RA llamador");
+                ICG.GEN("L_MET_" + className + classNumber + "_" + serviceName + offset + ": LOADFP", "Guardamos el ED al RA llamador");
             }
 
             ICG.GEN("LOADSP", "Apilamos la locación donde empieza el RA de la unidad");
@@ -230,4 +231,12 @@ public abstract class ServiceEntry {
             ICG.GEN("RET", parametersTable.size() + 1, "Retornamos de la unidad");
         }
     }
+    
+    public int getClassNumber() {
+        return classNumber;
+    } 
+    
+    public void setClassNumber(int n) {
+        classNumber = n;
+    } 
 }
