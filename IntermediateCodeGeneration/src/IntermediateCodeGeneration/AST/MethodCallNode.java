@@ -172,20 +172,20 @@ public class MethodCallNode extends PrimaryNode {
         String currentMethod = id.getLexeme();
 
         ICG.GEN(".CODE");
-        ICG.GEN("LOAD", 3, "Apilamos el THIS para invocar al metodo '" + currentMethod + "'");
+        ICG.GEN("LOAD", 3, "MethodCallNode. Apilamos el THIS para invocar al metodo '" + currentMethod + "'");
 
         Type returnType = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType();
         String returnTypeName = returnType.getTypeName();
 
         if (!returnTypeName.equals("void")) {
-            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
-            ICG.GEN("SWAP", "Acomodamos el THIS haciendo un SWAP con RETVAL.");
+            ICG.GEN("RMEM", 1, "MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+            ICG.GEN("SWAP", "MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL.");
         }
 
         for (ExpressionNode actualArg : actualArgs) {
             actualArg.setICG(ICG);
             actualArg.generateCode();
-            ICG.GEN("SWAP", "Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
+            ICG.GEN("SWAP", "MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
         }
 
         if (!currentClass.equals(id.getLexeme()) && symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getModifier().equals("static")) {

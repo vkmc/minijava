@@ -91,17 +91,17 @@ public class ForNode extends SentenceNode {
         if (currentServiceEntry.getLocalVariableEntry(incrementValue.getLexeme()) != null) {
             // el offset de una variable local comienza en 0 y decrece
             int localVariableOffset = currentServiceEntry.getLocalVariableEntry(incrementValue.getLexeme()).getOffset();
-            ICG.GEN("STORE", localVariableOffset, "For. Asignacion. El lado izquierdo es una variable local del metodo '" + currentService + "'");
+            ICG.GEN("STORE", localVariableOffset, "ForNode. El lado izquierdo es una variable local del metodo '" + currentService + "'");
         } else if (currentServiceEntry.getParameterEntry(incrementValue.getLexeme()) != null) {
             // el offset de una variable local comienza en 0 y decrece
             int parameterOffset = currentServiceEntry.getLocalVariableEntry(incrementValue.getLexeme()).getOffset();
-            ICG.GEN("STORE", parameterOffset + 3, "For. Asignacion. El lado izquierdo es un parametro del metodo '" + currentService + "'");
+            ICG.GEN("STORE", parameterOffset + 3, "ForNode. El lado izquierdo es un parametro del metodo '" + currentService + "'");
         } else if (currentClassEntry.getInstanceVariableEntry(incrementValue.getLexeme()) != null) {
-            ICG.GEN("LOAD", 3, "Apilamos THIS");
-            ICG.GEN("SWAP", "Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");
+            ICG.GEN("LOAD", 3, "ForNode. Apilamos THIS");
+            ICG.GEN("SWAP", "ForNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");
 
             int offsetInstanceVariable = currentClassEntry.getInstanceVariableEntry(incrementValue.getLexeme()).getOffset();
-            ICG.GEN("STOREREF", offsetInstanceVariable, "For. Asignacion . El lado izquierdo es una variable de instancia de la clase '" + currentClass + "'.");
+            ICG.GEN("STOREREF", offsetInstanceVariable, "ForNode. El lado izquierdo es una variable de instancia de la clase '" + currentClass + "'.");
         }
 
         ICG.GEN("JUMP L_COND_FOR_" + label + "_" + symbolTable.getCurrentService() + "_" + symbolTable.getCurrentClass());

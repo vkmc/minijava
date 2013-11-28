@@ -41,6 +41,6 @@ public class SemanticAnalyzer {
 
     private void sentencesCheck() throws SemanticException {
         symbolTable.setICG(ICG);
-        symbolTable.sentenceCheck();
+        symbolTable.sentencesCheck();
     }
 }

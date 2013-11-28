@@ -262,7 +262,7 @@ public class IdMethodCallNode extends PrimaryNode {
             // es un parametro del metodo actual
             idType = currentServiceParameters.get(idName).getType();
             int parameterOffset = currentServiceParameters.get(idName).getOffset();
-            ICG.GEN("LOAD", parameterOffset + 3, "Cargamos el parametro '" + idName + "'.");
+            ICG.GEN("LOAD", parameterOffset + 3, "IdMethodCallNode. Cargamos el parametro '" + idName + "'.");
             // siempre es +3
             // puntero de retorno, enlace dinamico y this
             return;
@@ -270,7 +270,7 @@ public class IdMethodCallNode extends PrimaryNode {
             // es una variable local del metodo actual
             idType = currentServiceLocalVariables.get(idName).getType();
             int localVariableOffset = currentServiceLocalVariables.get(idName).getOffset();
-            ICG.GEN("LOAD", localVariableOffset, "Cargamos la variable local '" + idName + "'.");
+            ICG.GEN("LOAD", localVariableOffset, "IdMethodCallNode.Cargamos la variable local '" + idName + "'.");
             return;
         }
 
@@ -281,8 +281,8 @@ public class IdMethodCallNode extends PrimaryNode {
             // el control de si es un metodo estatico se realiza en el checkNode
             idType = currentClassInstanceVariables.get(idName).getType();
             int instanceVariableOffset = currentClassInstanceVariables.get(idName).getOffset();
-            ICG.GEN("LOAD", 3, "Apilamos el THIS para poder acceder al CIR.");
-            ICG.GEN("LOADREF", instanceVariableOffset, "Cargamos la variable de instancia '" + idName + "'.");
+            ICG.GEN("LOAD", 3, "IdMethodCallNode. Apilamos el THIS para poder acceder al CIR.");
+            ICG.GEN("LOADREF", instanceVariableOffset, "IdMethodCallNode. Cargamos la variable de instancia '" + idName + "'.");
         }
 
         if (!checkClasses) {
@@ -295,7 +295,7 @@ public class IdMethodCallNode extends PrimaryNode {
             // es una clase
             Type aType = new ClassType(idName, symbolTable);
             idType = aType;
-            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el this ficticio");
+            ICG.GEN("RMEM", 1, "IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio");
             staticMethod = true; // es una invocacion a un metodo estatico
         }
     }

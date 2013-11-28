@@ -215,7 +215,8 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // Simple malloc.
-        GEN("L_SIMPLE_MALLOC: LOADFP");
+        GEN("L_SIMPLE_MALLOC: NOP");
+        GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
         GEN("LOADHL");

@@ -65,14 +65,14 @@ public class ReturnExpNode extends ReturnNode {
         ICG.GEN("; Retorno de expresion del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
         offsetRet = offsetRet + 3; // parametros, variables locales, puntero de retorno, enlace dinamico y this.
 
-        ICG.GEN("STORE", offsetRet, "Almacenamos el retorno del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+        ICG.GEN("STORE", offsetRet, "ReturnExpNode. Almacenamos el retorno del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
 
         if (localVariablesCount > 0) {
             // El metodo tiene variables locales
-            ICG.GEN("FMEM", localVariablesCount, "Liberamos el espacio usado por las variables locales del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+            ICG.GEN("FMEM", localVariablesCount, "ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
         }
 
-        ICG.GEN("STOREFP", "Actualizamos el FP para que apunte al RA del llamador");
-        ICG.GEN("RET", parametersCount + 1, "Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+        ICG.GEN("STOREFP", "ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador");
+        ICG.GEN("RET", parametersCount + 1, "ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
     }
 }

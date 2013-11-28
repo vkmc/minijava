@@ -61,10 +61,10 @@ public class ReturnNode extends SentenceNode {
 
         if (localVariablesCount > 0) {
             // El metodo tiene variables locales
-            ICG.GEN("FMEM", localVariablesCount, "Liberamos el espacio usado por las variables locales del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+            ICG.GEN("FMEM", localVariablesCount, "ReturnNode. Liberamos el espacio usado por las variables locales del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
         }
 
-        ICG.GEN("STOREFP", "Actualizamos el FP para que apunte al RA del llamador");
-        ICG.GEN("RET", parametersCount + 1, "Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
+        ICG.GEN("STOREFP", "ReturnNode. Actualizamos el FP para que apunte al RA del llamador");
+        ICG.GEN("RET", parametersCount + 1, "ReturnNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
     }
 }

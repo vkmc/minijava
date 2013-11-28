@@ -39,6 +39,6 @@ public class ThisNode extends PrimaryNode {
     @Override
     public void generateCode() throws SemanticException {
         ICG.GEN(".CODE");
-        ICG.GEN("LOAD", 3, "Apilamos THIS");
+        ICG.GEN("LOAD", 3, "ThisNode. Apilamos THIS");
     }
 }

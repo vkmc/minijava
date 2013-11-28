@@ -132,31 +132,31 @@ public class NewNode extends PrimaryNode {
     @Override
     public void generateCode() throws SemanticException {
         ICG.GEN(".CODE");
-        ICG.GEN("RMEM", 1, "Llamada al constructor de la clase '" + id.getLexeme() + "'. Se reserva memoria para la referencia al nuevo CIR");
+        ICG.GEN("RMEM", 1, "NewNode. Llamada al constructor de la clase '" + id.getLexeme() + "'. Se reserva memoria para la referencia al nuevo CIR");
 
         int instanceVariablesCount = symbolTable.getClassEntry(id.getLexeme()).getInstanceVariablesCount() + 1;
 
-        ICG.GEN("PUSH", instanceVariablesCount, "Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT.");
-        ICG.GEN("PUSH L_SIMPLE_MALLOC", "Apilamos la direccion de la rutina para reservar memoria en el heap");
-        ICG.GEN("CALL", "Invocamos a la rutina en el tope de la pila (lsimple_malloc)");
-        ICG.GEN("DUP", "Duplicamos la referencia al nuevo CIR para el STOREREF.");
+        ICG.GEN("PUSH", instanceVariablesCount, "NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT.");
+        ICG.GEN("PUSH L_SIMPLE_MALLOC", "NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap");
+        ICG.GEN("CALL", "NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc)");
+        ICG.GEN("DUP", "NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF.");
         ClassEntry classEntry = symbolTable.getClassEntry(id.getLexeme());
-        ICG.GEN("PUSH VT_" + id.getLexeme() + classEntry.getClassNumber(), "Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR");
-        ICG.GEN("STOREREF", 0, "Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT");
-        ICG.GEN("DUP", "Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila");
+        ICG.GEN("PUSH VT_" + id.getLexeme() + classEntry.getClassNumber(), "NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR");
+        ICG.GEN("STOREREF", 0, "NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT");
+        ICG.GEN("DUP", "NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila");
 
         for (ExpressionNode actualArg : actualArgs) {
             actualArg.setICG(ICG);
             actualArg.generateCode();
 
             ICG.GEN(".CODE");
-            ICG.GEN("SWAP", "Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
+            ICG.GEN("SWAP", "NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
         }
 
         ICG.GEN(".CODE");
         classEntry = symbolTable.getClassEntry(id.getLexeme());
-        ICG.GEN("PUSH L_CTOR_" + id.getLexeme() + classEntry.getClassNumber() + "_" + id.getLexeme(), "Apilamos la direccion del constructor de la clase '" + id.getLexeme() + "'.");
-        ICG.GEN("CALL", "Invocamos la rutina del constructor de la clase '" + id.getLexeme() + "'");
+        ICG.GEN("PUSH L_CTOR_" + id.getLexeme() + classEntry.getClassNumber() + "_" + id.getLexeme(), "NewNode. Apilamos la direccion del constructor de la clase '" + id.getLexeme() + "'.");
+        ICG.GEN("CALL", "NewNode. Invocamos la rutina del constructor de la clase '" + id.getLexeme() + "'");
 
         Type callerType = idType;
         for (CallNode call : callList) {

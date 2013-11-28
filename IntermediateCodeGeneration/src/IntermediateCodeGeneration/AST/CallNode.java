@@ -136,21 +136,21 @@ public class CallNode extends PrimaryNode {
         ICG.GEN(".CODE");
 
         if (!callReturnType.getTypeName().equals("void")) {
-            ICG.GEN("RMEM", 1, "Reservamos una locacion de memoria para el resultado del metodo '" + id.getLexeme() + "' de la clase '" + currentClass + "'");
-            ICG.GEN("SWAP", "Acomodamos el THIS haciendo un SWAP con RETVAL");
+            ICG.GEN("RMEM", 1, "CallNode. Reservamos una locacion de memoria para el resultado del metodo '" + id.getLexeme() + "' de la clase '" + currentClass + "'");
+            ICG.GEN("SWAP", "CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL");
         }
 
         for (ExpressionNode expression : actualArgs) {
             expression.setICG(ICG);
             expression.generateCode();
-            ICG.GEN("SWAP", "Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
+            ICG.GEN("SWAP", "CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro.");
         }
 
         ICG.GEN(".CODE");
 
         if (isSystem) {
             ICG.GEN("PUSH L_MET_System1_" + id.getLexeme());
-            ICG.GEN("CALL", "Llamada al metodo '" + id.getLexeme() + "' de System.");
+            ICG.GEN("CALL", "CallNode. Llamada al metodo '" + id.getLexeme() + "' de System.");
         } else {
             if (isStatic) {
                 ClassEntry classEntry = symbolTable.getClassEntry(staticMethodClass);
