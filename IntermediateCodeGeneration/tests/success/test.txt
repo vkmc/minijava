@@ -1,0 +1,129 @@
+.DATA
+VT_Object: NOP
+VT_System: DW L_MET_System_Ctor, L_MET_System_read, L_MET_System_printI, L_MET_System_printC, L_MET_System_printB, L_MET_System_printS, L_MET_System_println, L_MET_System_printBln, L_MET_System_printCln, L_MET_System_printIln, L_MET_System_printSln 
+.CODE
+PUSH L_SIMPLE_INIT_HEAP  ; Inicializamos el heap 
+CALL
+RMEM 1  ; Reservamos memoria para el this 
+PUSH L_MET_A_main  ; Apilamos el label del main de la Clase Principal del Programa 
+CALL
+HALT
+L_MET_System_Ctor: NOP  ; Constructor de system 
+LOADFP
+LOADSP
+STOREFP
+STOREFP
+RET 1
+L_MET_System_read: NOP
+LOADFP
+LOADSP
+STOREFP
+READ
+STORE 4
+STOREFP
+RET 1
+L_MET_System_printI: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+STOREFP
+RET 2
+L_MET_System_printC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+STOREFP
+RET 2
+L_MET_System_printB: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+STOREFP
+RET 2
+L_MET_System_printS: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+STOREFP
+RET 2
+L_MET_System_println: NOP
+LOADFP
+LOADSP
+STOREFP
+PRNLN
+STOREFP
+RET 1
+L_MET_System_printBln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_printCln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_printIln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_printSln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+PRNLN
+STOREFP
+RET 2
+L_SIMPLE_MALLOC: LOADFP  ; Inicializacion unidad 
+LOADSP
+STOREFP  ; Finaliza inicializacion del RA 
+LOADHL  ; hl 
+DUP  ; hl 
+PUSH 1  ; 1 
+ADD  ; hl+1 
+STORE 4  ; Guarda resultado (puntero a la base del bloque) 
+LOAD 3  ; Carga cantidad de celdas a alojar (parametro)  
+ADD
+STOREHL  ; Mueve el heap limit (hl) 
+STOREFP
+RET 1  ; Retorna eliminando el parametro 
+L_SIMPLE_INIT_HEAP: RET 0  ; Inicializacion simplificada del .heap 
+.DATA
+VT_A: DW L_MET_A_main
+.CODE
+; Inicializacion del CI del constructor 'A' de clase 'A'
+L_CTOR_A_A: LOADFP  ; Se guarda el enlace dinamico al RA llamador 
+LOADSP  ; Se apila el lugar a donde comienza el RA de la unidad 
+STOREFP  ; Se actualiza el FP con el valor del tope de la pila 
+STOREFP ; actualizar el FP para que apunte al RA del llamador
+RET 1
+.CODE
+; Inicializacion del CI del metodo 'main' de clase 'A'
+L_MET_A_main: LOADFP  ; Se guarda el enlace dinamico al RA llamador 
+LOADSP  ; Se apila el lugar a donde comienza el RA de la unidad 
+STOREFP  ; Se actualiza el FP con el valor del tope de la pila 
+STOREFP ; actualizar el FP para que apunte al RA del llamador
+RET 1

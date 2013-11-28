@@ -6,6 +6,7 @@ import IntermediateCodeGeneration.ICGenerator;
 import IntermediateCodeGeneration.SemanticException;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -391,7 +392,8 @@ public class ClassEntry {
         } else {
             String DWInstruction = "VT_" + className + classNumber + ": DW ";
             Collection<MethodEntry> methods = methodsTable.values();
-            for (MethodEntry aMethod : methods) {
+            Collection<MethodEntry> orderedMethods = orderMethods(methods);
+            for (MethodEntry aMethod : orderedMethods) {
                 int methodClassNumber = symbolTable.getClassEntry(aMethod.getClassName()).getClassNumber();
                 DWInstruction += "L_MET_" + aMethod.getClassName() + methodClassNumber + "_" + aMethod.getName() + aMethod.getOffset() + ", ";
             }
@@ -407,6 +409,29 @@ public class ClassEntry {
     
     public void setClassNumber(int n) {
         classNumber = n;
+    }
+
+    private LinkedList<MethodEntry> orderMethods(Collection<MethodEntry> methods) {
+        LinkedList<MethodEntry> ordered = new LinkedList<>();
+        Iterator<MethodEntry> iterator = methods.iterator();
+
+        int offset = 0;
+        boolean added = false; // reinicia la iteracion e incrementa el indice
+        
+        while (offset < methods.size()) {
+            while (!added && iterator.hasNext()) {
+                MethodEntry aMethod = iterator.next();
+                if (aMethod.getOffset() == offset) {
+                    ordered.addLast(aMethod);
+                    added = true;
+                }
+            }
+            offset++;
+            iterator = methods.iterator();
+            added = false;
+        }
+    
+        return ordered;  
     }
 }
 
