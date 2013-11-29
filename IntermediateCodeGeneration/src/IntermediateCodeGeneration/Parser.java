@@ -453,22 +453,23 @@ public class Parser {
             return simpleSentence;
         } else if (lookAhead.equals("if")) {
             match("if");
+            Token current = currentToken; 
             match("(");
             ExpressionNode condition = Expresion();
             match(")");
             SentenceNode sentenceIf = Sentencia();
-            return Sentencia_(condition, sentenceIf);
+            return Sentencia_(condition, sentenceIf, current);
         } else if (lookAhead.equals("while")) {
-            Token current = currentToken;
             match("while");
+            Token current = currentToken;
             match("(");
             ExpressionNode condition = Expresion();
             match(")");
             SentenceNode sentence = Sentencia();
             return new WhileNode(symbolTable, condition, sentence, current);
         } else if (lookAhead.equals("for")) {
-            Token current = currentToken;
             match("for");
+            Token current = currentToken;
             match("(");
             AssignNode init = Asignacion();
             match(";");
@@ -483,7 +484,6 @@ public class Parser {
         } else if (lookAhead.equals("return")) {
             match("return");
             Token current = currentToken;
-            Token returnToken = currentToken;
             ExpressionNode expression = Sentencia__();
             match(";");
             if (expression == null) {
@@ -502,15 +502,15 @@ public class Parser {
         }
     }
 
-    private SentenceNode Sentencia_(ExpressionNode condition, SentenceNode sentenceIf) throws LexicalException, SyntacticException {
+    private SentenceNode Sentencia_(ExpressionNode condition, SentenceNode sentenceIf, Token current) throws LexicalException, SyntacticException {
         if (lookAhead.equals("else")) {
             match("else");
             SentenceNode sentenceElse = Sentencia();
-            return new IfThenElseNode(symbolTable, condition, sentenceIf, sentenceElse, currentToken);
+            return new IfThenElseNode(symbolTable, condition, sentenceIf, sentenceElse, current);
         } else {
             // Sentencia_ -> lambda
             // if-then sin else
-            return new IfThenNode(symbolTable, condition, sentenceIf, currentToken);
+            return new IfThenNode(symbolTable, condition, sentenceIf, current);
 
         }
     }
