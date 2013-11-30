@@ -1,0 +1,34 @@
+Se insertaran los siguientes animales: 
+15 -> Oso
+45 -> Perro
+56 -> Elefante
+1 -> Koala
+12 -> Leon
+543 -> Tigre
+156 -> Gato
+34 -> Leopardo
+26 -> Loro
+11 -> Tucan
+100 -> Pollo
+320 -> Caballo
+800 -> Vaca
+810 -> Toro
+901 -> Ardilla
+43 -> Coyote
+2 -> Lobo
+
+Obtener: 543 > Tigre
+Obtener: 11 > Tucan
+Obtener: 2 > Lobo
+Obtener: 810 > Toro
+Obtener: 901 > Ardilla
+
+Eliminar 543.
+Eliminar 320.
+Eliminar 901.
+
+Obtener: 543 > No se ha encontrado.
+Obtener: 901 > No se ha encontrado.
+Obtener: 320 > No se ha encontrado.
+Obtener: 43 > Coyote
+Obtener: 12 > Leon

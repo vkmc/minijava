@@ -50,8 +50,10 @@ public class SymbolTable {
     private void addClassObject() {
         ClassEntry Object = new ClassEntry("Object", this, 0);
         Object.setParent(null); // El padre de Object es null
-        Object.setClassNumber(lastClassNumber);
+        Object.setClassNumber(lastClassNumber); // Control para GCI
         lastClassNumber++;
+        Object.setConstructorEntry("Object", 0); // Constructor
+        
         classTable.put("Object", Object);
 
         controlledClasses.put("Object", Object);
@@ -63,11 +65,13 @@ public class SymbolTable {
     private void addClassSystem() {
         ClassEntry System = new ClassEntry("System", null, 0);
         System.setParent("Object");
-        System.setClassNumber(lastClassNumber);
+        System.setClassNumber(lastClassNumber); // Control para GCI
         lastClassNumber++;
+        
+        // System.setConstructorEntry("System", 0); // Constructor
+        
         classTable.put("System", System);
-
-
+        
         System.addMethodEntry("read", new IntegerType(), "static", 0);
 
         System.addMethodEntry("printB", new VoidType(), "static", 0);

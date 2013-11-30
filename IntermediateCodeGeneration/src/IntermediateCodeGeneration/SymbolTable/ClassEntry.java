@@ -29,7 +29,7 @@ public class ClassEntry {
     private SymbolTable symbolTable;
     private ICGenerator ICG;
     private int instanceVariablesCount; // cantidad de variables de instancia en total (contando heredadas)
-    private int classNumber; 
+    private int classNumber;
 
     public ClassEntry(String className, SymbolTable symbolTable, int lineNumber) {
         this.className = className;
@@ -287,14 +287,14 @@ public class ClassEntry {
                 redefinedMethod.compareParameters(parentMethod);
 
                 redefinedMethod.setOffset(parentMethod.getOffset());
-                System.out.println("Clase Actual: "+symbolTable.getCurrentClass()+" - Clase: "+className+" - Metodo: "+redefinedMethod.getName()+" - Offset: "+ parentMethod.getOffset());
+                System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + redefinedMethod.getName() + " - Offset: " + parentMethod.getOffset());
                 redefinedMethod.setParametersOffset();
                 redefinedMethod.setLocalVariablesOffset();
             } else {
                 // Se hereda el metodo
                 addInheritedMethod(parentMethod);
                 MethodEntry inheritedMethod = methodsTable.get(parentMethodName);
-                System.out.println("Clase Actual: "+symbolTable.getCurrentClass()+" - Clase: "+className+" - Metodo: "+inheritedMethod.getName()+" - Offset: "+ parentMethod.getOffset());
+                System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + inheritedMethod.getName() + " - Offset: " + parentMethod.getOffset());
                 inheritedMethod.setOffset(parentMethod.getOffset());
             }
         }
@@ -351,8 +351,7 @@ public class ClassEntry {
         int offset = 0;
         for (MethodEntry aMethod : methodsTable.values()) {
             if (aMethod.getOffset() == -1) {    // no es un metodo heredado (controlado en su respectiva clase)
-                System.out.println("Clase Actual: "+symbolTable.getCurrentClass()+" - Clase: "+className+" - Metodo: "+aMethod.getName()+" - Offset: "+(baseOffset+offset));
-                
+                System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + aMethod.getName() + " - Offset: " + (baseOffset + offset));
                 aMethod.setOffset(baseOffset + offset);
                 aMethod.setLocalVariablesOffset();
                 aMethod.setParametersOffset();
@@ -364,7 +363,7 @@ public class ClassEntry {
     public void setInstanceVariablesOffset(int baseOffset) {
         int offset = 1;
         for (InstanceVariableEntry anInstanceVariable : instanceVariablesTable.values()) {
-            System.out.println("Clase: "+className+" - Variable de instancia: "+anInstanceVariable.getVariableName()+" - Offset: "+ (baseOffset+offset));          
+            System.out.println("Clase: " + className + " - Variable de instancia: " + anInstanceVariable.getVariableName() + " - Offset: " + (baseOffset + offset));
             anInstanceVariable.setOffset(baseOffset + offset);
             offset++;
         }
@@ -388,25 +387,25 @@ public class ClassEntry {
     private void initVT() {
         ICG.GEN(".DATA");
         if (methodsTable.isEmpty()) {
-            ICG.GEN("VT_" + className + classNumber + ": NOP");
+            ICG.GEN("VT_" + className + "_" + classNumber + ": NOP");
         } else {
-            String DWInstruction = "VT_" + className + classNumber + ": DW ";
+            String DWInstruction = "VT_" + className + "_" + classNumber + ": DW ";
             Collection<MethodEntry> methods = methodsTable.values();
             Collection<MethodEntry> orderedMethods = orderMethods(methods);
             for (MethodEntry aMethod : orderedMethods) {
                 int methodClassNumber = symbolTable.getClassEntry(aMethod.getClassName()).getClassNumber();
-                DWInstruction += "L_MET_" + aMethod.getClassName() + methodClassNumber + "_" + aMethod.getName() + aMethod.getOffset() + ", ";
+                DWInstruction += "L_MET_" + aMethod.getClassName() + "_" + methodClassNumber + "_" + aMethod.getName() + "_" + aMethod.getOffset() + ", ";
             }
 
             DWInstruction = DWInstruction.substring(0, DWInstruction.length() - 2); // Comma removal
             ICG.GEN(DWInstruction);
         }
     }
-    
+
     public int getClassNumber() {
         return classNumber;
-    } 
-    
+    }
+
     public void setClassNumber(int n) {
         classNumber = n;
     }
@@ -417,7 +416,7 @@ public class ClassEntry {
 
         int offset = 0;
         boolean added = false; // reinicia la iteracion e incrementa el indice
-        
+
         while (offset < methods.size()) {
             while (!added && iterator.hasNext()) {
                 MethodEntry aMethod = iterator.next();
@@ -430,8 +429,7 @@ public class ClassEntry {
             iterator = methods.iterator();
             added = false;
         }
-    
-        return ordered;  
+
+        return ordered;
     }
 }
-
