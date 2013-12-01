@@ -70,7 +70,6 @@ public class ForNode extends SentenceNode {
         increment.generateCode();
 
         // Almaceno el valor del incremento
-
         Token incrementValue = init.getId();
 
         String currentClass = symbolTable.getCurrentClass();

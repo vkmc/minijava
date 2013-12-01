@@ -53,7 +53,7 @@ public class SymbolTable {
         Object.setClassNumber(lastClassNumber); // Control para GCI
         lastClassNumber++;
         Object.setConstructorEntry("Object", 0); // Constructor
-        
+
         classTable.put("Object", Object);
 
         controlledClasses.put("Object", Object);
@@ -67,11 +67,10 @@ public class SymbolTable {
         System.setParent("Object");
         System.setClassNumber(lastClassNumber); // Control para GCI
         lastClassNumber++;
-        
+
         // System.setConstructorEntry("System", 0); // Constructor
-        
         classTable.put("System", System);
-        
+
         System.addMethodEntry("read", new IntegerType(), "static", 0);
 
         System.addMethodEntry("printB", new VoidType(), "static", 0);
@@ -330,19 +329,18 @@ public class SymbolTable {
                 if (!typeExists(aType)) {
                     throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " de la variable de instancia " + anInstanceVar.getVariableName() + " no existe.");
                 }
-                if (anInstanceVar.getVariableName().equals(aClass.getName())) {
-                    throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: La clase '" + aClass.getName() + "' tiene una variable de instancia con su mismo nombre.");
-                }
-                for (MethodEntry aMethod :  aClass.getMethods().values()) {
-                   if (anInstanceVar.getVariableName().equals(aMethod.getName())) {
-                        throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: La variable de instancia '" + anInstanceVar.getVariableName() + "' de la clase '" + aClass.getName() + "' tiene el mismo nombre que un método de su clase.");
-                }
-            }
-                
+//                if (anInstanceVar.getVariableName().equals(aClass.getName())) {
+//                    throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: La clase '" + aClass.getName() + "' tiene una variable de instancia con su mismo nombre.");
+//                }
+//                for (MethodEntry aMethod :  aClass.getMethods().values()) {
+//                   if (anInstanceVar.getVariableName().equals(aMethod.getName())) {
+//                        throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: La variable de instancia '" + anInstanceVar.getVariableName() + "' de la clase '" + aClass.getName() + "' tiene el mismo nombre que un método de su clase.");
+//                   }
+//                }
+
             }
         }
     }
-    
 
     /**
      * Control de declaraciones: Parametros
@@ -365,7 +363,6 @@ public class SymbolTable {
                         throw new SemanticException("Linea: " + aParameter.getLineNumber() + " - Error semantico: El tipo " + aType.getTypeName() + " del parametro " + aParameter.getVariableName() + " en el constructor '" + aConstructor.getName() + "' no existe.");
                     }
                 }
-
 
                 Collection<MethodEntry> methods = aClass.getMethods().values();
 
@@ -430,7 +427,7 @@ public class SymbolTable {
         for (ClassEntry aClass : classes) {
             if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
                 currentClass = aClass.getName();
-                System.out.println("Current class: "+currentClass);
+                System.out.println("Current class: " + currentClass);
                 aClass.setICG(ICG);
                 aClass.checkClass();
             }
@@ -481,14 +478,14 @@ public class SymbolTable {
     public void setICG(ICGenerator ICG) {
         this.ICG = ICG;
     }
-    
+
     public int getLastClassNumber() {
         return lastClassNumber;
     }
-    
+
     public void printOffsets() {
-        for (ClassEntry aClass: classTable.values()) {
-            for (MethodEntry aMethod: aClass.getMethods().values()) {
+        for (ClassEntry aClass : classTable.values()) {
+            for (MethodEntry aMethod : aClass.getMethods().values()) {
                 System.out.println(aClass.getName() + " " + aMethod.getName() + " " + aMethod.getOffset());
             }
         }

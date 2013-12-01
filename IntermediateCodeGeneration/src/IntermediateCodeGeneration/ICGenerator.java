@@ -81,13 +81,13 @@ public class ICGenerator {
         GEN(".DATA");
 
         // Object class doesn't have methods so it isn't necessary to create a VT for it.
-        GEN("VT_Object0: NOP");
+        GEN("VT_Object_0: NOP");
 
         // System class VT.
-        GEN("VT_System1: DW L_MET_System1_Ctor, L_MET_System1_read, "
-                + "L_MET_System1_printI, L_MET_System1_printC, L_MET_System1_printB, "
-                + "L_MET_System1_printS, L_MET_System1_println, L_MET_System1_printBln, "
-                + "L_MET_System1_printCln, L_MET_System1_printIln, L_MET_System1_printSln ");
+        GEN("VT_System_1: DW L_MET_System_1_Ctor, L_MET_System_1_read, "
+                + "L_MET_System_1_printI, L_MET_System_1_printC, L_MET_System_1_printB, "
+                + "L_MET_System_1_printS, L_MET_System_1_println, L_MET_System_1_printBln, "
+                + "L_MET_System_1_printCln, L_MET_System_1_printIln, L_MET_System_1_printSln ");
 
         GEN(".CODE");
         GEN("PUSH L_SIMPLE_INIT_HEAP");
@@ -98,12 +98,12 @@ public class ICGenerator {
         ClassEntry mainClassEntry = symbolTable.getClassEntry(mainClass);
         int mainOffset = mainClassEntry.getMethodEntry("main").getOffset();
         GEN("RMEM", 1);
-        GEN("PUSH L_MET_" + mainClass + mainClassEntry.getClassNumber() + "_main" + mainOffset);
+        GEN("PUSH L_MET_" + mainClass + "_" + mainClassEntry.getClassNumber() + "_main_" + mainOffset);
         GEN("CALL");
         GEN("HALT");
 
         // System class constructor.
-        GEN("L_MET_System1_Ctor: NOP", "Constructor de system");
+        GEN("L_MET_System_1_Ctor: NOP", "Constructor de system");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -112,7 +112,7 @@ public class ICGenerator {
 
         // System methods.
         // System.read()
-        GEN("L_MET_System1_read: NOP");
+        GEN("L_MET_System_1_read: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -122,7 +122,7 @@ public class ICGenerator {
         GEN("RET", 1);
 
         // System.printi()
-        GEN("L_MET_System1_printI: NOP");
+        GEN("L_MET_System_1_printI: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -132,7 +132,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printc()
-        GEN("L_MET_System1_printC: NOP");
+        GEN("L_MET_System_1_printC: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -142,7 +142,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printb()
-        GEN("L_MET_System1_printB: NOP");
+        GEN("L_MET_System_1_printB: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -152,7 +152,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.prints()
-        GEN("L_MET_System1_printS: NOP");
+        GEN("L_MET_System_1_printS: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -162,7 +162,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.println()
-        GEN("L_MET_System1_println: NOP");
+        GEN("L_MET_System_1_println: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -171,7 +171,7 @@ public class ICGenerator {
         GEN("RET", 1);
 
         // System.printbln()
-        GEN("L_MET_System1_printBln: NOP");
+        GEN("L_MET_System_1_printBln: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -182,7 +182,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printcln()
-        GEN("L_MET_System1_printCln: NOP");
+        GEN("L_MET_System_1_printCln: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -193,7 +193,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printiln()
-        GEN("L_MET_System1_printIln: NOP");
+        GEN("L_MET_System_1_printIln: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");
@@ -204,7 +204,7 @@ public class ICGenerator {
         GEN("RET", 2);
 
         // System.printsln()
-        GEN("L_MET_System1_printSln: NOP");
+        GEN("L_MET_System_1_printSln: NOP");
         GEN("LOADFP");
         GEN("LOADSP");
         GEN("STOREFP");

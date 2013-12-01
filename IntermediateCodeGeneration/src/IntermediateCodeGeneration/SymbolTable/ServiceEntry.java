@@ -165,7 +165,7 @@ public abstract class ServiceEntry {
         int localVariableOffset = 0;
 
         for (LocalVariableEntry aLocalVariable : localVariables) {
-            System.out.println("Clase Actual: "+symbolTable.getCurrentClass()+" - Clase: " + className + " - Metodo: " + serviceName + " - Local variable: " + aLocalVariable.getVariableName() + " - Offset: " + localVariableOffset);
+            System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + serviceName + " - Local variable: " + aLocalVariable.getVariableName() + " - Offset: " + localVariableOffset);
 
             aLocalVariable.setOffset(localVariableOffset);
             localVariableOffset--;
@@ -180,7 +180,7 @@ public abstract class ServiceEntry {
         int parameterOffset = parameters.size();
 
         for (ParameterEntry aParameter : parametersTable.values()) {
-            System.out.println("Clase Actual: "+symbolTable.getCurrentClass()+" - Clase: " + className + " - Metodo: " + serviceName + " - Parametro: " + aParameter.getVariableName() + " - Offset: " + parameterOffset);
+            System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + serviceName + " - Parametro: " + aParameter.getVariableName() + " - Offset: " + parameterOffset);
 
             aParameter.setOffset(parameterOffset);
             parameterOffset--;
@@ -209,10 +209,10 @@ public abstract class ServiceEntry {
 
             if (serviceName.equals(className)) {
                 ICG.GEN("; INICIALIZAMOS EL CI DEL CONSTRUCTOR '" + serviceName + "' DE LA CLASE '" + className + "'");
-                ICG.GEN("L_CTOR_" + className + classNumber + "_" + serviceName + ": LOADFP", "Guardamos el ED al RA llamador");
+                ICG.GEN("L_CTOR_" + className + "_" + classNumber + "_" + serviceName + ": LOADFP", "Guardamos el ED al RA llamador");
             } else {
                 ICG.GEN("; INICIALIZAMOS EL CI DEL METODO '" + serviceName + "' DE LA CLASE '" + className + "'");
-                ICG.GEN("L_MET_" + className + classNumber + "_" + serviceName + offset + ": LOADFP", "Guardamos el ED al RA llamador");
+                ICG.GEN("L_MET_" + className + "_" + classNumber + "_" + serviceName + "_" + offset + ": LOADFP", "Guardamos el ED al RA llamador");
             }
 
             ICG.GEN("LOADSP", "Apilamos la locación donde empieza el RA de la unidad");

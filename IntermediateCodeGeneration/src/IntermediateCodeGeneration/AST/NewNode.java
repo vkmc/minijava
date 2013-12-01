@@ -86,7 +86,7 @@ public class NewNode extends PrimaryNode {
         if (formalArgs.size() != actualArgs.size()) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
-        
+
         int index = 0;
         for (ParameterEntry formalArg : formalArgs) {
             actualArgs.get(index).checkNode();
@@ -124,7 +124,6 @@ public class NewNode extends PrimaryNode {
 
         // si no surge ningun error durante el control de conformidad de tipos
         // se le asigna al nodo actual el tipo del ultimo callnode en la lista
-
         this.setExpressionType(currentType);
 
     }
@@ -141,7 +140,7 @@ public class NewNode extends PrimaryNode {
         ICG.GEN("CALL", "NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc)");
         ICG.GEN("DUP", "NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF.");
         ClassEntry classEntry = symbolTable.getClassEntry(id.getLexeme());
-        ICG.GEN("PUSH VT_" + id.getLexeme() + classEntry.getClassNumber(), "NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR");
+        ICG.GEN("PUSH VT_" + id.getLexeme() + "_" + classEntry.getClassNumber(), "NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR");
         ICG.GEN("STOREREF", 0, "NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT");
         ICG.GEN("DUP", "NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila");
 
@@ -155,7 +154,7 @@ public class NewNode extends PrimaryNode {
 
         ICG.GEN(".CODE");
         classEntry = symbolTable.getClassEntry(id.getLexeme());
-        ICG.GEN("PUSH L_CTOR_" + id.getLexeme() + classEntry.getClassNumber() + "_" + id.getLexeme(), "NewNode. Apilamos la direccion del constructor de la clase '" + id.getLexeme() + "'.");
+        ICG.GEN("PUSH L_CTOR_" + id.getLexeme() + "_" + classEntry.getClassNumber() + "_" + id.getLexeme(), "NewNode. Apilamos la direccion del constructor de la clase '" + id.getLexeme() + "'.");
         ICG.GEN("CALL", "NewNode. Invocamos la rutina del constructor de la clase '" + id.getLexeme() + "'");
 
         Type callerType = idType;

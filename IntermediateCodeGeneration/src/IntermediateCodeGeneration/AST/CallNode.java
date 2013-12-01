@@ -109,12 +109,11 @@ public class CallNode extends PrimaryNode {
         String currentClass = symbolTable.getCurrentClass();
         String callerTypeName = callerType.getTypeName();
         Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(callerTypeName).getMethodEntry(id.getLexeme()).getParameters().values();
-        
 
         if (formalArgs.size() != actualArgs.size()) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
-        
+
         int index = 0;
         for (ParameterEntry formalArg : formalArgs) {
             actualArgs.get(index).checkNode();
@@ -129,7 +128,7 @@ public class CallNode extends PrimaryNode {
 
     @Override
     public void generateCode() throws SemanticException {
-       
+
         // Los controles sobre el metodo se realizan durante el checkNode()
         String currentClass = symbolTable.getCurrentClass();
 
@@ -149,12 +148,12 @@ public class CallNode extends PrimaryNode {
         ICG.GEN(".CODE");
 
         if (isSystem) {
-            ICG.GEN("PUSH L_MET_System1_" + id.getLexeme());
+            ICG.GEN("PUSH L_MET_System_1_" + id.getLexeme());
             ICG.GEN("CALL", "CallNode. Llamada al metodo '" + id.getLexeme() + "' de System.");
         } else {
             if (isStatic) {
                 ClassEntry classEntry = symbolTable.getClassEntry(staticMethodClass);
-                ICG.GEN("PUSH VT_" + staticMethodClass + classEntry.getClassNumber());
+                ICG.GEN("PUSH VT_" + staticMethodClass + "_" + classEntry.getClassNumber());
             }
 
             if (!VT) {

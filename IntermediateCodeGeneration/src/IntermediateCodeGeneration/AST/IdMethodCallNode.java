@@ -182,7 +182,6 @@ public class IdMethodCallNode extends PrimaryNode {
 
         // si no surge ningun error durante el control de conformidad de tipos
         // se le asigna al nodo actual el tipo del ultimo callnode en la lista
-
         this.setExpressionType(currentType);
 
     }

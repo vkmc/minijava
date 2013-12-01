@@ -112,7 +112,7 @@ public class MethodEntry extends ServiceEntry {
             String currentParameterType = currentParameter.getType().getTypeName();
 
             if (!inheritedParameterType.equals(currentParameterType)) {
-                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: Los tipos de los parametros del metodo '" + aMethod.getName() + " de la clase padre '" + aMethod.getClassName() + "' son diferentes a los nombres de los parametros del metodo '" + serviceName + "' de la clase hija '" + className + ".\nEn la clase padre el parametro en la posicion " + counter + " del metodo es de tipo " + inheritedParameter.getType().getTypeName() + " y en la clase hija es de tipo " + currentParameter.getType().getTypeName() + ".");
+                throw new SemanticException("Linea: " + getLineNumber() + " - Error semantico: Los tipos de los parametros del metodo '" + aMethod.getName() + " de la clase padre '" + aMethod.getClassName() + "' son diferentes a los tipos de los parametros del metodo '" + serviceName + "' de la clase hija '" + className + ".\nEn la clase padre el parametro en la posicion " + counter + " del metodo es de tipo " + inheritedParameter.getType().getTypeName() + " y en la clase hija es de tipo " + currentParameter.getType().getTypeName() + ".");
             }
         }
     }

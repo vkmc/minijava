@@ -68,7 +68,6 @@ public class MethodCallNode extends PrimaryNode {
         controlFormalArgs();
 
         // control de llamadas
-
         Type callerType = idType;
         for (CallNode call : callList) {
             call.setCallerType(callerType);
@@ -119,7 +118,6 @@ public class MethodCallNode extends PrimaryNode {
     private void controlFormalArgs() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
         Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getParameters().values();
-        
 
         if (formalArgs.size() != actualArgs.size()) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
@@ -161,7 +159,6 @@ public class MethodCallNode extends PrimaryNode {
 
         // si no surge ningun error durante el control de conformidad de tipos
         // se le asigna al nodo actual el tipo del ultimo callnode en la lista
-
         this.setExpressionType(nextType);
 
     }
@@ -190,7 +187,7 @@ public class MethodCallNode extends PrimaryNode {
 
         if (!currentClass.equals(id.getLexeme()) && symbolTable.getClassEntry(currentClass).getMethodEntry(id.getLexeme()).getModifier().equals("static")) {
             ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
-            ICG.GEN("PUSH VT_" + currentClass + classEntry.getClassNumber());
+            ICG.GEN("PUSH VT_" + currentClass + "_" + classEntry.getClassNumber());
         } else {
             ICG.GEN("DUP", "MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo '" + currentMethod + "'.");
             ICG.GEN("LOADREF", 0, "MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT.");
