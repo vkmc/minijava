@@ -162,7 +162,7 @@ public class CallNode extends PrimaryNode {
             }
 
             int offsetId = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(id.getLexeme()).getOffset();
-            System.out.println(id.getLexeme() + " " + offsetId + " caller type: " + callerType.getTypeName());
+            // System.out.println(id.getLexeme() + " " + offsetId + " caller type: " + callerType.getTypeName());
             ICG.GEN("LOADREF", offsetId, "CallNode. Recuperamos la direccion del metodo '" + id.getLexeme() + "'.");
             ICG.GEN("CALL", "CallNode. Llamamos al metodo '" + id.getLexeme() + "'.");
         }

@@ -48,21 +48,24 @@ public class ClassType extends Type {
         ClassEntry subtypeClass = symbolTable.getClassEntry(type.getTypeName());
         ClassEntry supertypeClass = symbolTable.getClassEntry(this.getTypeName());
         String subtypeName = subtypeClass.getName();
-
+ 
         String supertypeName = supertypeClass.getName();
 
         if (subtypeName.equals("Object") && (supertypeName.equals("Object"))) {
             return true;
         }
 
-        while (!conforms && !subtypeName.equals("Object")) {
+        while (!conforms && subtypeClass != null) {
             // If the types are the same then it conforms.
             if (subtypeName.equals(supertypeName)) {
                 conforms = true;
             } else {
                 // If the types aren't the same, we check with the subtype's parent.
                 subtypeClass = symbolTable.getClassEntry(subtypeClass.getParent());
-                subtypeName = subtypeClass.getName();
+                
+                if (subtypeClass != null) {                
+                    subtypeName = subtypeClass.getName();
+                }
             }
         }
         return conforms;

@@ -423,11 +423,9 @@ public class SymbolTable {
      */
     public void sentencesCheck() throws SemanticException {
         Collection<ClassEntry> classes = classTable.values();
-        System.out.println("Entre al chequeo de sentencias");
         for (ClassEntry aClass : classes) {
             if (!aClass.getName().equals("Object") && !aClass.getName().equals("System")) {
                 currentClass = aClass.getName();
-                System.out.println("Current class: " + currentClass);
                 aClass.setICG(ICG);
                 aClass.checkClass();
             }
