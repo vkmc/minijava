@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         if (args.length != 2) {
             System.err.println("Cantidad de argumentos inválida.");
-            System.err.println("Uso: java -jar ICG.jar <IN_FILE> [<OUT_FILE>]");
+            System.err.println("Uso: java -jar IntermediateCodeGeneration.jar <IN_FILE> <OUT_FILE>");
             return;
         }
 

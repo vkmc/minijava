@@ -36,7 +36,7 @@ public class ReturnExpNode extends ReturnNode {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un constructor no puede tener un retorno.");
         }
 
-        if (!expression.getExpressionType().checkConformity(currentMethodEntry.getReturnType())) {
+        if (!currentMethodEntry.getReturnType().checkConformity(expression.getExpressionType())) {
             if (currentMethodEntry.getReturnType().getTypeName().equals("void")) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un metodo de tipo void no puede retornar un valor.");
             }
