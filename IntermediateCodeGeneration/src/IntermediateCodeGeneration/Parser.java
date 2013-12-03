@@ -117,6 +117,9 @@ public class Parser {
             match("extends");
             match("id");
             String parent = currentToken.getLexeme();
+            if (parent.equals("System")) {
+                throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Una clase no puede heredar de la clase System.");
+            }
             classEntry.setParent(parent);
             classEntry.setParentList(parent);
             symbolTable.controlCircularInheritance(classEntry);
@@ -162,6 +165,9 @@ public class Parser {
     private void Atributo(String from) throws LexicalException, SyntacticException, SemanticException {
         match("var");
         Type type = Tipo();
+        if (type.getTypeName().equals("System")) {
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: No se puede declarar una variable de tipo System.");
+        }
         ListaDecVars(from, type);
         if (!lookAhead.equals(";")) {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el terminador de la lista de variables ';'. Se encontro: '" + lookAhead.getToken() + "'.");
@@ -172,7 +178,9 @@ public class Parser {
     private void Metodo() throws LexicalException, SyntacticException, SemanticException {
         String modificator = ModMetodo();
         Type type = TipoMetodo();
-
+        if (type.getTypeName().equals("System")) {
+            throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: No se puede definir un metodo con tipo de retorno System.");
+        }
         match("id");
 
         String methodName = currentToken.getLexeme();

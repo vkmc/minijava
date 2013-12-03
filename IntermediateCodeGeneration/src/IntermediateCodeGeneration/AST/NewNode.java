@@ -64,6 +64,10 @@ public class NewNode extends PrimaryNode {
      */
     private void checkId() throws SemanticException {
         // debe ser un constructor
+        if (id.getLexeme().equals("System")) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No se puede crear una instancia de la clase System.");
+        }
+        
         if (symbolTable.isConstructor(id.getLexeme()) == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El constructor invocado no esta declarado.");
         }
