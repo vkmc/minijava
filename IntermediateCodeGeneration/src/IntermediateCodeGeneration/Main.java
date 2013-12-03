@@ -14,13 +14,19 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        if (args.length != 2) {
+        if ((args.length != 1) && (args.length != 2)) {
             System.err.println("Cantidad de argumentos inválida.");
             System.err.println("Uso: java -jar IntermediateCodeGeneration.jar <IN_FILE> <OUT_FILE>");
             return;
         }
-
-        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(args[0], args[1]);
+        
+        String outputFile;
+        if (args.length == 1) {
+            outputFile = args[0] + "CeIASM.txt";
+        } else {
+            outputFile = args[1];
+        }
+        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(args[0], outputFile);
         try {
             semanticAnalyzer.checkSemantics();
         } catch (SemanticException | SyntacticException | LexicalException exc) {
