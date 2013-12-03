@@ -29,9 +29,9 @@ public abstract class Type {
      * @return aTypeName
      */
     public String getTypeName() {
-        return typeName;
+        return typeName;        
     }
-
+ 
     public static boolean isPrimitiveType(Type aType) {
         String aTypeName = aType.getTypeName();
         return aTypeName.equals("boolean") || aTypeName.equals("char") || aTypeName.equals("int") || aTypeName.equals("String") || aTypeName.equals("void") || aTypeName.equals("null");

@@ -26,7 +26,7 @@ public class IfThenNode extends SentenceNode {
         condition.checkNode();
 
         if (!condition.getExpressionType().getTypeName().equals("boolean")) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La condicion de la sentencia if-then debe ser de tipo boolean. Se encontro una expresion de tipo " + condition.getExpressionType().getTypeName() + " .");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La condicion de la sentencia if-then debe ser de tipo boolean. Se encontro una expresion de tipo " + condition.getExpressionType().getTypeName() + ".");
         }
 
         sentenceIf.checkNode();

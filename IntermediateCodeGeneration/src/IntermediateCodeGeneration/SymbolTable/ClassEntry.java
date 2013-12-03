@@ -216,11 +216,11 @@ public class ClassEntry {
         MethodEntry main = methodsTable.get("main");
         if (main != null && main.getClassName().equals(className)) {
             if (!main.getModifier().equals("static")) {
-                throw new SemanticException("Linea: " + main.getLineNumber() + " - Error semantico: El metodo main debe ser estatico");
+                throw new SemanticException("Linea: " + main.getLineNumber() + " - Error semantico: El metodo main debe ser estatico.");
             }
 
             if (!main.getParameters().isEmpty()) {
-                throw new SemanticException("Linea: " + main.getLineNumber() + " - Error semantico: El metodo main no debe tener parametros");
+                throw new SemanticException("Linea: " + main.getLineNumber() + " - Error semantico: El metodo main no debe tener parametros.");
             }
         } else {
             return false;

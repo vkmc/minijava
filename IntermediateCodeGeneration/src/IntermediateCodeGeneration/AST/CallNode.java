@@ -95,7 +95,7 @@ public class CallNode extends PrimaryNode {
         } else if (symbolTable.isConstructor(id.getLexeme()) != null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede realizarse una llamada a un constructor.");
         } else {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El metodo invocado no esta declarado en clase " + callerTypeName);
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El metodo '"+ id.getLexeme() +"' no esta declarado en la clase " + callerTypeName + ".");
         }
     }
 

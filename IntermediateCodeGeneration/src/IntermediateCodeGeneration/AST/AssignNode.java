@@ -7,6 +7,7 @@ import IntermediateCodeGeneration.SymbolTable.InstanceVariableEntry;
 import IntermediateCodeGeneration.SymbolTable.LocalVariableEntry;
 import IntermediateCodeGeneration.SymbolTable.MethodEntry;
 import IntermediateCodeGeneration.SymbolTable.ParameterEntry;
+import IntermediateCodeGeneration.SymbolTable.ServiceEntry;
 import IntermediateCodeGeneration.SymbolTable.Type.Type;
 import IntermediateCodeGeneration.Token;
 import IntermediateCodeGeneration.SymbolTable.SymbolTable;
@@ -38,14 +39,27 @@ public class AssignNode extends SentenceNode {
     @Override
     public void checkNode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
-        String currentMethod = symbolTable.getCurrentService();
-
+        String currentService = symbolTable.getCurrentService();
+        
+        ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
+        MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentService);
+        ConstructorEntry currentConstructorEntry = currentClassEntry.getConstructorEntry();
+        ServiceEntry currentServiceEntry;
+        
         checkId();
         expression.checkNode();
+        
+        if (currentMethodEntry != null) {
+            currentServiceEntry = currentMethodEntry;
+        } else if (currentConstructorEntry != null) {
+            currentServiceEntry = currentConstructorEntry;
+        } else {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No esta definido el servicio '" + currentService + "' en la clase actual.");
+        }
 
-        if (symbolTable.getClassEntry(currentClass).getInstanceVariableEntry(id.getLexeme()) != null
-                || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getLocalVariableEntry(id.getLexeme()) != null
-                || symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getParameterEntry(id.getLexeme()) != null) {
+        if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null
+                || currentServiceEntry.getLocalVariableEntry(id.getLexeme()) != null
+                || currentServiceEntry.getParameterEntry(id.getLexeme()) != null) {
             if (!idType.checkConformity(expression.getExpressionType())) {
                 throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No puede asignarse una expresion de tipo " + expression.getExpressionType().getTypeName() + " a una variable de tipo " + idType.getTypeName() + ".");
             }
@@ -100,7 +114,7 @@ public class AssignNode extends SentenceNode {
             return;
         }
 
-        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre '" + idName + "' en la tabla de simbolos.");
+        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe la variable '" + idName + "' en la tabla de simbolos.");
     }
 
     @Override

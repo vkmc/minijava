@@ -96,7 +96,7 @@ public class Parser {
             symbolTable.addClassEntry(className, lineNumber);
             symbolTable.setCurrentClass(className);
         } else {
-            throw new SemanticException("Linea: " + currentToken.getLineNumber() + " - Error semantico: Ya existe una clase declarada con el nombre " + className);
+            throw new SemanticException("Linea: " + currentToken.getLineNumber() + " - Error semantico: Ya existe una clase declarada con el nombre " + className + ".");
         }
         Herencia();
         // el control de { lo hace Herencia()
@@ -181,11 +181,11 @@ public class Parser {
         ClassEntry classEntry = symbolTable.getClassEntry(currentClass);
 
         if (methodName.equals(currentClass)) {
-            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El metodo " + methodName + " no puede tener el mismo nombre que su clase.");
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: El metodo '" + methodName + "' no puede tener el mismo nombre que su clase.");
         } else if (classEntry.getInstanceVariableEntry(methodName) != null) {
-            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Existe una variable de instancia previamente declarada con el nombre " + methodName + " en la clase " + currentClass + ".");
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Existe una variable de instancia previamente declarada con el nombre '" + methodName + "' en la clase " + currentClass + ".");
         } else if (classEntry.getMethodEntry(methodName) != null) {
-            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Existe un metodo previamente declarado con el nombre " + methodName + " en la clase " + currentClass + ".");
+            throw new SemanticException("Linea: " + lookAhead.getLineNumber() + " - Error semantico: Existe un metodo previamente declarado con el nombre '" + methodName + "' en la clase " + currentClass + ".");
         } else {
             classEntry.addMethodEntry(methodName, type, modificator, lookAhead.getLineNumber());
         }
@@ -361,14 +361,14 @@ public class Parser {
             if (from.equals("class")) {
                 if (classEntry.getName().equals(variableName)) {
                     // La variable de instancia tiene el mismo nombre que la clase en la que se declara
-                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: La variable de instancia " + variableName + " no puede tener el mismo nombre que la clase en la que se declara.");
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: La variable de instancia '" + variableName + "' no puede tener el mismo nombre que la clase en la que se declara.");
 
                 }
 
                 if (classEntry.getMethods().get(variableName) != null) {
                     // La variable de instancia tiene el mismo nombre que un metodo
                     // previamente declarado en la misma clase
-                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe un metodo previamente declarado con el nombre " + variableName + " en la clase " + currentClass + ".");
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe un metodo previamente declarado con el nombre '" + variableName + "' en la clase " + currentClass + ".");
 
                 }
 
@@ -377,16 +377,16 @@ public class Parser {
                     // La variable de instancia no existe. Se crea.
                     classEntry.addInstanceVariableEntry(variableName, type, lineNumber);
                 } else {
-                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe una variable de instancia previamente declarada con el nombre " + variableName + " en la clase " + currentClass + ".");
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe una variable de instancia previamente declarada con el nombre '" + variableName + "' en la clase " + currentClass + ".");
                 }
             } else if (from.equals("method")) {
                 // Declaración de variable local.
                 String currentMethod = symbolTable.getCurrentService();
                 ServiceEntry serviceEntry = classEntry.getMethodEntry(currentMethod);
                 if (serviceEntry.getParameterEntry(variableName) != null) {
-                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe un parametro previamente declarado con el nombre " + variableName + " en el metodo " + currentMethod + " de la clase " + currentClass + ".");
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe un parametro previamente declarado con el nombre '" + variableName + "' en el metodo " + currentMethod + " de la clase " + currentClass + ".");
                 } else if (serviceEntry.getLocalVariableEntry(variableName) != null) {
-                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe una variable local previamente declarada con el nombre " + variableName + " en el metodo " + currentMethod + " de la clase " + currentClass + ".");
+                    throw new SemanticException("Linea: " + lineNumber + " - Error semantico: Existe una variable local previamente declarada con el nombre '" + variableName + "' en el metodo " + currentMethod + " de la clase " + currentClass + ".");
                 } else {
                     // La variable local no existe. Se crea.
                     serviceEntry.addLocalVariableEntry(variableName, type, lineNumber);

@@ -33,7 +33,7 @@ public class ReturnExpNode extends ReturnNode {
         MethodEntry currentMethodEntry = symbolTable.getClassEntry(currentClass).getMethodEntry(currentService);
 
         if (currentConstructorEntry.getName().equals(currentService)) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un constructor no puede tener un retorno.");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Un constructor no puede tener retorno.");
         }
 
         if (!currentMethodEntry.getReturnType().checkConformity(expression.getExpressionType())) {
