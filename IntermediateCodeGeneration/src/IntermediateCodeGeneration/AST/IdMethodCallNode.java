@@ -200,35 +200,32 @@ public class IdMethodCallNode extends PrimaryNode {
 
     private void generateCodeCalls() throws SemanticException {
         Type callerType = idType;
-        boolean firstCall = true;
-
+        
         for (CallNode call : callList) {
             call.setCallerType(callerType);
             call.setICG(ICG);
 
-            MethodEntry currentMethodCall = symbolTable.getClassEntry(idType.getTypeName()).getMethodEntry(call.getId().getLexeme());
+            MethodEntry currentMethodCall = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(call.getId().getLexeme());
 
-            if (firstCall && staticMethod) {
+            if (currentMethodCall.getModifier().equals("static")) {
+                staticMethod = true; // es una invocacion a un metodo estatico
+                ICG.GEN("RMEM", 1, "IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio");
+           
                 if (id.getLexeme().equals("System")) {
                     call.setSystem(true);
-                } else if (!symbolTable.getCurrentClass().equals(call.getId().getLexeme()) && currentMethodCall.getModifier().equals("dynamic")) {
-                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo estatico, el metodo '" + call.getId().getLexeme() + "' es dinamico.");
                 } else {
                     call.setVT(true);
-                    call.setStatic(true, id.getLexeme());
+                    call.setStatic(true, idType.getTypeName());
                     // VT de la clase actual para metodos estaticos
                 }
-            } else if (firstCall && !staticMethod) {
-                if (!symbolTable.getCurrentClass().equals(call.getId().getLexeme()) && currentMethodCall.getModifier().equals("static")) {
-                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Se esperaba la invocacion de un metodo dinamico, el metodo '" + call.getId().getLexeme() + "' es estatico.");
-                }
-            }
-
+            } 
+            
             call.generateCode();
+            
             call.setVT(false);
             call.setSystem(false);
+            staticMethod = false;
             callerType = call.getCallReturnType();
-            firstCall = false;
         }
     }
 
@@ -294,8 +291,6 @@ public class IdMethodCallNode extends PrimaryNode {
             // es una clase
             Type aType = new ClassType(idName, symbolTable);
             idType = aType;
-            ICG.GEN("RMEM", 1, "IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio");
-            staticMethod = true; // es una invocacion a un metodo estatico
         }
     }
 }

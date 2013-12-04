@@ -18,7 +18,6 @@ import java.util.LinkedList;
  */
 public class NewNode extends PrimaryNode {
 
-    // Llamadas? Como seria eso? Controlar!
     protected Token id;
     protected Type idType;
     protected LinkedList<ExpressionNode> actualArgs;
@@ -67,7 +66,7 @@ public class NewNode extends PrimaryNode {
         if (id.getLexeme().equals("System")) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No se puede crear una instancia de la clase System.");
         }
-        
+
         if (symbolTable.isConstructor(id.getLexeme()) == null) {
             throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El constructor invocado no esta declarado.");
         }
@@ -88,7 +87,7 @@ public class NewNode extends PrimaryNode {
         Collection<ParameterEntry> formalArgs = symbolTable.getClassEntry(idTypeName).getConstructorEntry().getParameters().values();
 
         if (formalArgs.size() != actualArgs.size()) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el metodo " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Las listas de argumentos actuales y formales para el constructor " + id.getLexeme() + " de la clase " + currentClass + " tienen diferente longitud.");
         }
 
         int index = 0;
@@ -96,8 +95,14 @@ public class NewNode extends PrimaryNode {
             actualArgs.get(index).checkNode();
             if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType())) {
                 int position = index + 1;
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + position + ") no conforma con el tipo del argumento formal."
-                        + " El tipo del argumento actual es " + actualArgs.get(index).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
+                String actualArgTypeName = actualArgs.get(index).getExpressionType().getTypeName();
+                if (actualArgTypeName.equals("null")) {
+                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al constructor '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + position + ") no conforma con el tipo del argumento formal."
+                            + " El argumento actual es " + actualArgs.get(index).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
+                } else {
+                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al constructor '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + position + ") no conforma con el tipo del argumento formal."
+                            + " El tipo del argumento actual es " + actualArgs.get(index).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
+                }
             }
             index++;
         }

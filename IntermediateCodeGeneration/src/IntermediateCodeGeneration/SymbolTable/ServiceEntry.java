@@ -165,8 +165,6 @@ public abstract class ServiceEntry {
         int localVariableOffset = 0;
 
         for (LocalVariableEntry aLocalVariable : localVariables) {
-            // System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + serviceName + " - Local variable: " + aLocalVariable.getVariableName() + " - Offset: " + localVariableOffset);
-
             aLocalVariable.setOffset(localVariableOffset);
             localVariableOffset--;
         }
@@ -180,8 +178,6 @@ public abstract class ServiceEntry {
         int parameterOffset = parameters.size();
 
         for (ParameterEntry aParameter : parametersTable.values()) {
-            // System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + serviceName + " - Parametro: " + aParameter.getVariableName() + " - Offset: " + parameterOffset);
-
             aParameter.setOffset(parameterOffset);
             parameterOffset--;
         }

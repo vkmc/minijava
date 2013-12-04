@@ -68,7 +68,8 @@ public class SymbolTable {
         System.setClassNumber(lastClassNumber); // Control para GCI
         lastClassNumber++;
 
-        // System.setConstructorEntry("System", 0); // Constructor
+        // System.setConstructorEntry("System", 0); // System no debe tener Constructor
+        
         classTable.put("System", System);
 
         System.addMethodEntry("read", new IntegerType(), "static", 0);
@@ -329,15 +330,6 @@ public class SymbolTable {
                 if (!typeExists(aType)) {
                     throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: El tipo '" + aType.getTypeName() + "' de la variable de instancia '" + anInstanceVar.getVariableName() + "' no existe.");
                 }
-//                if (anInstanceVar.getVariableName().equals(aClass.getName())) {
-//                    throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: La clase '" + aClass.getName() + "' tiene una variable de instancia con su mismo nombre.");
-//                }
-//                for (MethodEntry aMethod :  aClass.getMethods().values()) {
-//                   if (anInstanceVar.getVariableName().equals(aMethod.getName())) {
-//                        throw new SemanticException("Linea: " + anInstanceVar.getLineNumber() + " - Error semantico: La variable de instancia '" + anInstanceVar.getVariableName() + "' de la clase '" + aClass.getName() + "' tiene el mismo nombre que un método de su clase.");
-//                   }
-//                }
-
             }
         }
     }
@@ -479,13 +471,5 @@ public class SymbolTable {
 
     public int getLastClassNumber() {
         return lastClassNumber;
-    }
-
-    public void printOffsets() {
-        for (ClassEntry aClass : classTable.values()) {
-            for (MethodEntry aMethod : aClass.getMethods().values()) {
-                System.out.println(aClass.getName() + " " + aMethod.getName() + " " + aMethod.getOffset());
-            }
-        }
     }
 }

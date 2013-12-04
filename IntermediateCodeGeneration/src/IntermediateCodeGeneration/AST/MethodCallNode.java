@@ -127,8 +127,14 @@ public class MethodCallNode extends PrimaryNode {
             actualArgs.get(index).checkNode();
             if (!formalArg.getType().checkConformity(actualArgs.get(index).getExpressionType())) {
                 int position = index + 1;
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + position + ") no conforma con el tipo del argumento formal."
-                        + " El tipo del argumento actual es " + actualArgs.get(index).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
+                String actualArgTypeName = actualArgs.get(index).getExpressionType().getTypeName();
+                if (actualArgTypeName.equals("null")) {
+                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + position + ") no conforma con el tipo del argumento formal."
+                            + " El argumento actual es " + actualArgs.get(index).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
+                } else {
+                    throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: En la llamada al metodo '" + id.getLexeme() + "' el tipo del argumento actual en la posicion (" + position + ") no conforma con el tipo del argumento formal."
+                            + " El tipo del argumento actual es " + actualArgs.get(index).getExpressionType().getTypeName() + " y el tipo del argumento formal es " + formalArg.getType().getTypeName() + ".");
+                }
             }
             index++;
         }

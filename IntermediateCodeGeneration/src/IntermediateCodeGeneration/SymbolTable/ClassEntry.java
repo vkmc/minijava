@@ -287,14 +287,12 @@ public class ClassEntry {
                 redefinedMethod.compareParameters(parentMethod);
 
                 redefinedMethod.setOffset(parentMethod.getOffset());
-                // System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + redefinedMethod.getName() + " - Offset: " + parentMethod.getOffset());
                 redefinedMethod.setParametersOffset();
                 redefinedMethod.setLocalVariablesOffset();
             } else {
                 // Se hereda el metodo
                 addInheritedMethod(parentMethod);
                 MethodEntry inheritedMethod = methodsTable.get(parentMethodName);
-                // System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + inheritedMethod.getName() + " - Offset: " + parentMethod.getOffset());
                 inheritedMethod.setOffset(parentMethod.getOffset());
             }
         }
@@ -351,7 +349,6 @@ public class ClassEntry {
         int offset = 0;
         for (MethodEntry aMethod : methodsTable.values()) {
             if (aMethod.getOffset() == -1) {    // no es un metodo heredado (controlado en su respectiva clase)
-                // System.out.println("Clase Actual: " + symbolTable.getCurrentClass() + " - Clase: " + className + " - Metodo: " + aMethod.getName() + " - Offset: " + (baseOffset + offset));
                 aMethod.setOffset(baseOffset + offset);
                 aMethod.setLocalVariablesOffset();
                 aMethod.setParametersOffset();
@@ -363,7 +360,6 @@ public class ClassEntry {
     public void setInstanceVariablesOffset(int baseOffset) {
         int offset = 1;
         for (InstanceVariableEntry anInstanceVariable : instanceVariablesTable.values()) {
-            // System.out.println("Clase: " + className + " - Variable de instancia: " + anInstanceVariable.getVariableName() + " - Offset: " + (baseOffset + offset));
             anInstanceVariable.setOffset(baseOffset + offset);
             offset++;
         }
@@ -410,6 +406,17 @@ public class ClassEntry {
         classNumber = n;
     }
 
+    /**
+     * Ordena la lista de metodos segun su offset para ser insertados en la VT
+     * Esto debe realizarse ya que la consolidacion de herencia ocurre luego de que los metodos
+     * de la clase han sido insertados, por lo que los metodos de la clase padre quedan
+     * ultimos en la lista de metodos (siendo que deberian estar primeros).
+     * 
+     * Esta lista ordenada solo es utilizada al inicializar la VT
+     * 
+     * @param methods
+     * @return lista de metodos ordenada
+     */
     private LinkedList<MethodEntry> orderMethods(Collection<MethodEntry> methods) {
         LinkedList<MethodEntry> ordered = new LinkedList<>();
         Iterator<MethodEntry> iterator = methods.iterator();
