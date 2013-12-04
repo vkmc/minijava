@@ -28,13 +28,13 @@ public class IdMethodCallNode extends PrimaryNode {
     protected Token id;
     protected Type idType;  // necesario para controlar las llamadas
     protected LinkedList<CallNode> callList;
-    private boolean staticMethod;
+    boolean idCall;
 
     public IdMethodCallNode(SymbolTable symbolTable, Token id, LinkedList<CallNode> callList, Token token) {
         super(symbolTable, token);
         this.id = id;
         this.callList = callList;
-        staticMethod = false;
+        idCall = true;
     }
 
     @Override
@@ -141,7 +141,12 @@ public class IdMethodCallNode extends PrimaryNode {
         }
 
         if (!checkClasses) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe la variable '" + idName + "' en la tabla de simbolos.");
+            if (currentMethodEntry != null) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La variable '" + idName + "' no es visible en el metodo '" + currentMethodEntry.getName() + "'.");
+            } else if (currentConstructorEntry != null) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La variable '" + idName + "' no es visible en el constructor '" + currentConstructorEntry.getName() + "'.");
+
+            }
         }
 
         LinkedHashMap<String, ClassEntry> classes = symbolTable.getClasses();
@@ -154,7 +159,7 @@ public class IdMethodCallNode extends PrimaryNode {
             return;
         }
 
-        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe el nombre '" + idName + "' en la tabla de simbolos.");
+        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La variable '" + idName + "' no esta declarada.");
     }
 
     /**
@@ -200,7 +205,8 @@ public class IdMethodCallNode extends PrimaryNode {
 
     private void generateCodeCalls() throws SemanticException {
         Type callerType = idType;
-        
+        boolean staticMethod = false;
+
         for (CallNode call : callList) {
             call.setCallerType(callerType);
             call.setICG(ICG);
@@ -209,8 +215,12 @@ public class IdMethodCallNode extends PrimaryNode {
 
             if (currentMethodCall.getModifier().equals("static")) {
                 staticMethod = true; // es una invocacion a un metodo estatico
-                ICG.GEN("RMEM", 1, "IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio");
-           
+                ICG.GEN("RMEM", 1, "IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio.");
+
+                if (idCall) {
+                    ICG.GEN("FMEM", 1, "IdMethodCallNode. Liberamos una locacion de memoria ya que se invoca desde una variable.");
+                }
+
                 if (id.getLexeme().equals("System")) {
                     call.setSystem(true);
                 } else {
@@ -218,10 +228,10 @@ public class IdMethodCallNode extends PrimaryNode {
                     call.setStatic(true, idType.getTypeName());
                     // VT de la clase actual para metodos estaticos
                 }
-            } 
-            
+            }
+
             call.generateCode();
-            
+
             call.setVT(false);
             call.setSystem(false);
             staticMethod = false;
@@ -266,7 +276,7 @@ public class IdMethodCallNode extends PrimaryNode {
             // es una variable local del metodo actual
             idType = currentServiceLocalVariables.get(idName).getType();
             int localVariableOffset = currentServiceLocalVariables.get(idName).getOffset();
-            ICG.GEN("LOAD", localVariableOffset, "IdMethodCallNode.Cargamos la variable local '" + idName + "'.");
+            ICG.GEN("LOAD", localVariableOffset, "IdMethodCallNode. Cargamos la variable local '" + idName + "'.");
             return;
         }
 
@@ -284,6 +294,8 @@ public class IdMethodCallNode extends PrimaryNode {
         if (!checkClasses) {
             return;
         }
+
+        idCall = false;
 
         LinkedHashMap<String, ClassEntry> classes = symbolTable.getClasses();
 

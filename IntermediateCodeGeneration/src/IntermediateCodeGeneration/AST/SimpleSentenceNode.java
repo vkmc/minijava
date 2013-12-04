@@ -33,7 +33,7 @@ public class SimpleSentenceNode extends SentenceNode {
         if (getSentenceType().getTypeName().equals("void")) {
             // Si la sentencia es void, no es necesario hacer un POP
         } else {
-            ICG.GEN("POP", "SimpleSentenceNode. Desapilamos el resultado de la expresion");
+            ICG.GEN("POP", "SimpleSentenceNode. Desapilamos el resultado de la expresion.");
         }
     }
 }

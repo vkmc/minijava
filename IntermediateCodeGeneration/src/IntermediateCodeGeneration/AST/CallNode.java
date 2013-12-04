@@ -141,8 +141,8 @@ public class CallNode extends PrimaryNode {
         ICG.GEN(".CODE");
 
         if (!callReturnType.getTypeName().equals("void")) {
-            ICG.GEN("RMEM", 1, "CallNode. Reservamos una locacion de memoria para el resultado del metodo '" + id.getLexeme() + "' de la clase '" + currentClass + "'");
-            ICG.GEN("SWAP", "CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL");
+            ICG.GEN("RMEM", 1, "CallNode. Reservamos una locacion de memoria para el resultado del metodo '" + id.getLexeme() + "' de la clase '" + currentClass + "'.");
+            ICG.GEN("SWAP", "CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL.");
         }
 
         for (ExpressionNode expression : actualArgs) {
@@ -168,7 +168,6 @@ public class CallNode extends PrimaryNode {
             }
 
             int offsetId = symbolTable.getClassEntry(callerType.getTypeName()).getMethodEntry(id.getLexeme()).getOffset();
-            // System.out.println(id.getLexeme() + " " + offsetId + " caller type: " + callerType.getTypeName());
             ICG.GEN("LOADREF", offsetId, "CallNode. Recuperamos la direccion del metodo '" + id.getLexeme() + "'.");
             ICG.GEN("CALL", "CallNode. Llamamos al metodo '" + id.getLexeme() + "'.");
         }

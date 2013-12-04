@@ -32,34 +32,34 @@ public class BinaryExpressionNode extends ExpressionNode {
         String operatorLexeme = operator.getLexeme();
         if (operatorLexeme.equals("+") || operatorLexeme.equals("-") || operatorLexeme.equals("*") || operatorLexeme.equals("/") || operatorLexeme.equals("%")) {
             if (!left.getExpressionType().getTypeName().equals("int")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a una subexpresion de tipo " + left.getExpressionType().getTypeName() + ".\nSe esperaba una subexpresion de tipo entero.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a una subexpresion de tipo " + left.getExpressionType().getTypeName() + ". Se esperaba una subexpresion de tipo entero.");
             } else if (!right.getExpressionType().getTypeName().equals("int")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a una subexpresion de tipo " + right.getExpressionType().getTypeName() + ".\nSe esperaba una subexpresion de tipo entero.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a una subexpresion de tipo " + right.getExpressionType().getTypeName() + ". Se esperaba una subexpresion de tipo entero.");
             } else {
                 Type type = new IntegerType();
                 this.setExpressionType(type);
             }
         } else if (operatorLexeme.equals("&&") || operatorLexeme.equals("||")) {
             if (!left.getExpressionType().getTypeName().equals("boolean")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a una subexpresion de tipo " + left.getExpressionType().getTypeName() + ".\nSe esperaba una subexpresion de tipo boolean.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a una subexpresion de tipo " + left.getExpressionType().getTypeName() + ". Se esperaba una subexpresion de tipo boolean.");
             } else if (!right.getExpressionType().getTypeName().equals("boolean")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a una subexpresion de tipo " + right.getExpressionType().getTypeName() + ".\nSe esperaba una subexpresion de tipo boolean.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a una subexpresion de tipo " + right.getExpressionType().getTypeName() + ". Se esperaba una subexpresion de tipo boolean.");
             } else {
                 Type type = new BooleanType();
                 this.setExpressionType(type);
             }
         } else if (operatorLexeme.equals("==") || operatorLexeme.equals("!=")) {
             if (!left.getExpressionType().checkConformity(right.getExpressionType()) && !right.getExpressionType().checkConformity(left.getExpressionType())) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Los tipos de las subexpresiones no son conformantes.\nLa subexpresion de la izquierda es de tipo " + left.getExpressionType().getTypeName() + " y la subexpresion de la derecha es de tipo " + right.getExpressionType().getTypeName() + ".");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: Los tipos de las subexpresiones no son conformantes. La subexpresion de la izquierda es de tipo " + left.getExpressionType().getTypeName() + " y la subexpresion de la derecha es de tipo " + right.getExpressionType().getTypeName() + ".");
             } else {
                 Type type = new BooleanType();
                 this.setExpressionType(type);
             }
         } else if (operatorLexeme.equals(">") || operatorLexeme.equals(">=") || operatorLexeme.equals("<=") || operatorLexeme.equals("<")) {
             if (!left.getExpressionType().getTypeName().equals("int")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a la subexpresion de tipo " + left.getExpressionType().getTypeName() + ".\nSe esperaba una subexpresion de tipo entero.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a la subexpresion de tipo " + left.getExpressionType().getTypeName() + ". Se esperaba una subexpresion de tipo entero.");
             } else if (!right.getExpressionType().getTypeName().equals("int")) {
-                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a la subexpresion de tipo " + right.getExpressionType().getTypeName() + ".\nSe esperaba una subexpresion de tipo entero.");
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: El operador binario '" + operatorLexeme + "' no puede aplicarse a la subexpresion de tipo " + right.getExpressionType().getTypeName() + ". Se esperaba una subexpresion de tipo entero.");
             } else {
                 Type type = new BooleanType();
                 this.setExpressionType(type);

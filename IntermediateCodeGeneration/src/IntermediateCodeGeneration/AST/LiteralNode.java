@@ -30,7 +30,7 @@ public class LiteralNode extends PrimaryNode {
 
         if (expressionType.getTypeName().equals("null")) {
             ICG.GEN(".CODE");
-            ICG.GEN("PUSH 0", "LiteralNode. Apilamos 'null'");
+            ICG.GEN("PUSH 0", "LiteralNode. Apilamos 'null'.");
         } else if (expressionType.getTypeName().equals("String")) {
             String label = ICG.generateLabel();
 
@@ -45,15 +45,15 @@ public class LiteralNode extends PrimaryNode {
             } else if (literal.getLexeme().equals("'\\t'")) {
                 ICG.GEN("PUSH 9", "LiteralNode. Apilo el caracter tab.");
             } else {
-                ICG.GEN("PUSH " + (int) literal.getLexeme().charAt(1), "LiteralNode. Apilo el caracter " + literal.getLexeme());
+                ICG.GEN("PUSH " + (int) literal.getLexeme().charAt(1), "LiteralNode. Apilo el caracter " + literal.getLexeme() + ".");
             }
         } else if (expressionType.getTypeName().equals("boolean")) {
             if (literal.getLexeme().equals("true")) {
                 ICG.GEN(".CODE");
-                ICG.GEN("PUSH 1", "LiteralNode. Apilamos 'true'");
+                ICG.GEN("PUSH 1", "LiteralNode. Apilamos 'true'.");
             } else if (literal.getLexeme().equals("false")) {
                 ICG.GEN(".CODE");
-                ICG.GEN("PUSH 0", "LiteralNode. Apilamos 'false'");
+                ICG.GEN("PUSH 0", "LiteralNode. Apilamos 'false'.");
             }
         } else {
             ICG.GEN(".CODE");

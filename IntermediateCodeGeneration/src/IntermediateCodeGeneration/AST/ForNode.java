@@ -35,7 +35,7 @@ public class ForNode extends SentenceNode {
         condition.checkNode();
 
         if (!condition.getExpressionType().getTypeName().equals("boolean")) {
-            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La condicion de la sentencia for debe ser de tipo boolean. Se encontro una expresion de tipo " + condition.getExpressionType().getTypeName() + " .");
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La condicion de la sentencia for debe ser de tipo boolean. Se encontro una expresion de tipo '" + condition.getExpressionType().getTypeName() + "'.");
         }
 
         increment.checkNode();
@@ -94,7 +94,7 @@ public class ForNode extends SentenceNode {
         } else if (currentServiceEntry.getParameterEntry(incrementValue.getLexeme()) != null) {
             // el offset de una variable local comienza en 0 y decrece
             int parameterOffset = currentServiceEntry.getLocalVariableEntry(incrementValue.getLexeme()).getOffset();
-            ICG.GEN("STORE", parameterOffset + 3, "ForNode. El lado izquierdo es un parametro del metodo '" + currentService + "'");
+            ICG.GEN("STORE", parameterOffset + 3, "ForNode. El lado izquierdo es un parametro del metodo '" + currentService + "'.");
         } else if (currentClassEntry.getInstanceVariableEntry(incrementValue.getLexeme()) != null) {
             ICG.GEN("LOAD", 3, "ForNode. Apilamos THIS");
             ICG.GEN("SWAP", "ForNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");

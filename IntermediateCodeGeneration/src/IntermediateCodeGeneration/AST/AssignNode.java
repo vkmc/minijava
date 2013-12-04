@@ -40,15 +40,15 @@ public class AssignNode extends SentenceNode {
     public void checkNode() throws SemanticException {
         String currentClass = symbolTable.getCurrentClass();
         String currentService = symbolTable.getCurrentService();
-        
+
         ClassEntry currentClassEntry = symbolTable.getClassEntry(currentClass);
         MethodEntry currentMethodEntry = currentClassEntry.getMethodEntry(currentService);
         ConstructorEntry currentConstructorEntry = currentClassEntry.getConstructorEntry();
         ServiceEntry currentServiceEntry;
-        
+
         checkId();
         expression.checkNode();
-        
+
         if (currentMethodEntry != null) {
             currentServiceEntry = currentMethodEntry;
         } else if (currentConstructorEntry != null) {
@@ -114,7 +114,12 @@ public class AssignNode extends SentenceNode {
             return;
         }
 
-        throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No existe la variable '" + idName + "' en la tabla de simbolos.");
+        if (currentMethodEntry != null) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La variable '" + idName + "' no es visible en el metodo '" + currentMethodEntry.getName() + "'.");
+        } else if (currentConstructorEntry != null) {
+            throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: La variable '" + idName + "' no es visible en el constructor '" + currentConstructorEntry.getName() + "'.");
+
+        }
     }
 
     @Override
@@ -136,11 +141,11 @@ public class AssignNode extends SentenceNode {
             if (currentMethodEntry.getLocalVariableEntry(id.getLexeme()) != null) {
                 // el offset de una variable local comienza en 0 y decrece
                 int localVariableOffset = currentMethodEntry.getLocalVariableEntry(id.getLexeme()).getOffset();
-                ICG.GEN("STORE", localVariableOffset, "AssignNode. El lado izquierdo es una variable local del metodo '" + currentService + "'");
+                ICG.GEN("STORE", localVariableOffset, "AssignNode. El lado izquierdo es una variable local del metodo '" + currentService + "'.");
             } else if (currentMethodEntry.getParameterEntry(id.getLexeme()) != null) {
                 // el offset de una variable local comienza en 0 y decrece
                 int parameterOffset = currentMethodEntry.getParameterEntry(id.getLexeme()).getOffset();
-                ICG.GEN("STORE", parameterOffset + 3, "AssignNode. El lado izquierdo es un parametro del metodo '" + currentService + "'");
+                ICG.GEN("STORE", parameterOffset + 3, "AssignNode. El lado izquierdo es un parametro del metodo '" + currentService + "'.");
             } else if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null) {
                 ICG.GEN("LOAD", 3, "AssignNode. Apilamos THIS");
                 ICG.GEN("SWAP", "AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");
@@ -153,11 +158,11 @@ public class AssignNode extends SentenceNode {
             if (currentConstructorEntry.getLocalVariableEntry(id.getLexeme()) != null) {
                 // el offset de una variable local comienza en 0 y decrece
                 int localVariableOffset = currentConstructorEntry.getLocalVariableEntry(id.getLexeme()).getOffset();
-                ICG.GEN("STORE", localVariableOffset, "AssignNode. El lado izquierdo es una variable local del metodo '" + currentService + "'");
+                ICG.GEN("STORE", localVariableOffset, "AssignNode. El lado izquierdo es una variable local del metodo '" + currentService + "'.");
             } else if (currentConstructorEntry.getParameterEntry(id.getLexeme()) != null) {
                 // el offset de una variable local comienza en 0 y decrece
                 int parameterOffset = currentConstructorEntry.getParameterEntry(id.getLexeme()).getOffset();
-                ICG.GEN("STORE", parameterOffset + 3, "AssignNode. El lado izquierdo es un parametro del metodo '" + currentService + "'");
+                ICG.GEN("STORE", parameterOffset + 3, "AssignNode. El lado izquierdo es un parametro del metodo '" + currentService + "'.");
             } else if (currentClassEntry.getInstanceVariableEntry(id.getLexeme()) != null) {
                 ICG.GEN("LOAD", 3, "AssignNode. Apilamos THIS");
                 ICG.GEN("SWAP", "AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor).");

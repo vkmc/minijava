@@ -62,7 +62,7 @@ public class ReturnExpNode extends ReturnNode {
         expression.generateCode();
 
         ICG.GEN(".CODE");
-        ICG.GEN("; Retorno de expresion del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
+        ICG.GEN("; Retorno de expresion del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
         offsetRet = offsetRet + 3; // parametros, variables locales, puntero de retorno, enlace dinamico y this.
 
         ICG.GEN("STORE", offsetRet, "ReturnExpNode. Almacenamos el retorno del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");

@@ -175,7 +175,7 @@ public class MethodCallNode extends PrimaryNode {
         String currentMethod = id.getLexeme();
 
         ICG.GEN(".CODE");
-        ICG.GEN("LOAD", 3, "MethodCallNode. Apilamos el THIS para invocar al metodo '" + currentMethod + "'");
+        ICG.GEN("LOAD", 3, "MethodCallNode. Apilamos el THIS para invocar al metodo '" + currentMethod + "'.");
 
         Type returnType = symbolTable.getClassEntry(currentClass).getMethodEntry(currentMethod).getReturnType();
         String returnTypeName = returnType.getTypeName();

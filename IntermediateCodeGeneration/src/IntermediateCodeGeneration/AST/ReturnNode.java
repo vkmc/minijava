@@ -57,7 +57,7 @@ public class ReturnNode extends SentenceNode {
         int localVariablesCount = currentMethodEntry.getLocalVariables().size();
 
         ICG.GEN(".CODE");
-        ICG.GEN("; Retorno vacio del metodo '" + currentMethod + "' de la clase '" + currentClass + "'");
+        ICG.GEN("; Retorno vacio del metodo '" + currentMethod + "' de la clase '" + currentClass + "'.");
 
         if (localVariablesCount > 0) {
             // El metodo tiene variables locales
