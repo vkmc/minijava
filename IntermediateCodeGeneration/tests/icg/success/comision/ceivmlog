@@ -225,6 +225,37 @@ La ejecución del programa finalizó exitosamente.
 
 
 
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/llamada_estatico_this.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A1 :: main()
+A :: A()
+1
+2
+A2 :: A2()
+3
+4
+A2 :: print() :: i1
+A2 :: geti1()
+3
+A2 :: print() :: i2
+A2 :: geti2()
+4
+A2 :: main()
+A2 :: A2()
+1
+2
+5
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/llamadas_directas.txt
 ------------------------------------------------------------------
 CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.

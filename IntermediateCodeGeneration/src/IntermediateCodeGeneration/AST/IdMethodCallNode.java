@@ -28,13 +28,13 @@ public class IdMethodCallNode extends PrimaryNode {
     protected Token id;
     protected Type idType;  // necesario para controlar las llamadas
     protected LinkedList<CallNode> callList;
-    boolean idCall;
+    boolean varFlag;
 
     public IdMethodCallNode(SymbolTable symbolTable, Token id, LinkedList<CallNode> callList, Token token) {
         super(symbolTable, token);
         this.id = id;
         this.callList = callList;
-        idCall = true;
+        varFlag = true;
     }
 
     @Override
@@ -217,7 +217,7 @@ public class IdMethodCallNode extends PrimaryNode {
                 staticMethod = true; // es una invocacion a un metodo estatico
                 ICG.GEN("RMEM", 1, "IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio.");
 
-                if (idCall) {
+                if (varFlag) {
                     ICG.GEN("FMEM", 1, "IdMethodCallNode. Liberamos una locacion de memoria ya que se invoca desde una variable.");
                 }
 
@@ -229,13 +229,19 @@ public class IdMethodCallNode extends PrimaryNode {
                     // VT de la clase actual para metodos estaticos
                 }
             }
+            
+            // Es un metodo dinamico y se esta queriendo acceder con el nombre de una clase
+            if (currentMethodCall.getModifier().equals("dynamic") && !varFlag) {
+                throw new SemanticException("Linea: " + token.getLineNumber() + " - Error semantico: No es posible invocar el metodo dinamico '" +currentMethodCall.getName()+ "' teniendo como lado izquierdo el nombre de la clase.");
+            }
 
             call.generateCode();
 
             call.setVT(false);
             call.setSystem(false);
             staticMethod = false;
-            callerType = call.getCallReturnType();
+            varFlag = true;
+            callerType = call.getCallReturnType();            
         }
     }
 
@@ -289,13 +295,14 @@ public class IdMethodCallNode extends PrimaryNode {
             int instanceVariableOffset = currentClassInstanceVariables.get(idName).getOffset();
             ICG.GEN("LOAD", 3, "IdMethodCallNode. Apilamos el THIS para poder acceder al CIR.");
             ICG.GEN("LOADREF", instanceVariableOffset, "IdMethodCallNode. Cargamos la variable de instancia '" + idName + "'.");
+            return;
         }
 
         if (!checkClasses) {
             return;
         }
-
-        idCall = false;
+        
+        varFlag = false;
 
         LinkedHashMap<String, ClassEntry> classes = symbolTable.getClasses();
 
