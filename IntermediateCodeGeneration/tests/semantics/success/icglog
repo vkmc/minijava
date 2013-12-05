@@ -58,7 +58,6 @@
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/jerarquia_herencia.java
 
 
-./run_tests_icg.sh: line 10: [: ==: unary operator expected
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/llamada_estatica_cadena_llamadas_dynamic.java
 
 

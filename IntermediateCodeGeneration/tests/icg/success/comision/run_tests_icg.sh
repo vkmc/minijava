@@ -12,9 +12,7 @@ for file in `ls`; do
                 jar="${CURRENT_DIR}/$file"
                 txt="${jar%.*}"
                 txt="$txt.txt"
-                #echo $jar
-                #echo $txt
-		java -jar IntermediateCodeGeneration.jar $jar $txt
+		java -jar Minijava.jar $jar $txt
                 printf "\n\n"
 	fi
 done
