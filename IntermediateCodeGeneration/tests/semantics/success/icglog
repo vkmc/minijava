@@ -1,9 +1,3 @@
-/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/bug_labels_clases_metodos_case_sensitve.java
-
-
-/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/bug_VTs_herencia.java
-
-
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/clase_atributo.java
 
 
@@ -64,6 +58,7 @@
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/jerarquia_herencia.java
 
 
+./run_tests_icg.sh: line 10: [: ==: unary operator expected
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/llamada_estatica_cadena_llamadas_dynamic.java
 
 

@@ -26,7 +26,7 @@ public class Main {
         } else {
             outputFile = args[1];
         }
-        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(args[0], outputFile);
+        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(args[0], args[1]);
         try {
             semanticAnalyzer.checkSemantics();
         } catch (SemanticException | SyntacticException | LexicalException exc) {

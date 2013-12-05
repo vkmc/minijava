@@ -167,7 +167,55 @@ POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion.
 LOAD -5  ; IdMethodCallNode. Cargamos la variable local 'Tipo'. 
 POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
 .CODE
+PUSH 5
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'j'. 
+.CODE
+PUSH 2
+.CODE
+SUB
+.CODE
+GT
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'i'. 
+.CODE
+PUSH 3
+.CODE
+LE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'j'. 
+.CODE
+PUSH 10
+.CODE
+LE
+.CODE
+AND
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+PUSH 1
+.CODE
+PUSH 3
+.CODE
+LT
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'j'. 
+.CODE
+PUSH 10
+.CODE
+EQ
+.CODE
+OR
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
 LOAD 3  ; ThisNode. Apilamos THIS. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+PUSH 1  ; LiteralNode. Apilamos 'true'. 
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'false'. 
+.CODE
+OR
 POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
 .CODE
 PUSH 1  ; LiteralNode. Apilamos 'true'. 

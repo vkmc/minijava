@@ -3,14 +3,10 @@ class A {
 
     static boolean methodb1(Objeto o1, Objeto o2)
     var Objeto o3, o4;
-		var String s1 , s2;
+    var String s1 , s2;
+    {}
 
-    {
-    }
-    dynamic
-
-    int methodi1() {
-    }
+    dynamic int methodi1() {}
 }
 
 class Objeto {
@@ -19,14 +15,13 @@ class Objeto {
 
     static void main()
     var Objeto o;
-	var int m;
-
+    var int m;
     {
         (o.getN());
     }
-    dynamic
 
-    int getN() {
-        return n;
+    dynamic int getN()
+    {
+    	return n;
     }
 }

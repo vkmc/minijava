@@ -4,7 +4,7 @@ IntermediateCodeGeneration.SemanticException: Linea: 3 - Error semantico: Una cl
 
 
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/herencia_circular.java
-IntermediateCodeGeneration.SemanticException: Error semantico: Herencia circular. La clase B no puede heredar de si misma.
+IntermediateCodeGeneration.SemanticException: Error semantico: Herencia circular. La clase A no puede heredar de si misma.
 
 
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/herencia_conflictiva01.java

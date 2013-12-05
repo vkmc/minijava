@@ -1,4 +1,3 @@
-
 class foo {
 
     foo(int i)
@@ -18,11 +17,11 @@ class foo {
         (Cadena);
         (Clase);
         (Tipo);
-        //(i != 5 > j && true - 2 || a == null);
-        //(i <= 3 > j + 2 - 9 * 100 / 2 % j);
-        //(i < 3 > j == true);
+        (5 > j - 2);
+        (i <= 3 && j <= 10);
+        (1 < 3 || j == 10);
         (this);
-        //(true || false && true + 5);
+        (true || false);
         (true && false);
         (true || false && true);
 
@@ -31,6 +30,5 @@ class foo {
 
 class foo2 {
 
-    static void main() {
-    }
+    static void main() {}
 }

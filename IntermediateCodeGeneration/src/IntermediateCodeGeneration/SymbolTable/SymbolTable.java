@@ -69,7 +69,6 @@ public class SymbolTable {
         lastClassNumber++;
 
         // System.setConstructorEntry("System", 0); // System no debe tener Constructor
-        
         classTable.put("System", System);
 
         System.addMethodEntry("read", new IntegerType(), "static", 0);
@@ -191,6 +190,13 @@ public class SymbolTable {
                 }
             }
         }
+
+        for (ClassEntry aClass : classes) {
+            String className = aClass.getName();
+            if (!className.equals("Object") && !className.equals("System")) {
+                controlCircularInheritance(aClass);
+            }
+        }
     }
 
     /**
@@ -235,12 +241,15 @@ public class SymbolTable {
      * @param className
      */
     public void controlCircularInheritance(ClassEntry aClass) throws SemanticException {
-        LinkedList<String> parents = aClass.getParentList();
+        String parent = aClass.getParent();
         String className = aClass.getName();
 
-        if (parents.contains(className) == true) {
-            // Una clase se tiene a si misma en la lista de ancestros.
-            throw new SemanticException("Error semantico: Herencia circular. La clase " + className + " no puede heredar de si misma.");
+        while (!parent.equals("Object")) {
+            if (className.equals(parent)) {
+                // Una clase se tiene a si misma en la lista de ancestros.
+                throw new SemanticException("Error semantico: Herencia circular. La clase " + className + " no puede heredar de si misma.");
+            }
+            parent = classTable.get(parent).getParent();
         }
     }
 

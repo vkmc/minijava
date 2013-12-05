@@ -1,13 +1,9 @@
-
 class A {
 
-    dynamic
-
-    boolean methodb1(Objeto o1, Objeto o2)
+    dynamic boolean methodb1(Objeto o1, Objeto o2)
     var String s1, s2;
-		var int a, b;
+    var int a, b;
     var boolean condicion;
-
     {
         while (!condicion) {
 
@@ -25,6 +21,5 @@ class A {
 
 class Objeto {
 
-    static void main() {
-    }
+    static void main() { }
 }

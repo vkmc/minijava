@@ -122,13 +122,11 @@ public class Parser {
             }
             classEntry.setParent(parent);
             classEntry.setParentList(parent);
-            symbolTable.controlCircularInheritance(classEntry);
         } else if (lookAhead.equals("{")) {
             // Herencia -> lambda
             // No hay herencia
             classEntry.setParent("Object");
             classEntry.setParentList("Object");
-            symbolTable.controlCircularInheritance(classEntry);
         } else {
             throw new SyntacticException("Linea: " + lookAhead.getLineNumber() + " - Error sintactico: Se esperaba el comienzo de la clase '{' o la especificacion de herencia. Se encontro: '" + lookAhead.getToken() + "'.");
         }
