@@ -1,3 +1,9 @@
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/bug_labels_clases_metodos_case_sensitve.java
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/bug_VTs_herencia.java
+
+
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/clase_atributo.java
 
 
@@ -46,6 +52,9 @@
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/herencia.java
 
 
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/instancia_clase_Object.java
+
+
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/invocacion_dinamico_metodo_static.java
 
 
@@ -53,6 +62,12 @@
 
 
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/jerarquia_herencia.java
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/llamada_estatica_cadena_llamadas_dynamic.java
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/llamada_estatica_variable_instancia.java
 
 
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/success/programa_sintacticamente_valido01.java

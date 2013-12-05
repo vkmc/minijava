@@ -1,4 +1,8 @@
 rm: cannot remove ‘*.txt’: No such file or directory
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/heredar_clase_System.java
+IntermediateCodeGeneration.SemanticException: Linea: 3 - Error semantico: Una clase no puede heredar de la clase System.
+
+
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/herencia_circular.java
 IntermediateCodeGeneration.SemanticException: Error semantico: Herencia circular. La clase B no puede heredar de si misma.
 
@@ -31,6 +35,22 @@ En la clase padre la cantidad de parametros del metodo es 3 y en la clase hija e
 IntermediateCodeGeneration.SemanticException: Linea: 15 - Error semantico: La variable 'n' no es visible en el metodo 'printN'.
 
 
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/inconformidad_tipos_asignacion.java
+IntermediateCodeGeneration.SemanticException: Linea: 41 - Error semantico: No puede asignarse una expresion de tipo Padre a una variable de tipo Hija.
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/inconformidad_tipos_parametros.java
+IntermediateCodeGeneration.SemanticException: Linea: 8 - Error semantico: En la llamada al metodo 'conformityTest' el tipo del argumento actual en la posicion (1) no conforma con el tipo del argumento formal. El tipo del argumento actual es int y el tipo del argumento formal es String.
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/inconformidad_tipos_retorno.java
+IntermediateCodeGeneration.SemanticException: Linea: 10 - Error semantico: El tipo de la expresion retornada no es conforme al tipo de retorno del metodo actual. El tipo de la expresion retornada es 'int' y el tipo de retorno del metodo es 'String'.
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/instancia_clase_System.java
+IntermediateCodeGeneration.SemanticException: Linea: 7 - Error semantico: No se puede crear una instancia de la clase System.
+
+
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/invocacion_dinamico_metodo_static.java
 IntermediateCodeGeneration.SemanticException: Linea: 20 - Error semantico: No puede hacerse una invocacion al metodo dinamico 'getN' en la clase Objeto en el contexto del metodo estatico 'main'.
 
@@ -43,8 +63,28 @@ IntermediateCodeGeneration.SemanticException: Linea: 18 - Error semantico: No pu
 IntermediateCodeGeneration.SemanticException: Linea: 23 - Error semantico: En la llamada al metodo 'methodb1' el tipo del argumento actual en la posicion (2) no conforma con el tipo del argumento formal. El tipo del argumento actual es Objeto2 y el tipo del argumento formal es Objeto.
 
 
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/llamada_dinamica_usando_nombre_clase.java
+IntermediateCodeGeneration.SemanticException: Linea: 31 - Error semantico: No es posible invocar el metodo dinamico 'toString' teniendo como lado izquierdo el nombre de la clase.
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/llamada_dynamic_sin_id_desde_static.java
+IntermediateCodeGeneration.SemanticException: Linea: 34 - Error semantico: No puede hacerse una invocacion al metodo dinamico 'ret1' en la clase Reverse en el contexto del metodo estatico 'm'.
+
+
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/metodo_constructor.java
 IntermediateCodeGeneration.SemanticException: Linea: 4 - Error semantico: La variable 'foo' no es visible en el constructor 'A'.
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/numero_linea_correcto_error_for.java
+IntermediateCodeGeneration.SemanticException: Linea: 7 - Error semantico: La condicion de la sentencia for debe ser de tipo boolean. Se encontro una expresion de tipo 'String'.
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/numero_linea_correcto_error_if.java
+IntermediateCodeGeneration.LexicalException: Linea: 1 - Error lexico: Caracter no soportado (﻿).
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/numero_linea_correcto_error_while.java
+IntermediateCodeGeneration.SemanticException: Linea: 6 - Error semantico: La condicion de la sentencia while debe ser de tipo boolean. Se encontro una expresion de tipo 'String'.
 
 
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/retorno_constructor.java
@@ -63,8 +103,16 @@ IntermediateCodeGeneration.SemanticException: Linea: 27 - Error semantico: El me
 IntermediateCodeGeneration.SemanticException: Linea: 20 - Error semantico: No se puede hacer referencia al objeto actual usando la palabra reservada 'this' en el contexto de un metodo estatico.
 
 
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/tipo_retorno_System.java
+IntermediateCodeGeneration.SyntacticException: Linea: 8 - Error semantico: No se puede definir un metodo con tipo de retorno System.
+
+
 /home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/variable_instancia_metodo_static.java
 IntermediateCodeGeneration.SemanticException: Linea: 20 - Error semantico: No puede usarse la variable de instancia 'n' en un metodo estatico.
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/semantics/fail/variable_tipo_System.java
+IntermediateCodeGeneration.SyntacticException: Linea: 5 - Error semantico: No se puede declarar una variable de tipo System.
 
 
 Tests succeded
