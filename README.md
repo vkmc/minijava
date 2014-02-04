@@ -7,5 +7,5 @@ el código de la entrega final se encuentra en la carpeta Compiler, junto con lo
 ## cómo usar?
 
 * escribir el código minijava
-* compilarlo `java -jar Minijava.jar input.java output.txt
-* ejecutarlo `java -jar CeIVM2011.jar output.txt
+* compilarlo ` java -jar Minijava.jar input.java output.txt
+* ejecutarlo ` java -jar CeIVM2011.jar output.txt
