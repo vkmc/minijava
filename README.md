@@ -9,4 +9,4 @@ el código de la entrega final se encuentra en la carpeta Compiler, junto con lo
 
 * escribir el código minijava
 * compilarlo `java -jar Minijava.jar input.java output.txt`
-* ejecutarlo `java -jar CeIVM2011.jar output.txt`
+* ejecutarlo `java -jar CeIVM-cei2011.jar output.txt`
