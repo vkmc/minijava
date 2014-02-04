@@ -1,0 +1,525 @@
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/asignaciones.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+@cei
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/bug_labels_clases_metodos_case_sensitive.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/bug_VTs_herencia.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+1
+2
+3
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/clases_con_mismo_nombre.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: A() 
+A :: m() 
+1
+a :: a() 
+a :: m() 
+4
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/for.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: A() 4
+A :: forloop() 
+for [ 
+while ( 0 1 2 3 ) Iteracion 0 
+while ( 0 1 2 3 ) Iteracion 1 
+while ( 0 1 2 3 ) Iteracion 2 
+while ( 0 1 2 3 ) Iteracion 3 
+]
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/herencia.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A3 :: A3() :: i1 
+3
+A3 :: A3() :: i3 
+4
+A3 :: A3() :: i5 
+5
+
+A3 :: print() :: i1 
+A3 :: geti1() :: i1
+3
+
+A3 :: print() :: i3 
+A3 :: geti3() :: i3 
+4
+
+A3 :: print() :: i5 
+A3 :: geti5() :: i5 
+5
+
+A3 :: A3() :: i1 
+1
+A3 :: A3() :: i3 
+2
+A3 :: A3() :: i5 
+3
+
+A :: printA() :: i1 A3 :: geti1() :: i1
+1
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/if.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: A()
+Parametros: 0 - a - Lorem - false
+A :: setInteger()
+A :: getInteger()
+A :: print()A :: getInteger()
+2
+A :: less()
+Valor i = 2
+Valor n = 3
+Es maximo! n es mayor que i
+Valor a = 1
+Valor b = 3
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/interaccion_clases_multiplesmains.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A2 :: A2()
+7
+8
+A2 :: print() :: i1
+A2 :: geti1()
+7
+A2 :: print() :: i2
+A2 :: geti2()
+8
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/interaccion_clases.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A2 :: A2()
+1
+2
+A2 :: print() :: i1
+A2 :: geti1()
+1
+A2 :: print() :: i2
+A2 :: geti2()
+2
+A2 :: setO()
+A :: A()
+3
+4
+A :: print() :: i1
+A :: geti1()
+3
+A :: print() :: i2
+A :: geti2()
+4
+A :: setO()
+A :: A()
+5
+6
+A :: print() :: i1
+A :: geti1()
+5
+A :: print() :: i2
+A :: geti2()
+6
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/llamada_directa_estatico.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A1 :: main()
+A :: A()
+1
+2
+A2 :: A2()
+3
+4
+A2 :: print() :: i1
+A2 :: geti1()
+3
+A2 :: print() :: i2
+A2 :: geti2()
+4
+A2 :: main()
+5
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/llamada_encadenada_estatico.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: calc() :: A.random() = 11
+A :: calc() :: A2.random() = 100
+A :: calc() :: A3.retA3().hello() = Hello, world!
+A :: calc() :: foo1().foo2().foo3() = 120
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/llamada_estatico_this.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A1 :: main()
+A :: A()
+1
+2
+A2 :: A2()
+3
+4
+A2 :: print() :: i1
+A2 :: geti1()
+3
+A2 :: print() :: i2
+A2 :: geti2()
+4
+A2 :: main()
+A2 :: A2()
+1
+2
+5
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/llamadas_directas.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A
+A2
+B
+A
+A
+B
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/llamadas.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: getName() 
+A :: getName() 
+A
+A2 :: getName() 
+A2
+B :: getName() 
+B
+A :: getName() 
+A
+A :: getName() 
+A
+B :: getName() 
+B
+B :: getName() 
+B
+B :: getName() 
+B
+B :: getName() 
+B
+Main :: getName() 
+Main
+B :: getName() 
+B
+Main :: getName() 
+Main
+Main :: getName() 
+Main
+Main :: getName() 
+Main
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/null.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: print() :: s1 Hola
+A :: print() :: s2 Mundo
+A2 :: print() :: i1 4
+A2 :: print() :: i2 6
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/retorno_clase_inicializado.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/retorno_clase_sin_inicializar.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/retorno_string_inicializado.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: main() 
+Hola, mundo!
+Compiladores e Interpretes 
+Minijava 
+2013
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/retorno_string_sininicializar.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+×
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/sentencia_simple.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: main() 
+A :: foo1() 
+A :: foo1() 
+A :: foo2() 
+A :: foo3() 
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/subbloques.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: print() :: i1 1
+A :: print() :: i2 4
+A2 :: A2()
+i1 == 1
+i2 == 6
+B :: print() :: i1 1
+B :: print() :: i2 6
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/this_sentencias.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: _this()
+A :: fooA()
+A :: _sentencias()
+10B :: fooB()
+
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/this.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: main() :: ret 
+11
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/icg/success/comision/while.txt
+------------------------------------------------------------------
+CeI Virtual Machine (CeIVM) - v1.1.0. Por: Sebastián Escarza.
+Compiladores e Intérpretes - 2º Cuatrimestre de 2011 - DCIC - UNS.
+------------------------------------------------------------------
+
+A :: A() Hello, world!
+A :: whileloop() 
+Iteracion 1
+Iteracion 2
+Iteracion 3
+Iteracion 4
+Iteracion 5
+Iteracion 6
+Iteracion 7
+Iteracion 8
+Iteracion 9
+Iteracion 10
+Iteracion 11
+Iteracion 12
+Iteracion 13
+Iteracion 14
+Iteracion 15
+Iteracion 16
+
+Valor i = 20
+Valor j = 20
+
+La ejecución del programa finalizó exitosamente.
+
+
+
+
+Tests succeded

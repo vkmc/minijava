@@ -1,0 +1,12 @@
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/defensa/clase_metodo_sentencia_while.java
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/defensa/test1.java
+IntermediateCodeGeneration.SemanticException: Linea: 7 - Error semantico: El tipo de la expresion retornada no es conforme al tipo de retorno del metodo actual. El tipo de la expresion retornada es 'A' y el tipo de retorno del metodo es 'B'.
+
+
+/home/vkmc/NetBeansProjects/minijava/IntermediateCodeGeneration/tests/defensa/test2.java
+IntermediateCodeGeneration.SemanticException: Error semantico: Herencia circular. La clase A no puede heredar de si misma.
+
+
+Tests succeded

@@ -1,0 +1,426 @@
+.DATA
+VT_Object_0: NOP
+VT_System_1: DW L_MET_System_1_Ctor, L_MET_System_1_read, L_MET_System_1_printI, L_MET_System_1_printC, L_MET_System_1_printB, L_MET_System_1_printS, L_MET_System_1_println, L_MET_System_1_printBln, L_MET_System_1_printCln, L_MET_System_1_printIln, L_MET_System_1_printSln 
+.CODE
+PUSH L_SIMPLE_INIT_HEAP
+CALL
+RMEM 1
+PUSH L_MET_Reverser_2_main_7
+CALL
+HALT
+L_MET_System_1_Ctor: NOP  ; Constructor de system 
+LOADFP
+LOADSP
+STOREFP
+STOREFP
+RET 1
+L_MET_System_1_read: NOP
+LOADFP
+LOADSP
+STOREFP
+READ
+STORE 4
+STOREFP
+RET 1
+L_MET_System_1_printI: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+STOREFP
+RET 2
+L_MET_System_1_printC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+STOREFP
+RET 2
+L_MET_System_1_printB: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+STOREFP
+RET 2
+L_MET_System_1_printS: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+STOREFP
+RET 2
+L_MET_System_1_println: NOP
+LOADFP
+LOADSP
+STOREFP
+PRNLN
+STOREFP
+RET 1
+L_MET_System_1_printBln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printCln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printIln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printSln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+PRNLN
+STOREFP
+RET 2
+L_SIMPLE_MALLOC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOADHL
+DUP
+PUSH 1
+ADD
+STORE 4
+LOAD 3
+ADD
+STOREHL
+STOREFP
+RET 1
+L_SIMPLE_INIT_HEAP: RET 0  ; Inicializacion simplificada del .heap 
+.DATA
+VT_Reverser_2: DW L_MET_Reverser_2_countDigits_0, L_MET_Reverser_2_invertir_1, L_MET_Reverser_2_m_2, L_MET_Reverser_2_ret1_3, L_MET_Reverser_2_ret2_4, L_MET_Reverser_2_ret3_5, L_MET_Reverser_2_m1_6, L_MET_Reverser_2_main_7
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'Reverser' DE LA CLASE 'Reverser'
+L_CTOR_Reverser_2_Reverser: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'countDigits' DE LA CLASE 'Reverser'
+L_MET_Reverser_2_countDigits_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'countDigits' 
+.CODE
+PUSH 0
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'countDigits'. 
+.CODE
+L_WHILE_1_countDigits_Reverser: NOP
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'number'. 
+.CODE
+PUSH 0
+.CODE
+GT
+BF L_ENDWHILE_1_countDigits_Reverser
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'number'. 
+.CODE
+PUSH 10
+.CODE
+DIV
+.CODE
+STORE 4  ; AssignNode. El lado izquierdo es un parametro del metodo 'countDigits'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'count'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'countDigits'. 
+JUMP L_WHILE_1_countDigits_Reverser
+L_ENDWHILE_1_countDigits_Reverser: NOP
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'count'. 
+.CODE
+; Retorno de expresion del metodo 'countDigits' de la clase 'Reverser'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'countDigits' de la clase 'Reverser'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'countDigits' de la clase 'Reverser'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'countDigits' de la clase 'Reverser'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'countDigits' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'invertir' DE LA CLASE 'Reverser'
+L_MET_Reverser_2_invertir_1: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 2  ; Reservamos memoria para las variables locales del metodo 'invertir' 
+.CODE
+PUSH 0
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'invertir'. 
+.CODE
+.CODE
+PUSH 0
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'invertir'. 
+L_COND_FOR_2_invertir_Reverser: NOP
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'aux'. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'digits'. 
+.CODE
+LT
+BF L_ENDFOR_2_invertir_Reverser
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'count'. 
+.CODE
+PUSH 10
+.CODE
+MUL
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'number'. 
+.CODE
+PUSH 10
+.CODE
+MOD
+.CODE
+ADD
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'invertir'. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'number'. 
+.CODE
+PUSH 10
+.CODE
+DIV
+.CODE
+STORE 5  ; AssignNode. El lado izquierdo es un parametro del metodo 'invertir'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'aux'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+STORE 0  ; ForNode. El lado izquierdo es una variable local del metodo 'invertir' 
+JUMP L_COND_FOR_2_invertir_Reverser
+L_ENDFOR_2_invertir_Reverser: NOP
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'count'. 
+.CODE
+; Retorno de expresion del metodo 'invertir' de la clase 'Reverser'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'invertir' de la clase 'Reverser'. 
+FMEM 2  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'invertir' de la clase 'Reverser'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'invertir' de la clase 'Reverser'. 
+FMEM 2  ; Liberamos la memoria de las variables locales del metodo 'invertir' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 3  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'm' DE LA CLASE 'Reverser'
+L_MET_Reverser_2_m_2: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Reverser'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 1  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Reverser_2  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+PUSH L_CTOR_Reverser_2_Reverser  ; NewNode. Apilamos la direccion del constructor de la clase 'Reverser'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Reverser'. 
+.CODE
+; Retorno de expresion del metodo 'm' de la clase 'Reverser'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'm' de la clase 'Reverser'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'm' de la clase 'Reverser'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'ret1' DE LA CLASE 'Reverser'
+L_MET_Reverser_2_ret1_3: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Reverser'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 1  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Reverser_2  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+PUSH L_CTOR_Reverser_2_Reverser  ; NewNode. Apilamos la direccion del constructor de la clase 'Reverser'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Reverser'. 
+.CODE
+; Retorno de expresion del metodo 'ret1' de la clase 'Reverser'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'ret1' de la clase 'Reverser'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'ret1' de la clase 'Reverser'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'ret2' DE LA CLASE 'Reverser'
+L_MET_Reverser_2_ret2_4: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Reverser'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 1  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Reverser_2  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+PUSH L_CTOR_Reverser_2_Reverser  ; NewNode. Apilamos la direccion del constructor de la clase 'Reverser'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Reverser'. 
+.CODE
+; Retorno de expresion del metodo 'ret2' de la clase 'Reverser'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'ret2' de la clase 'Reverser'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'ret2' de la clase 'Reverser'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'ret3' DE LA CLASE 'Reverser'
+L_MET_Reverser_2_ret3_5: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Reverser'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 1  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Reverser_2  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+PUSH L_CTOR_Reverser_2_Reverser  ; NewNode. Apilamos la direccion del constructor de la clase 'Reverser'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Reverser'. 
+.CODE
+; Retorno de expresion del metodo 'ret3' de la clase 'Reverser'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'ret3' de la clase 'Reverser'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'ret3' de la clase 'Reverser'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'm1' DE LA CLASE 'Reverser'
+L_MET_Reverser_2_m1_6: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'm1' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'ret1'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'ret1' de la clase 'Reverser'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'ret1'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 3  ; MethodCallNode. Recuperamos la direccion del metodo 'ret1'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'ret1'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'ret2' de la clase 'Reverser'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'ret2'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 4  ; CallNode. Recuperamos la direccion del metodo 'ret2'. 
+CALL  ; CallNode. Llamamos al metodo 'ret2'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'ret3' de la clase 'Reverser'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'ret3'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; CallNode. Recuperamos la direccion del metodo 'ret3'. 
+CALL  ; CallNode. Llamamos al metodo 'ret3'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'invertir' de la clase 'Reverser'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 10
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH 2
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'invertir'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'invertir'. 
+CALL  ; CallNode. Llamamos al metodo 'invertir'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'm1'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'm1' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'main' DE LA CLASE 'Reverser'
+L_MET_Reverser_2_main_7: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 4  ; Reservamos memoria para las variables locales del metodo 'main' 
+.CODE
+PUSH 123
+.CODE
+STORE -2  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'countDigits'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'countDigits' de la clase 'Reverser'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD -2  ; IdMethodCallNode. Cargamos la variable local 'number'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+PUSH VT_Reverser_2
+LOADREF 0  ; MethodCallNode. Recuperamos la direccion del metodo 'countDigits'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'countDigits'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'digits'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printIln
+CALL  ; CallNode. Llamada al metodo 'printIln' de System. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'reversed'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printIln
+CALL  ; CallNode. Llamada al metodo 'printIln' de System. 
+FMEM 4  ; Liberamos la memoria de las variables locales del metodo 'main' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 

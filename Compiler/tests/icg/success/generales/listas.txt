@@ -1,0 +1,873 @@
+.DATA
+VT_Object_0: NOP
+VT_System_1: DW L_MET_System_1_Ctor, L_MET_System_1_read, L_MET_System_1_printI, L_MET_System_1_printC, L_MET_System_1_printB, L_MET_System_1_printS, L_MET_System_1_println, L_MET_System_1_printBln, L_MET_System_1_printCln, L_MET_System_1_printIln, L_MET_System_1_printSln 
+.CODE
+PUSH L_SIMPLE_INIT_HEAP
+CALL
+RMEM 1
+PUSH L_MET_MainClass_4_main_0
+CALL
+HALT
+L_MET_System_1_Ctor: NOP  ; Constructor de system 
+LOADFP
+LOADSP
+STOREFP
+STOREFP
+RET 1
+L_MET_System_1_read: NOP
+LOADFP
+LOADSP
+STOREFP
+READ
+STORE 4
+STOREFP
+RET 1
+L_MET_System_1_printI: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+STOREFP
+RET 2
+L_MET_System_1_printC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+STOREFP
+RET 2
+L_MET_System_1_printB: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+STOREFP
+RET 2
+L_MET_System_1_printS: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+STOREFP
+RET 2
+L_MET_System_1_println: NOP
+LOADFP
+LOADSP
+STOREFP
+PRNLN
+STOREFP
+RET 1
+L_MET_System_1_printBln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printCln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printIln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printSln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+PRNLN
+STOREFP
+RET 2
+L_SIMPLE_MALLOC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOADHL
+DUP
+PUSH 1
+ADD
+STORE 4
+LOAD 3
+ADD
+STOREHL
+STOREFP
+RET 1
+L_SIMPLE_INIT_HEAP: RET 0  ; Inicializacion simplificada del .heap 
+.DATA
+VT_IntLinkedList_2: DW L_MET_IntLinkedList_2_getSize_0, L_MET_IntLinkedList_2_addFirst_1, L_MET_IntLinkedList_2_addLast_2, L_MET_IntLinkedList_2_add_3, L_MET_IntLinkedList_2_getFirst_4, L_MET_IntLinkedList_2_getLast_5, L_MET_IntLinkedList_2_get_6
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'IntLinkedList' DE LA CLASE 'IntLinkedList'
+L_CTOR_IntLinkedList_2_IntLinkedList: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+PUSH 0
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntLinkedList'. 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'IntElement'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 3  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_IntElement_3  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+PUSH 0
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_IntElement_3_IntElement  ; NewNode. Apilamos la direccion del constructor de la clase 'IntElement'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'IntElement'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 3  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntLinkedList'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 3  ; IdMethodCallNode. Cargamos la variable de instancia 'first'. 
+.CODE
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setNext'. 
+CALL  ; CallNode. Llamamos al metodo 'setNext'. 
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntLinkedList'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getSize' DE LA CLASE 'IntLinkedList'
+L_MET_IntLinkedList_2_getSize_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'size'. 
+.CODE
+; Retorno de expresion del metodo 'getSize' de la clase 'IntLinkedList'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getSize' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getSize' de la clase 'IntLinkedList'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'addFirst' DE LA CLASE 'IntLinkedList'
+L_MET_IntLinkedList_2_addFirst_1: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'addFirst' 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'IntElement'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 3  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_IntElement_3  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_IntElement_3_IntElement  ; NewNode. Apilamos la direccion del constructor de la clase 'IntElement'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'IntElement'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'addFirst'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'element'. 
+.CODE
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 3  ; IdMethodCallNode. Cargamos la variable de instancia 'first'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getNext' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'getNext'. 
+CALL  ; CallNode. Llamamos al metodo 'getNext'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setNext'. 
+CALL  ; CallNode. Llamamos al metodo 'setNext'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 3  ; IdMethodCallNode. Cargamos la variable de instancia 'first'. 
+.CODE
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'element'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setNext'. 
+CALL  ; CallNode. Llamamos al metodo 'setNext'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'size'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntLinkedList'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'size'. 
+.CODE
+PUSH 1
+.CODE
+EQ
+.CODE
+BF L_ENDIFTHEN_1_addFirst_IntLinkedList
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 3  ; IdMethodCallNode. Cargamos la variable de instancia 'first'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getNext' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'getNext'. 
+CALL  ; CallNode. Llamamos al metodo 'getNext'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntLinkedList'. 
+L_ENDIFTHEN_1_addFirst_IntLinkedList: NOP
+.CODE
+PUSH 1  ; LiteralNode. Apilamos 'true'. 
+.CODE
+; Retorno de expresion del metodo 'addFirst' de la clase 'IntLinkedList'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'addFirst' de la clase 'IntLinkedList'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'addFirst' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'addFirst' de la clase 'IntLinkedList'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'addFirst' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'addLast' DE LA CLASE 'IntLinkedList'
+L_MET_IntLinkedList_2_addLast_2: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'addLast' 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'IntElement'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 3  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_IntElement_3  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_IntElement_3_IntElement  ; NewNode. Apilamos la direccion del constructor de la clase 'IntElement'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'IntElement'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'addLast'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia 'last'. 
+.CODE
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'element'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setNext'. 
+CALL  ; CallNode. Llamamos al metodo 'setNext'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'size'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntLinkedList'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'element'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntLinkedList'. 
+.CODE
+PUSH 1  ; LiteralNode. Apilamos 'true'. 
+.CODE
+; Retorno de expresion del metodo 'addLast' de la clase 'IntLinkedList'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'addLast' de la clase 'IntLinkedList'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'addLast' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'addLast' de la clase 'IntLinkedList'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'addLast' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'add' DE LA CLASE 'IntLinkedList'
+L_MET_IntLinkedList_2_add_3: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 3  ; Reservamos memoria para las variables locales del metodo 'add' 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'index'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'size'. 
+.CODE
+GE
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'index'. 
+.CODE
+PUSH 0
+.CODE
+LT
+.CODE
+OR
+.CODE
+BF L_ENDIFTHEN_2_add_IntLinkedList
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'false'. 
+.CODE
+; Retorno de expresion del metodo 'add' de la clase 'IntLinkedList'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'add' de la clase 'IntLinkedList'. 
+FMEM 3  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'add' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'add' de la clase 'IntLinkedList'. 
+L_ENDIFTHEN_2_add_IntLinkedList: NOP
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'index'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'size'. 
+.CODE
+PUSH 1
+.CODE
+SUB
+.CODE
+EQ
+.CODE
+BF L_ENDIFTHEN_3_add_IntLinkedList
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'addLast'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'addLast' de la clase 'IntLinkedList'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addLast'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'addLast'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'addLast'. 
+.CODE
+; Retorno de expresion del metodo 'add' de la clase 'IntLinkedList'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'add' de la clase 'IntLinkedList'. 
+FMEM 3  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'add' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'add' de la clase 'IntLinkedList'. 
+L_ENDIFTHEN_3_add_IntLinkedList: NOP
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'IntElement'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 3  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_IntElement_3  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_IntElement_3_IntElement  ; NewNode. Apilamos la direccion del constructor de la clase 'IntElement'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'IntElement'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'add'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 3  ; IdMethodCallNode. Cargamos la variable de instancia 'first'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getNext' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'getNext'. 
+CALL  ; CallNode. Llamamos al metodo 'getNext'. 
+.CODE
+STORE -2  ; AssignNode. El lado izquierdo es una variable local del metodo 'add'. 
+.CODE
+PUSH 0
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'add'. 
+.CODE
+L_WHILE_4_add_IntLinkedList: NOP
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'index'. 
+.CODE
+LT
+BF L_ENDWHILE_4_add_IntLinkedList
+.CODE
+LOAD -2  ; IdMethodCallNode. Cargamos la variable local 'current'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getNext' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'getNext'. 
+CALL  ; CallNode. Llamamos al metodo 'getNext'. 
+.CODE
+STORE -2  ; AssignNode. El lado izquierdo es una variable local del metodo 'add'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'add'. 
+JUMP L_WHILE_4_add_IntLinkedList
+L_ENDWHILE_4_add_IntLinkedList: NOP
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'element'. 
+.CODE
+.CODE
+LOAD -2  ; IdMethodCallNode. Cargamos la variable local 'current'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getNext' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'getNext'. 
+CALL  ; CallNode. Llamamos al metodo 'getNext'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setNext'. 
+CALL  ; CallNode. Llamamos al metodo 'setNext'. 
+.CODE
+LOAD -2  ; IdMethodCallNode. Cargamos la variable local 'current'. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'element'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setNext'. 
+CALL  ; CallNode. Llamamos al metodo 'setNext'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'size'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntLinkedList'. 
+.CODE
+PUSH 1  ; LiteralNode. Apilamos 'true'. 
+.CODE
+; Retorno de expresion del metodo 'add' de la clase 'IntLinkedList'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'add' de la clase 'IntLinkedList'. 
+FMEM 3  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'add' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'add' de la clase 'IntLinkedList'. 
+FMEM 3  ; Liberamos la memoria de las variables locales del metodo 'add' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 3  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getFirst' DE LA CLASE 'IntLinkedList'
+L_MET_IntLinkedList_2_getFirst_4: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 3  ; IdMethodCallNode. Cargamos la variable de instancia 'first'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getElement' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getElement'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'getElement'. 
+CALL  ; CallNode. Llamamos al metodo 'getElement'. 
+.CODE
+; Retorno de expresion del metodo 'getFirst' de la clase 'IntLinkedList'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getFirst' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getFirst' de la clase 'IntLinkedList'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getLast' DE LA CLASE 'IntLinkedList'
+L_MET_IntLinkedList_2_getLast_5: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia 'last'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getElement' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getElement'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'getElement'. 
+CALL  ; CallNode. Llamamos al metodo 'getElement'. 
+.CODE
+; Retorno de expresion del metodo 'getLast' de la clase 'IntLinkedList'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getLast' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getLast' de la clase 'IntLinkedList'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'get' DE LA CLASE 'IntLinkedList'
+L_MET_IntLinkedList_2_get_6: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 2  ; Reservamos memoria para las variables locales del metodo 'get' 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 3  ; IdMethodCallNode. Cargamos la variable de instancia 'first'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getNext' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'getNext'. 
+CALL  ; CallNode. Llamamos al metodo 'getNext'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'get'. 
+.CODE
+PUSH 0
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'get'. 
+.CODE
+L_WHILE_5_get_IntLinkedList: NOP
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'index'. 
+.CODE
+LT
+BF L_ENDWHILE_5_get_IntLinkedList
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'current'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getNext' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getNext'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'getNext'. 
+CALL  ; CallNode. Llamamos al metodo 'getNext'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'get'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'get'. 
+JUMP L_WHILE_5_get_IntLinkedList
+L_ENDWHILE_5_get_IntLinkedList: NOP
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'current'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getElement' de la clase 'IntLinkedList'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getElement'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'getElement'. 
+CALL  ; CallNode. Llamamos al metodo 'getElement'. 
+.CODE
+; Retorno de expresion del metodo 'get' de la clase 'IntLinkedList'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'get' de la clase 'IntLinkedList'. 
+FMEM 2  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'get' de la clase 'IntLinkedList'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'get' de la clase 'IntLinkedList'. 
+FMEM 2  ; Liberamos la memoria de las variables locales del metodo 'get' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.DATA
+VT_IntElement_3: DW L_MET_IntElement_3_setNext_0, L_MET_IntElement_3_getElement_1, L_MET_IntElement_3_getNext_2
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'IntElement' DE LA CLASE 'IntElement'
+L_CTOR_IntElement_3_IntElement: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntElement'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'setNext' DE LA CLASE 'IntElement'
+L_MET_IntElement_3_setNext_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'IntElement'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getElement' DE LA CLASE 'IntElement'
+L_MET_IntElement_3_getElement_1: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'element'. 
+.CODE
+; Retorno de expresion del metodo 'getElement' de la clase 'IntElement'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getElement' de la clase 'IntElement'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getElement' de la clase 'IntElement'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getNext' DE LA CLASE 'IntElement'
+L_MET_IntElement_3_getNext_2: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia 'next'. 
+.CODE
+; Retorno de expresion del metodo 'getNext' de la clase 'IntElement'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getNext' de la clase 'IntElement'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getNext' de la clase 'IntElement'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.DATA
+VT_MainClass_4: DW L_MET_MainClass_4_main_0
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'MainClass' DE LA CLASE 'MainClass'
+L_CTOR_MainClass_4_MainClass: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'main' DE LA CLASE 'MainClass'
+L_MET_MainClass_4_main_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 2  ; Reservamos memoria para las variables locales del metodo 'main' 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'IntLinkedList'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 4  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_IntLinkedList_2  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+PUSH L_CTOR_IntLinkedList_2_IntLinkedList  ; NewNode. Apilamos la direccion del constructor de la clase 'IntLinkedList'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'IntLinkedList'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'list'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'addFirst' de la clase 'MainClass'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 0
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addFirst'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'addFirst'. 
+CALL  ; CallNode. Llamamos al metodo 'addFirst'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'list'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'addLast' de la clase 'MainClass'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 1
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addLast'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'addLast'. 
+CALL  ; CallNode. Llamamos al metodo 'addLast'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'list'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'addLast' de la clase 'MainClass'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 2
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addLast'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'addLast'. 
+CALL  ; CallNode. Llamamos al metodo 'addLast'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'list'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'addLast' de la clase 'MainClass'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 3
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addLast'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'addLast'. 
+CALL  ; CallNode. Llamamos al metodo 'addLast'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'list'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'addLast' de la clase 'MainClass'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 4
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addLast'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'addLast'. 
+CALL  ; CallNode. Llamamos al metodo 'addLast'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'list'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'addLast' de la clase 'MainClass'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 5
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addLast'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'addLast'. 
+CALL  ; CallNode. Llamamos al metodo 'addLast'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+.CODE
+PUSH 0
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+L_COND_FOR_6_main_MainClass: NOP
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'list'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getSize' de la clase 'MainClass'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getSize'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'getSize'. 
+CALL  ; CallNode. Llamamos al metodo 'getSize'. 
+.CODE
+LT
+BF L_ENDFOR_6_main_MainClass
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'list'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'get' de la clase 'MainClass'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'get'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 6  ; CallNode. Recuperamos la direccion del metodo 'get'. 
+CALL  ; CallNode. Llamamos al metodo 'get'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printIln
+CALL  ; CallNode. Llamada al metodo 'printIln' de System. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+STORE 0  ; ForNode. El lado izquierdo es una variable local del metodo 'main' 
+JUMP L_COND_FOR_6_main_MainClass
+L_ENDFOR_6_main_MainClass: NOP
+FMEM 2  ; Liberamos la memoria de las variables locales del metodo 'main' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 

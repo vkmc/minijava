@@ -1,0 +1,449 @@
+.DATA
+VT_Object_0: NOP
+VT_System_1: DW L_MET_System_1_Ctor, L_MET_System_1_read, L_MET_System_1_printI, L_MET_System_1_printC, L_MET_System_1_printB, L_MET_System_1_printS, L_MET_System_1_println, L_MET_System_1_printBln, L_MET_System_1_printCln, L_MET_System_1_printIln, L_MET_System_1_printSln 
+.CODE
+PUSH L_SIMPLE_INIT_HEAP
+CALL
+RMEM 1
+PUSH L_MET_A_2_main_4
+CALL
+HALT
+L_MET_System_1_Ctor: NOP  ; Constructor de system 
+LOADFP
+LOADSP
+STOREFP
+STOREFP
+RET 1
+L_MET_System_1_read: NOP
+LOADFP
+LOADSP
+STOREFP
+READ
+STORE 4
+STOREFP
+RET 1
+L_MET_System_1_printI: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+STOREFP
+RET 2
+L_MET_System_1_printC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+STOREFP
+RET 2
+L_MET_System_1_printB: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+STOREFP
+RET 2
+L_MET_System_1_printS: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+STOREFP
+RET 2
+L_MET_System_1_println: NOP
+LOADFP
+LOADSP
+STOREFP
+PRNLN
+STOREFP
+RET 1
+L_MET_System_1_printBln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printCln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printIln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printSln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+PRNLN
+STOREFP
+RET 2
+L_SIMPLE_MALLOC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOADHL
+DUP
+PUSH 1
+ADD
+STORE 4
+LOAD 3
+ADD
+STOREHL
+STOREFP
+RET 1
+L_SIMPLE_INIT_HEAP: RET 0  ; Inicializacion simplificada del .heap 
+.DATA
+VT_A_2: DW L_MET_A_2_print_0, L_MET_A_2_geti1_1, L_MET_A_2_seti1_2, L_MET_A_2_forloop_3, L_MET_A_2_main_4
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'A' DE LA CLASE 'A'
+L_CTOR_A_2_A: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'i'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'A'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString1_A_A: DW "A :: A() ", 0
+.CODE
+PUSH lString1_A_A  ; Apilamos el label del String '"A :: A() "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printS
+CALL  ; CallNode. Llamada al metodo 'printS' de System. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'i1'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printIln
+CALL  ; CallNode. Llamada al metodo 'printIln' de System. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'print' DE LA CLASE 'A'
+L_MET_A_2_print_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'print' 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString2_print_A: DW "A :: print() :: i1 ", 0
+.CODE
+PUSH lString2_print_A  ; Apilamos el label del String '"A :: print() :: i1 "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printS
+CALL  ; CallNode. Llamada al metodo 'printS' de System. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'geti1'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'geti1' de la clase 'A'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'geti1'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; MethodCallNode. Recuperamos la direccion del metodo 'geti1'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'geti1'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'print'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printIln
+CALL  ; CallNode. Llamada al metodo 'printIln' de System. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'print' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'geti1' DE LA CLASE 'A'
+L_MET_A_2_geti1_1: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'geti1' 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString3_geti1_A: DW "A :: geti1() ", 0
+.CODE
+PUSH lString3_geti1_A  ; Apilamos el label del String '"A :: geti1() "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'i1'. 
+.CODE
+; Retorno de expresion del metodo 'geti1' de la clase 'A'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'geti1' de la clase 'A'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'geti1' de la clase 'A'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'geti1' de la clase 'A'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'geti1' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'seti1' DE LA CLASE 'A'
+L_MET_A_2_seti1_2: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString4_seti1_A: DW "A :: seti1() ", 0
+.CODE
+PUSH lString4_seti1_A  ; Apilamos el label del String '"A :: seti1() "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'i'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'A'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'forloop' DE LA CLASE 'A'
+L_MET_A_2_forloop_3: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 3  ; Reservamos memoria para las variables locales del metodo 'forloop' 
+.CODE
+PUSH 0
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'forloop'. 
+.CODE
+PUSH 1  ; LiteralNode. Apilamos 'true'. 
+.CODE
+STORE -2  ; AssignNode. El lado izquierdo es una variable local del metodo 'forloop'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString5_forloop_A: DW "A :: forloop() ", 0
+.CODE
+PUSH lString5_forloop_A  ; Apilamos el label del String '"A :: forloop() "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString6_forloop_A: DW "for [ ", 0
+.CODE
+PUSH lString6_forloop_A  ; Apilamos el label del String '"for [ "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+.CODE
+PUSH 0
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'forloop'. 
+L_COND_FOR_7_forloop_A: NOP
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'i1'. 
+.CODE
+LT
+BF L_ENDFOR_7_forloop_A
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString8_forloop_A: DW "while ( ", 0
+.CODE
+PUSH lString8_forloop_A  ; Apilamos el label del String '"while ( "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printS
+CALL  ; CallNode. Llamada al metodo 'printS' de System. 
+.CODE
+L_WHILE_9_forloop_A: NOP
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'j'. 
+.CODE
+PUSH 4
+.CODE
+LT
+BF L_ENDWHILE_9_forloop_A
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'j'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printI
+CALL  ; CallNode. Llamada al metodo 'printI' de System. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString10_forloop_A: DW " ", 0
+.CODE
+PUSH lString10_forloop_A  ; Apilamos el label del String '" "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printS
+CALL  ; CallNode. Llamada al metodo 'printS' de System. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'j'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'forloop'. 
+JUMP L_WHILE_9_forloop_A
+L_ENDWHILE_9_forloop_A: NOP
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString11_forloop_A: DW ") ", 0
+.CODE
+PUSH lString11_forloop_A  ; Apilamos el label del String '") "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printS
+CALL  ; CallNode. Llamada al metodo 'printS' de System. 
+.CODE
+PUSH 0
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'forloop'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString12_forloop_A: DW "Iteracion ", 0
+.CODE
+PUSH lString12_forloop_A  ; Apilamos el label del String '"Iteracion "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printS
+CALL  ; CallNode. Llamada al metodo 'printS' de System. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printI
+CALL  ; CallNode. Llamada al metodo 'printI' de System. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString13_forloop_A: DW " ", 0
+.CODE
+PUSH lString13_forloop_A  ; Apilamos el label del String '" "'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'i'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+STORE -1  ; ForNode. El lado izquierdo es una variable local del metodo 'forloop' 
+JUMP L_COND_FOR_7_forloop_A
+L_ENDFOR_7_forloop_A: NOP
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString14_forloop_A: DW "]", 0
+.CODE
+PUSH lString14_forloop_A  ; Apilamos el label del String '"]"'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printS
+CALL  ; CallNode. Llamada al metodo 'printS' de System. 
+FMEM 3  ; Liberamos la memoria de las variables locales del metodo 'forloop' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'main' DE LA CLASE 'A'
+L_MET_A_2_main_4: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'main' 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'A'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 2  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_A_2  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+PUSH 4
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_A_2_A  ; NewNode. Apilamos la direccion del constructor de la clase 'A'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'A'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'a1'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'forloop' de la clase 'A'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'forloop'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 3  ; CallNode. Recuperamos la direccion del metodo 'forloop'. 
+CALL  ; CallNode. Llamamos al metodo 'forloop'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'main' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
