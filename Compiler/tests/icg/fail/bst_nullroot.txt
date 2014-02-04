@@ -1,0 +1,2139 @@
+.DATA
+VT_Object_0: NOP
+VT_System_1: DW L_MET_System_1_Ctor, L_MET_System_1_read, L_MET_System_1_printI, L_MET_System_1_printC, L_MET_System_1_printB, L_MET_System_1_printS, L_MET_System_1_println, L_MET_System_1_printBln, L_MET_System_1_printCln, L_MET_System_1_printIln, L_MET_System_1_printSln 
+.CODE
+PUSH L_SIMPLE_INIT_HEAP
+CALL
+RMEM 1
+PUSH L_MET_MMAin_6_main_0
+CALL
+HALT
+L_MET_System_1_Ctor: NOP  ; Constructor de system 
+LOADFP
+LOADSP
+STOREFP
+STOREFP
+RET 1
+L_MET_System_1_read: NOP
+LOADFP
+LOADSP
+STOREFP
+READ
+STORE 4
+STOREFP
+RET 1
+L_MET_System_1_printI: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+STOREFP
+RET 2
+L_MET_System_1_printC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+STOREFP
+RET 2
+L_MET_System_1_printB: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+STOREFP
+RET 2
+L_MET_System_1_printS: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+STOREFP
+RET 2
+L_MET_System_1_println: NOP
+LOADFP
+LOADSP
+STOREFP
+PRNLN
+STOREFP
+RET 1
+L_MET_System_1_printBln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printCln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printIln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printSln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+PRNLN
+STOREFP
+RET 2
+L_SIMPLE_MALLOC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOADHL
+DUP
+PUSH 1
+ADD
+STORE 4
+LOAD 3
+ADD
+STOREHL
+STOREFP
+RET 1
+L_SIMPLE_INIT_HEAP: RET 0  ; Inicializacion simplificada del .heap 
+.DATA
+VT_LinkedBinaryTree_2: DW L_MET_LinkedBinaryTree_2_LinkedBinaryTree_init_0, L_MET_LinkedBinaryTree_2_size_1, L_MET_LinkedBinaryTree_2_isEmpty_2, L_MET_LinkedBinaryTree_2_replace_3, L_MET_LinkedBinaryTree_2_root_4, L_MET_LinkedBinaryTree_2_parent_5, L_MET_LinkedBinaryTree_2_isInternal_6, L_MET_LinkedBinaryTree_2_isExternal_7, L_MET_LinkedBinaryTree_2_isRoot_8, L_MET_LinkedBinaryTree_2_setRoot_9, L_MET_LinkedBinaryTree_2_addLeft_10, L_MET_LinkedBinaryTree_2_addRight_11, L_MET_LinkedBinaryTree_2_left_12, L_MET_LinkedBinaryTree_2_right_13, L_MET_LinkedBinaryTree_2_hasLeft_14, L_MET_LinkedBinaryTree_2_hasRight_15
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'LinkedBinaryTree' DE LA CLASE 'LinkedBinaryTree'
+L_CTOR_LinkedBinaryTree_2_LinkedBinaryTree: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'LinkedBinaryTree_init'. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'LinkedBinaryTree_init'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; MethodCallNode. Recuperamos la direccion del metodo 'LinkedBinaryTree_init'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'LinkedBinaryTree_init'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'LinkedBinaryTree_init' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_LinkedBinaryTree_init_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'LinkedBinaryTree'. 
+.CODE
+PUSH 0
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'size' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_size_1: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia '_size'. 
+.CODE
+; Retorno de expresion del metodo 'size' de la clase 'LinkedBinaryTree'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'size' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'size' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'isEmpty' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_isEmpty_2: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia '_size'. 
+.CODE
+PUSH 0
+.CODE
+EQ
+.CODE
+; Retorno de expresion del metodo 'isEmpty' de la clase 'LinkedBinaryTree'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'isEmpty' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'isEmpty' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'replace' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_replace_3: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'replace' 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getEntry' de la clase 'LinkedBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; CallNode. Recuperamos la direccion del metodo 'getEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'getEntry'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'replace'. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+.CODE
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 3  ; CallNode. Recuperamos la direccion del metodo 'setEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'setEntry'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'toReturn'. 
+.CODE
+; Retorno de expresion del metodo 'replace' de la clase 'LinkedBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'replace' de la clase 'LinkedBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'replace' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'replace' de la clase 'LinkedBinaryTree'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'replace' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 3  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'root' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_root_4: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isEmpty'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isEmpty' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isEmpty'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'isEmpty'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isEmpty'. 
+.CODE
+.CODE
+BF L_ENDIFTHEN_1_root_LinkedBinaryTree
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'root' de la clase 'LinkedBinaryTree'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'root' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'root' de la clase 'LinkedBinaryTree'. 
+L_ENDIFTHEN_1_root_LinkedBinaryTree: NOP
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia '_root'. 
+.CODE
+; Retorno de expresion del metodo 'root' de la clase 'LinkedBinaryTree'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'root' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'root' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'parent' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_parent_5: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia '_root'. 
+.CODE
+EQ
+.CODE
+BF L_ENDIFTHEN_2_parent_LinkedBinaryTree
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'parent' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'parent' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'parent' de la clase 'LinkedBinaryTree'. 
+L_ENDIFTHEN_2_parent_LinkedBinaryTree: NOP
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getParent' de la clase 'LinkedBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getParent'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 4  ; CallNode. Recuperamos la direccion del metodo 'getParent'. 
+CALL  ; CallNode. Llamamos al metodo 'getParent'. 
+.CODE
+.CODE
+; Retorno de expresion del metodo 'parent' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'parent' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'parent' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'isInternal' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_isInternal_6: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'hasLeft'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'hasLeft' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'hasLeft'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 14  ; MethodCallNode. Recuperamos la direccion del metodo 'hasLeft'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'hasLeft'. 
+.CODE
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'hasRight'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'hasRight' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'hasRight'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 15  ; MethodCallNode. Recuperamos la direccion del metodo 'hasRight'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'hasRight'. 
+.CODE
+.CODE
+OR
+.CODE
+; Retorno de expresion del metodo 'isInternal' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'isInternal' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'isInternal' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'isExternal' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_isExternal_7: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isInternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isInternal' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isInternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 6  ; MethodCallNode. Recuperamos la direccion del metodo 'isInternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isInternal'. 
+.CODE
+.CODE
+NOT
+.CODE
+; Retorno de expresion del metodo 'isExternal' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'isExternal' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'isExternal' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'isRoot' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_isRoot_8: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia '_root'. 
+.CODE
+EQ
+.CODE
+; Retorno de expresion del metodo 'isRoot' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'isRoot' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'isRoot' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'setRoot' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_setRoot_9: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isEmpty'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isEmpty' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isEmpty'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'isEmpty'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isEmpty'. 
+.CODE
+.CODE
+BF L_ENDIF_3_setRoot_LinkedBinaryTree
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Node'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 5  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Node_4  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'entry'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_Node_4_Node  ; NewNode. Apilamos la direccion del constructor de la clase 'Node'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Node'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'LinkedBinaryTree'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia '_size'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'LinkedBinaryTree'. 
+JUMP L_ENDELSE_3_setRoot_LinkedBinaryTree
+L_ENDIF_3_setRoot_LinkedBinaryTree: NOP
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia '_root'. 
+.CODE
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'entry'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 3  ; CallNode. Recuperamos la direccion del metodo 'setEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'setEntry'. 
+L_ENDELSE_3_setRoot_LinkedBinaryTree: NOP
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'addLeft' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_addLeft_10: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'addLeft' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'hasLeft'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'hasLeft' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'padre'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'hasLeft'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 14  ; MethodCallNode. Recuperamos la direccion del metodo 'hasLeft'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'hasLeft'. 
+.CODE
+.CODE
+BF L_ENDIFTHEN_4_addLeft_LinkedBinaryTree
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'addLeft' de la clase 'LinkedBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'addLeft' de la clase 'LinkedBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'addLeft' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'addLeft' de la clase 'LinkedBinaryTree'. 
+L_ENDIFTHEN_4_addLeft_LinkedBinaryTree: NOP
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Node'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 5  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Node_4  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'entry'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_Node_4_Node  ; NewNode. Apilamos la direccion del constructor de la clase 'Node'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Node'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'addLeft'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'nuevo'. 
+.CODE
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'padre'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setParent'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setParent'. 
+CALL  ; CallNode. Llamamos al metodo 'setParent'. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'padre'. 
+.CODE
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'nuevo'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setLeft'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'setLeft'. 
+CALL  ; CallNode. Llamamos al metodo 'setLeft'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia '_size'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'LinkedBinaryTree'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'nuevo'. 
+.CODE
+; Retorno de expresion del metodo 'addLeft' de la clase 'LinkedBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'addLeft' de la clase 'LinkedBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'addLeft' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'addLeft' de la clase 'LinkedBinaryTree'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'addLeft' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 3  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'addRight' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_addRight_11: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'addRight' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'hasRight'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'hasRight' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'padre'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'hasRight'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 15  ; MethodCallNode. Recuperamos la direccion del metodo 'hasRight'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'hasRight'. 
+.CODE
+.CODE
+BF L_ENDIFTHEN_5_addRight_LinkedBinaryTree
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'addRight' de la clase 'LinkedBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'addRight' de la clase 'LinkedBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'addRight' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'addRight' de la clase 'LinkedBinaryTree'. 
+L_ENDIFTHEN_5_addRight_LinkedBinaryTree: NOP
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Node'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 5  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Node_4  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'entry'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_Node_4_Node  ; NewNode. Apilamos la direccion del constructor de la clase 'Node'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Node'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'addRight'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'nuevo'. 
+.CODE
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'padre'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setParent'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setParent'. 
+CALL  ; CallNode. Llamamos al metodo 'setParent'. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'padre'. 
+.CODE
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'nuevo'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setRight'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'setRight'. 
+CALL  ; CallNode. Llamamos al metodo 'setRight'. 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia '_size'. 
+.CODE
+PUSH 1
+.CODE
+ADD
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'LinkedBinaryTree'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'nuevo'. 
+.CODE
+; Retorno de expresion del metodo 'addRight' de la clase 'LinkedBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'addRight' de la clase 'LinkedBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'addRight' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'addRight' de la clase 'LinkedBinaryTree'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'addRight' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 3  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'left' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_left_12: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isExternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isExternal' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; MethodCallNode. Recuperamos la direccion del metodo 'isExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isExternal'. 
+.CODE
+.CODE
+BF L_ENDIFTHEN_6_left_LinkedBinaryTree
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'left' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'left' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'left' de la clase 'LinkedBinaryTree'. 
+L_ENDIFTHEN_6_left_LinkedBinaryTree: NOP
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getLeft' de la clase 'LinkedBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getLeft'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 6  ; CallNode. Recuperamos la direccion del metodo 'getLeft'. 
+CALL  ; CallNode. Llamamos al metodo 'getLeft'. 
+.CODE
+.CODE
+; Retorno de expresion del metodo 'left' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'left' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'left' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'right' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_right_13: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isExternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isExternal' de la clase 'LinkedBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; MethodCallNode. Recuperamos la direccion del metodo 'isExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isExternal'. 
+.CODE
+.CODE
+BF L_ENDIFTHEN_7_right_LinkedBinaryTree
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'right' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'right' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'right' de la clase 'LinkedBinaryTree'. 
+L_ENDIFTHEN_7_right_LinkedBinaryTree: NOP
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getRight' de la clase 'LinkedBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getRight'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; CallNode. Recuperamos la direccion del metodo 'getRight'. 
+CALL  ; CallNode. Llamamos al metodo 'getRight'. 
+.CODE
+.CODE
+; Retorno de expresion del metodo 'right' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'right' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'right' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'hasLeft' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_hasLeft_14: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getLeft' de la clase 'LinkedBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getLeft'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 6  ; CallNode. Recuperamos la direccion del metodo 'getLeft'. 
+CALL  ; CallNode. Llamamos al metodo 'getLeft'. 
+.CODE
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+NE
+.CODE
+; Retorno de expresion del metodo 'hasLeft' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'hasLeft' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'hasLeft' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'hasRight' DE LA CLASE 'LinkedBinaryTree'
+L_MET_LinkedBinaryTree_2_hasRight_15: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'node'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getRight' de la clase 'LinkedBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getRight'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; CallNode. Recuperamos la direccion del metodo 'getRight'. 
+CALL  ; CallNode. Llamamos al metodo 'getRight'. 
+.CODE
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+NE
+.CODE
+; Retorno de expresion del metodo 'hasRight' de la clase 'LinkedBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'hasRight' de la clase 'LinkedBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'hasRight' de la clase 'LinkedBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.DATA
+VT_LinkedSearchBinaryTree_3: DW L_MET_LinkedBinaryTree_2_LinkedBinaryTree_init_0, L_MET_LinkedBinaryTree_2_size_1, L_MET_LinkedBinaryTree_2_isEmpty_2, L_MET_LinkedBinaryTree_2_replace_3, L_MET_LinkedBinaryTree_2_root_4, L_MET_LinkedBinaryTree_2_parent_5, L_MET_LinkedBinaryTree_2_isInternal_6, L_MET_LinkedBinaryTree_2_isExternal_7, L_MET_LinkedBinaryTree_2_isRoot_8, L_MET_LinkedBinaryTree_2_setRoot_9, L_MET_LinkedBinaryTree_2_addLeft_10, L_MET_LinkedBinaryTree_2_addRight_11, L_MET_LinkedBinaryTree_2_left_12, L_MET_LinkedBinaryTree_2_right_13, L_MET_LinkedBinaryTree_2_hasLeft_14, L_MET_LinkedBinaryTree_2_hasRight_15, L_MET_LinkedSearchBinaryTree_3_find_16, L_MET_LinkedSearchBinaryTree_3_insert_17, L_MET_LinkedSearchBinaryTree_3_remove_18, L_MET_LinkedSearchBinaryTree_3_treeSearch_19, L_MET_LinkedSearchBinaryTree_3_treeInsert_20, L_MET_LinkedSearchBinaryTree_3_insertExternalNode_21, L_MET_LinkedSearchBinaryTree_3_removeExternal_22, L_MET_LinkedSearchBinaryTree_3_removeMin_23
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'LinkedSearchBinaryTree' DE LA CLASE 'LinkedSearchBinaryTree'
+L_CTOR_LinkedSearchBinaryTree_3_LinkedSearchBinaryTree: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'LinkedBinaryTree_init'. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'LinkedBinaryTree_init'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; MethodCallNode. Recuperamos la direccion del metodo 'LinkedBinaryTree_init'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'LinkedBinaryTree_init'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'find' DE LA CLASE 'LinkedSearchBinaryTree'
+L_MET_LinkedSearchBinaryTree_3_find_16: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'find' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isEmpty'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isEmpty' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isEmpty'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'isEmpty'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isEmpty'. 
+.CODE
+NOT
+.CODE
+BF L_ENDIF_8_find_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'treeSearch'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'root'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'root' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'root'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 4  ; MethodCallNode. Recuperamos la direccion del metodo 'root'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'root'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'treeSearch'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 19  ; MethodCallNode. Recuperamos la direccion del metodo 'treeSearch'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'treeSearch'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'find'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'node'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getEntry' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; CallNode. Recuperamos la direccion del metodo 'getEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'getEntry'. 
+.CODE
+; Retorno de expresion del metodo 'find' de la clase 'LinkedSearchBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'find' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'find' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'find' de la clase 'LinkedSearchBinaryTree'. 
+JUMP L_ENDELSE_8_find_LinkedSearchBinaryTree
+L_ENDIF_8_find_LinkedSearchBinaryTree: NOP
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'find' de la clase 'LinkedSearchBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'find' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'find' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'find' de la clase 'LinkedSearchBinaryTree'. 
+L_ENDELSE_8_find_LinkedSearchBinaryTree: NOP
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'find' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'insert' DE LA CLASE 'LinkedSearchBinaryTree'
+L_MET_LinkedSearchBinaryTree_3_insert_17: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 2  ; Reservamos memoria para las variables locales del metodo 'insert' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isEmpty'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isEmpty' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isEmpty'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'isEmpty'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isEmpty'. 
+.CODE
+NOT
+.CODE
+BF L_ENDIF_9_insert_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'treeInsert'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'value'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'root'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'root' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'root'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 4  ; MethodCallNode. Recuperamos la direccion del metodo 'root'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'root'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'treeInsert'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 20  ; MethodCallNode. Recuperamos la direccion del metodo 'treeInsert'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'treeInsert'. 
+.CODE
+; Retorno de expresion del metodo 'insert' de la clase 'LinkedSearchBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'insert' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 2  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'insert' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'insert' de la clase 'LinkedSearchBinaryTree'. 
+JUMP L_ENDELSE_9_insert_LinkedSearchBinaryTree
+L_ENDIF_9_insert_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'setRoot'. 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Entry'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 3  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Entry_5  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'value'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_Entry_5_Entry  ; NewNode. Apilamos la direccion del constructor de la clase 'Entry'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Entry'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setRoot'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 9  ; MethodCallNode. Recuperamos la direccion del metodo 'setRoot'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'setRoot'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'root'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'root' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'root'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 4  ; MethodCallNode. Recuperamos la direccion del metodo 'root'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'root'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getEntry' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; CallNode. Recuperamos la direccion del metodo 'getEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'getEntry'. 
+.CODE
+; Retorno de expresion del metodo 'insert' de la clase 'LinkedSearchBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'insert' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 2  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'insert' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'insert' de la clase 'LinkedSearchBinaryTree'. 
+L_ENDELSE_9_insert_LinkedSearchBinaryTree: NOP
+FMEM 2  ; Liberamos la memoria de las variables locales del metodo 'insert' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 3  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'remove' DE LA CLASE 'LinkedSearchBinaryTree'
+L_MET_LinkedSearchBinaryTree_3_remove_18: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 2  ; Reservamos memoria para las variables locales del metodo 'remove' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isEmpty'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isEmpty' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isEmpty'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'isEmpty'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isEmpty'. 
+.CODE
+BF L_ENDIFTHEN_10_remove_LinkedSearchBinaryTree
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'remove' de la clase 'LinkedSearchBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'remove' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 2  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'remove' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'remove' de la clase 'LinkedSearchBinaryTree'. 
+L_ENDIFTHEN_10_remove_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'treeSearch'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'k'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getKey' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getKey'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'getKey'. 
+CALL  ; CallNode. Llamamos al metodo 'getKey'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'root'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'root' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'root'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 4  ; MethodCallNode. Recuperamos la direccion del metodo 'root'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'root'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'treeSearch'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 19  ; MethodCallNode. Recuperamos la direccion del metodo 'treeSearch'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'treeSearch'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'remove'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isExternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isExternal' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'w'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; MethodCallNode. Recuperamos la direccion del metodo 'isExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isExternal'. 
+.CODE
+NOT
+.CODE
+BF L_ENDIFTHEN_11_remove_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isExternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isExternal' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'left'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'left' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'w'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'left'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 12  ; MethodCallNode. Recuperamos la direccion del metodo 'left'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'left'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; MethodCallNode. Recuperamos la direccion del metodo 'isExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isExternal'. 
+.CODE
+BF L_ENDIF_12_remove_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'removeExternal'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'left'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'left' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'w'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'left'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 12  ; MethodCallNode. Recuperamos la direccion del metodo 'left'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'left'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'removeExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 22  ; MethodCallNode. Recuperamos la direccion del metodo 'removeExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'removeExternal'. 
+JUMP L_ENDELSE_12_remove_LinkedSearchBinaryTree
+L_ENDIF_12_remove_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isExternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isExternal' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'right'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'right' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'w'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'right'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 13  ; MethodCallNode. Recuperamos la direccion del metodo 'right'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'right'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; MethodCallNode. Recuperamos la direccion del metodo 'isExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isExternal'. 
+.CODE
+BF L_ENDIF_13_remove_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'removeExternal'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'right'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'right' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'w'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'right'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 13  ; MethodCallNode. Recuperamos la direccion del metodo 'right'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'right'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'removeExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 22  ; MethodCallNode. Recuperamos la direccion del metodo 'removeExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'removeExternal'. 
+JUMP L_ENDELSE_13_remove_LinkedSearchBinaryTree
+L_ENDIF_13_remove_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'removeMin'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'removeMin' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'w'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'removeMin'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 23  ; MethodCallNode. Recuperamos la direccion del metodo 'removeMin'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'removeMin'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'remove'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'replace'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'replace' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'w'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'min'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'replace'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 3  ; MethodCallNode. Recuperamos la direccion del metodo 'replace'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'replace'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+L_ENDELSE_13_remove_LinkedSearchBinaryTree: NOP
+L_ENDELSE_12_remove_LinkedSearchBinaryTree: NOP
+L_ENDIFTHEN_11_remove_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'k'. 
+.CODE
+; Retorno de expresion del metodo 'remove' de la clase 'LinkedSearchBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'remove' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 2  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'remove' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'remove' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 2  ; Liberamos la memoria de las variables locales del metodo 'remove' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'treeSearch' DE LA CLASE 'LinkedSearchBinaryTree'
+L_MET_LinkedSearchBinaryTree_3_treeSearch_19: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isExternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isExternal' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; MethodCallNode. Recuperamos la direccion del metodo 'isExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isExternal'. 
+.CODE
+BF L_ENDIFTHEN_14_treeSearch_LinkedSearchBinaryTree
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+.CODE
+; Retorno de expresion del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+L_ENDIFTHEN_14_treeSearch_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getEntry' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; CallNode. Recuperamos la direccion del metodo 'getEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'getEntry'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getKey' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getKey'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'getKey'. 
+CALL  ; CallNode. Llamamos al metodo 'getKey'. 
+.CODE
+LT
+.CODE
+BF L_ENDIF_15_treeSearch_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'treeSearch'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getLeft' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getLeft'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 6  ; CallNode. Recuperamos la direccion del metodo 'getLeft'. 
+CALL  ; CallNode. Llamamos al metodo 'getLeft'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'treeSearch'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 19  ; MethodCallNode. Recuperamos la direccion del metodo 'treeSearch'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'treeSearch'. 
+.CODE
+; Retorno de expresion del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+JUMP L_ENDELSE_15_treeSearch_LinkedSearchBinaryTree
+L_ENDIF_15_treeSearch_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getEntry' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; CallNode. Recuperamos la direccion del metodo 'getEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'getEntry'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getKey' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getKey'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'getKey'. 
+CALL  ; CallNode. Llamamos al metodo 'getKey'. 
+.CODE
+GT
+.CODE
+BF L_ENDIF_16_treeSearch_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'treeSearch'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getRight' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getRight'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; CallNode. Recuperamos la direccion del metodo 'getRight'. 
+CALL  ; CallNode. Llamamos al metodo 'getRight'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'treeSearch'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 19  ; MethodCallNode. Recuperamos la direccion del metodo 'treeSearch'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'treeSearch'. 
+.CODE
+; Retorno de expresion del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+JUMP L_ENDELSE_16_treeSearch_LinkedSearchBinaryTree
+L_ENDIF_16_treeSearch_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+.CODE
+; Retorno de expresion del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'.
+STORE 6  ; ReturnExpNode. Almacenamos el retorno del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 3  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+L_ENDELSE_16_treeSearch_LinkedSearchBinaryTree: NOP
+L_ENDELSE_15_treeSearch_LinkedSearchBinaryTree: NOP
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 3  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'treeInsert' DE LA CLASE 'LinkedSearchBinaryTree'
+L_MET_LinkedSearchBinaryTree_3_treeInsert_20: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'treeInsert' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'treeSearch'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'treeSearch' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 6  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'treeSearch'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 19  ; MethodCallNode. Recuperamos la direccion del metodo 'treeSearch'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'treeSearch'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'treeInsert'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isExternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isExternal' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'toReturn'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; MethodCallNode. Recuperamos la direccion del metodo 'isExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isExternal'. 
+.CODE
+BF L_ENDIF_17_treeInsert_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'insertExternalNode'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'insertExternalNode' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 6  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'value'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'toReturn'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'insertExternalNode'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 21  ; MethodCallNode. Recuperamos la direccion del metodo 'insertExternalNode'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'insertExternalNode'. 
+.CODE
+; Retorno de expresion del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'.
+STORE 7  ; ReturnExpNode. Almacenamos el retorno del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 4  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'. 
+JUMP L_ENDELSE_17_treeInsert_LinkedSearchBinaryTree
+L_ENDIF_17_treeInsert_LinkedSearchBinaryTree: NOP
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+.CODE
+; Retorno de expresion del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'.
+STORE 7  ; ReturnExpNode. Almacenamos el retorno del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 4  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'treeInsert' de la clase 'LinkedSearchBinaryTree'. 
+L_ENDELSE_17_treeInsert_LinkedSearchBinaryTree: NOP
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'treeInsert' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 4  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'insertExternalNode' DE LA CLASE 'LinkedSearchBinaryTree'
+L_MET_LinkedSearchBinaryTree_3_insertExternalNode_21: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+.CODE
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'Entry'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 3  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_Entry_5  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+LOAD 6  ; IdMethodCallNode. Cargamos el parametro 'key'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'value'. 
+.CODE
+SWAP  ; NewNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_CTOR_Entry_5_Entry  ; NewNode. Apilamos la direccion del constructor de la clase 'Entry'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'Entry'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 3  ; CallNode. Recuperamos la direccion del metodo 'setEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'setEntry'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'addLeft'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'addLeft' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addLeft'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 10  ; MethodCallNode. Recuperamos la direccion del metodo 'addLeft'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'addLeft'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'addRight'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'addRight' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'addRight'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 11  ; MethodCallNode. Recuperamos la direccion del metodo 'addRight'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'addRight'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getEntry' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; CallNode. Recuperamos la direccion del metodo 'getEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'getEntry'. 
+.CODE
+; Retorno de expresion del metodo 'insertExternalNode' de la clase 'LinkedSearchBinaryTree'.
+STORE 7  ; ReturnExpNode. Almacenamos el retorno del metodo 'insertExternalNode' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 4  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'insertExternalNode' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 4  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'removeExternal' DE LA CLASE 'LinkedSearchBinaryTree'
+L_MET_LinkedSearchBinaryTree_3_removeExternal_22: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 3  ; Reservamos memoria para las variables locales del metodo 'removeExternal' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isExternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isExternal' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; MethodCallNode. Recuperamos la direccion del metodo 'isExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isExternal'. 
+.CODE
+BF L_ENDIFTHEN_18_removeExternal_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'parent'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'parent' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'parent'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; MethodCallNode. Recuperamos la direccion del metodo 'parent'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'parent'. 
+.CODE
+STORE -2  ; AssignNode. El lado izquierdo es una variable local del metodo 'removeExternal'. 
+.CODE
+LOAD -2  ; IdMethodCallNode. Cargamos la variable local 'padre'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getRight' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getRight'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; CallNode. Recuperamos la direccion del metodo 'getRight'. 
+CALL  ; CallNode. Llamamos al metodo 'getRight'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'removeExternal'. 
+.CODE
+LOAD -2  ; IdMethodCallNode. Cargamos la variable local 'padre'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getParent' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getParent'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 4  ; CallNode. Recuperamos la direccion del metodo 'getParent'. 
+CALL  ; CallNode. Llamamos al metodo 'getParent'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'removeExternal'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'padreNuevo'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getLeft' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getLeft'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 6  ; CallNode. Recuperamos la direccion del metodo 'getLeft'. 
+CALL  ; CallNode. Llamamos al metodo 'getLeft'. 
+.CODE
+LOAD -2  ; IdMethodCallNode. Cargamos la variable local 'padre'. 
+.CODE
+EQ
+.CODE
+BF L_ENDIF_19_removeExternal_LinkedSearchBinaryTree
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'padreNuevo'. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'hermano'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setLeft'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'setLeft'. 
+CALL  ; CallNode. Llamamos al metodo 'setLeft'. 
+JUMP L_ENDELSE_19_removeExternal_LinkedSearchBinaryTree
+L_ENDIF_19_removeExternal_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'padreNuevo'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getRight' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getRight'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 7  ; CallNode. Recuperamos la direccion del metodo 'getRight'. 
+CALL  ; CallNode. Llamamos al metodo 'getRight'. 
+.CODE
+LOAD -2  ; IdMethodCallNode. Cargamos la variable local 'padre'. 
+.CODE
+EQ
+.CODE
+BF L_ENDIFTHEN_20_removeExternal_LinkedSearchBinaryTree
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'padreNuevo'. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'hermano'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setRight'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; CallNode. Recuperamos la direccion del metodo 'setRight'. 
+CALL  ; CallNode. Llamamos al metodo 'setRight'. 
+L_ENDIFTHEN_20_removeExternal_LinkedSearchBinaryTree: NOP
+L_ENDELSE_19_removeExternal_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'hermano'. 
+.CODE
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'padreNuevo'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setParent'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; CallNode. Recuperamos la direccion del metodo 'setParent'. 
+CALL  ; CallNode. Llamamos al metodo 'setParent'. 
+L_ENDIFTHEN_18_removeExternal_LinkedSearchBinaryTree: NOP
+FMEM 3  ; Liberamos la memoria de las variables locales del metodo 'removeExternal' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'removeMin' DE LA CLASE 'LinkedSearchBinaryTree'
+L_MET_LinkedSearchBinaryTree_3_removeMin_23: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 1  ; Reservamos memoria para las variables locales del metodo 'removeMin' 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'right'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'right' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'nodo'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'right'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 13  ; MethodCallNode. Recuperamos la direccion del metodo 'right'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'right'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'removeMin'. 
+.CODE
+L_WHILE_21_removeMin_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'isInternal'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'isInternal' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'left'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'left' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'v'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'left'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 12  ; MethodCallNode. Recuperamos la direccion del metodo 'left'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'left'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'isInternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 6  ; MethodCallNode. Recuperamos la direccion del metodo 'isInternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'isInternal'. 
+BF L_ENDWHILE_21_removeMin_LinkedSearchBinaryTree
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'left'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'left' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'v'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'left'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 12  ; MethodCallNode. Recuperamos la direccion del metodo 'left'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'left'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'removeMin'. 
+JUMP L_WHILE_21_removeMin_LinkedSearchBinaryTree
+L_ENDWHILE_21_removeMin_LinkedSearchBinaryTree: NOP
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'removeExternal'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'left'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'left' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'v'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'left'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 12  ; MethodCallNode. Recuperamos la direccion del metodo 'left'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'left'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'removeExternal'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 22  ; MethodCallNode. Recuperamos la direccion del metodo 'removeExternal'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'removeExternal'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'v'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getEntry' de la clase 'LinkedSearchBinaryTree'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getEntry'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 5  ; CallNode. Recuperamos la direccion del metodo 'getEntry'. 
+CALL  ; CallNode. Llamamos al metodo 'getEntry'. 
+.CODE
+; Retorno de expresion del metodo 'removeMin' de la clase 'LinkedSearchBinaryTree'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'removeMin' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 1  ; ReturnExpNode. Liberamos el espacio usado por las variables locales del metodo 'removeMin' de la clase 'LinkedSearchBinaryTree'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'removeMin' de la clase 'LinkedSearchBinaryTree'. 
+FMEM 1  ; Liberamos la memoria de las variables locales del metodo 'removeMin' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.DATA
+VT_Node_4: DW L_MET_Node_4_setParent_0, L_MET_Node_4_setLeft_1, L_MET_Node_4_setRight_2, L_MET_Node_4_setEntry_3, L_MET_Node_4_getParent_4, L_MET_Node_4_getEntry_5, L_MET_Node_4_getLeft_6, L_MET_Node_4_getRight_7
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'Node' DE LA CLASE 'Node'
+L_CTOR_Node_4_Node: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'setEntry'. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setEntry'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 3  ; MethodCallNode. Recuperamos la direccion del metodo 'setEntry'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'setEntry'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'setLeft'. 
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setLeft'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; MethodCallNode. Recuperamos la direccion del metodo 'setLeft'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'setLeft'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'setRight'. 
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setRight'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'setRight'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'setRight'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'setParent'. 
+.CODE
+PUSH 0  ; LiteralNode. Apilamos 'null'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+DUP  ; MethodCallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'setParent'. 
+LOADREF 0  ; MethodCallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 0  ; MethodCallNode. Recuperamos la direccion del metodo 'setParent'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'setParent'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'setParent' DE LA CLASE 'Node'
+L_MET_Node_4_setParent_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'Node'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'setLeft' DE LA CLASE 'Node'
+L_MET_Node_4_setLeft_1: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 4  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'Node'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'setRight' DE LA CLASE 'Node'
+L_MET_Node_4_setRight_2: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 3  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'Node'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'setEntry' DE LA CLASE 'Node'
+L_MET_Node_4_setEntry_3: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'Node'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getParent' DE LA CLASE 'Node'
+L_MET_Node_4_getParent_4: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia 'parent'. 
+.CODE
+; Retorno de expresion del metodo 'getParent' de la clase 'Node'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getParent' de la clase 'Node'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getParent' de la clase 'Node'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getEntry' DE LA CLASE 'Node'
+L_MET_Node_4_getEntry_5: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'entry'. 
+.CODE
+; Retorno de expresion del metodo 'getEntry' de la clase 'Node'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getEntry' de la clase 'Node'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getEntry' de la clase 'Node'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getLeft' DE LA CLASE 'Node'
+L_MET_Node_4_getLeft_6: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 4  ; IdMethodCallNode. Cargamos la variable de instancia 'left'. 
+.CODE
+; Retorno de expresion del metodo 'getLeft' de la clase 'Node'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getLeft' de la clase 'Node'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getLeft' de la clase 'Node'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getRight' DE LA CLASE 'Node'
+L_MET_Node_4_getRight_7: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 3  ; IdMethodCallNode. Cargamos la variable de instancia 'right'. 
+.CODE
+; Retorno de expresion del metodo 'getRight' de la clase 'Node'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getRight' de la clase 'Node'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getRight' de la clase 'Node'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.DATA
+VT_Entry_5: DW L_MET_Entry_5_getKey_0, L_MET_Entry_5_getElement_1, L_MET_Entry_5_setElement_2
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'Entry' DE LA CLASE 'Entry'
+L_CTOR_Entry_5_Entry: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 5  ; IdMethodCallNode. Cargamos el parametro 'k'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 2  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'Entry'. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'Entry'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 3  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getKey' DE LA CLASE 'Entry'
+L_MET_Entry_5_getKey_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 2  ; IdMethodCallNode. Cargamos la variable de instancia 'key'. 
+.CODE
+; Retorno de expresion del metodo 'getKey' de la clase 'Entry'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getKey' de la clase 'Entry'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getKey' de la clase 'Entry'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'getElement' DE LA CLASE 'Entry'
+L_MET_Entry_5_getElement_1: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 3  ; IdMethodCallNode. Apilamos el THIS para poder acceder al CIR. 
+LOADREF 1  ; IdMethodCallNode. Cargamos la variable de instancia 'elem'. 
+.CODE
+; Retorno de expresion del metodo 'getElement' de la clase 'Entry'.
+STORE 4  ; ReturnExpNode. Almacenamos el retorno del metodo 'getElement' de la clase 'Entry'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 1  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'getElement' de la clase 'Entry'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'setElement' DE LA CLASE 'Entry'
+L_MET_Entry_5_setElement_2: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'e'. 
+.CODE
+LOAD 3  ; AssignNode. Apilamos THIS 
+SWAP  ; AssignNode. Invertimos el orden del tope de la pila. STOREREF usa los parametros en orden inverso (CIR, valor). 
+STOREREF 1  ; AssignNode. El lado izquierdo es una variable de instancia de la clase 'Entry'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.DATA
+VT_MMAin_6: DW L_MET_MMAin_6_main_0
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'MMAin' DE LA CLASE 'MMAin'
+L_CTOR_MMAin_6_MMAin: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'main' DE LA CLASE 'MMAin'
+L_MET_MMAin_6_main_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 2  ; Reservamos memoria para las variables locales del metodo 'main' 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.DATA
+lString22_main_MMAin: DW "HOLA", 0
+.CODE
+PUSH lString22_main_MMAin  ; Apilamos el label del String '"HOLA"'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+RMEM 1  ; NewNode. Llamada al constructor de la clase 'LinkedSearchBinaryTree'. Se reserva memoria para la referencia al nuevo CIR. 
+PUSH 3  ; NewNode. Apilamos la cantidad de variables de instancia del nuevo CIR mas el espacio para la VT. 
+PUSH L_SIMPLE_MALLOC  ; NewNode. Apilamos la direccion de la rutina para reservar memoria en el heap. 
+CALL  ; NewNode. Invocamos a la rutina en el tope de la pila (lsimple_malloc). 
+DUP  ; NewNode. Duplicamos la referencia al nuevo CIR para el STOREREF. 
+PUSH VT_LinkedSearchBinaryTree_3  ; NewNode. Apilamos la direccion del comienzo de la VT del id en la creacion de un CIR. 
+STOREREF 0  ; NewNode. Guardamos las referencia a la VT en el CIR creado. El offset 0 en el CIR se corresponde a la VT. 
+DUP  ; NewNode. Duplicamos el THIS para el RA del constructor quedando, al finalizar la ejecucion, en el tope de la pila. 
+.CODE
+PUSH L_CTOR_LinkedSearchBinaryTree_3_LinkedSearchBinaryTree  ; NewNode. Apilamos la direccion del constructor de la clase 'LinkedSearchBinaryTree'. 
+CALL  ; NewNode. Invocamos la rutina del constructor de la clase 'LinkedSearchBinaryTree'. 
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 't'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'insert' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 2
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.DATA
+lString23_main_MMAin: DW "Matias", 0
+.CODE
+PUSH lString23_main_MMAin  ; Apilamos el label del String '"Matias"'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'insert'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 17  ; CallNode. Recuperamos la direccion del metodo 'insert'. 
+CALL  ; CallNode. Llamamos al metodo 'insert'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 't'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'insert' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 3
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.DATA
+lString24_main_MMAin: DW "Mariano", 0
+.CODE
+PUSH lString24_main_MMAin  ; Apilamos el label del String '"Mariano"'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'insert'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 17  ; CallNode. Recuperamos la direccion del metodo 'insert'. 
+CALL  ; CallNode. Llamamos al metodo 'insert'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 't'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'insert' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 4
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.DATA
+lString25_main_MMAin: DW "Feffo", 0
+.CODE
+PUSH lString25_main_MMAin  ; Apilamos el label del String '"Feffo"'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'insert'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 17  ; CallNode. Recuperamos la direccion del metodo 'insert'. 
+CALL  ; CallNode. Llamamos al metodo 'insert'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 't'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'insert' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 1
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.DATA
+lString26_main_MMAin: DW "Ale", 0
+.CODE
+PUSH lString26_main_MMAin  ; Apilamos el label del String '"Ale"'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'insert'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 17  ; CallNode. Recuperamos la direccion del metodo 'insert'. 
+CALL  ; CallNode. Llamamos al metodo 'insert'. 
+POP  ; SimpleSentenceNode. Desapilamos el resultado de la expresion. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 't'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'find' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 3
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'find'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 16  ; CallNode. Recuperamos la direccion del metodo 'find'. 
+CALL  ; CallNode. Llamamos al metodo 'find'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'e'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getElement' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getElement'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'getElement'. 
+CALL  ; CallNode. Llamamos al metodo 'getElement'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 't'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'find' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 1
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'find'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 16  ; CallNode. Recuperamos la direccion del metodo 'find'. 
+CALL  ; CallNode. Llamamos al metodo 'find'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'e'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getElement' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getElement'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'getElement'. 
+CALL  ; CallNode. Llamamos al metodo 'getElement'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 't'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'find' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 4
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'find'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 16  ; CallNode. Recuperamos la direccion del metodo 'find'. 
+CALL  ; CallNode. Llamamos al metodo 'find'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'e'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getElement' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getElement'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'getElement'. 
+CALL  ; CallNode. Llamamos al metodo 'getElement'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 't'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'find' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+PUSH 10
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'find'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 16  ; CallNode. Recuperamos la direccion del metodo 'find'. 
+CALL  ; CallNode. Llamamos al metodo 'find'. 
+.CODE
+STORE -1  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD -1  ; IdMethodCallNode. Cargamos la variable local 'e'. 
+.CODE
+RMEM 1  ; CallNode. Reservamos una locacion de memoria para el resultado del metodo 'getElement' de la clase 'MMAin'. 
+SWAP  ; CallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+DUP  ; CallNode. Duplicamos la referencia al CIR para utilizarla en el LOADREF al asociar la VT para invocar al metodo 'getElement'. 
+LOADREF 0  ; CallNode. El offset de la VT en el CIR es siempre 0. Accedemos a la VT. 
+LOADREF 1  ; CallNode. Recuperamos la direccion del metodo 'getElement'. 
+CALL  ; CallNode. Llamamos al metodo 'getElement'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printSln
+CALL  ; CallNode. Llamada al metodo 'printSln' de System. 
+FMEM 2  ; Liberamos la memoria de las variables locales del metodo 'main' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 

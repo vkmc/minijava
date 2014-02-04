@@ -1,0 +1,345 @@
+.DATA
+VT_Object_0: NOP
+VT_System_1: DW L_MET_System_1_Ctor, L_MET_System_1_read, L_MET_System_1_printI, L_MET_System_1_printC, L_MET_System_1_printB, L_MET_System_1_printS, L_MET_System_1_println, L_MET_System_1_printBln, L_MET_System_1_printCln, L_MET_System_1_printIln, L_MET_System_1_printSln 
+.CODE
+PUSH L_SIMPLE_INIT_HEAP
+CALL
+RMEM 1
+PUSH L_MET_recursivos_2_main_3
+CALL
+HALT
+L_MET_System_1_Ctor: NOP  ; Constructor de system 
+LOADFP
+LOADSP
+STOREFP
+STOREFP
+RET 1
+L_MET_System_1_read: NOP
+LOADFP
+LOADSP
+STOREFP
+READ
+STORE 4
+STOREFP
+RET 1
+L_MET_System_1_printI: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+STOREFP
+RET 2
+L_MET_System_1_printC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+STOREFP
+RET 2
+L_MET_System_1_printB: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+STOREFP
+RET 2
+L_MET_System_1_printS: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+STOREFP
+RET 2
+L_MET_System_1_println: NOP
+LOADFP
+LOADSP
+STOREFP
+PRNLN
+STOREFP
+RET 1
+L_MET_System_1_printBln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+BPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printCln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+CPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printIln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+IPRINT
+PRNLN
+STOREFP
+RET 2
+L_MET_System_1_printSln: NOP
+LOADFP
+LOADSP
+STOREFP
+LOAD 4
+SPRINT
+PRNLN
+STOREFP
+RET 2
+L_SIMPLE_MALLOC: NOP
+LOADFP
+LOADSP
+STOREFP
+LOADHL
+DUP
+PUSH 1
+ADD
+STORE 4
+LOAD 3
+ADD
+STOREHL
+STOREFP
+RET 1
+L_SIMPLE_INIT_HEAP: RET 0  ; Inicializacion simplificada del .heap 
+.DATA
+VT_recursivos_2: DW L_MET_recursivos_2_fibonacci_0, L_MET_recursivos_2_sumatoria_1, L_MET_recursivos_2_factorial_2, L_MET_recursivos_2_main_3
+.CODE
+; INICIALIZAMOS EL CI DEL CONSTRUCTOR 'recursivos' DE LA CLASE 'recursivos'
+L_CTOR_recursivos_2_recursivos: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'fibonacci' DE LA CLASE 'recursivos'
+L_MET_recursivos_2_fibonacci_0: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+PUSH 0
+.CODE
+GT
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+PUSH 3
+.CODE
+LT
+.CODE
+AND
+.CODE
+BF L_ENDIFTHEN_1_fibonacci_recursivos
+.CODE
+PUSH 1
+.CODE
+; Retorno de expresion del metodo 'fibonacci' de la clase 'recursivos'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'fibonacci' de la clase 'recursivos'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'fibonacci' de la clase 'recursivos'. 
+L_ENDIFTHEN_1_fibonacci_recursivos: NOP
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'fibonacci'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'fibonacci' de la clase 'recursivos'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+PUSH 1
+.CODE
+SUB
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+PUSH VT_recursivos_2
+LOADREF 0  ; MethodCallNode. Recuperamos la direccion del metodo 'fibonacci'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'fibonacci'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'fibonacci'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'fibonacci' de la clase 'recursivos'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+PUSH 2
+.CODE
+SUB
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+PUSH VT_recursivos_2
+LOADREF 0  ; MethodCallNode. Recuperamos la direccion del metodo 'fibonacci'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'fibonacci'. 
+.CODE
+ADD
+.CODE
+; Retorno de expresion del metodo 'fibonacci' de la clase 'recursivos'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'fibonacci' de la clase 'recursivos'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'fibonacci' de la clase 'recursivos'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'sumatoria' DE LA CLASE 'recursivos'
+L_MET_recursivos_2_sumatoria_1: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+PUSH 0
+.CODE
+EQ
+.CODE
+BF L_ENDIFTHEN_2_sumatoria_recursivos
+.CODE
+PUSH 0
+.CODE
+; Retorno de expresion del metodo 'sumatoria' de la clase 'recursivos'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'sumatoria' de la clase 'recursivos'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'sumatoria' de la clase 'recursivos'. 
+L_ENDIFTHEN_2_sumatoria_recursivos: NOP
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'sumatoria'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'sumatoria' de la clase 'recursivos'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+PUSH 1
+.CODE
+SUB
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+PUSH VT_recursivos_2
+LOADREF 1  ; MethodCallNode. Recuperamos la direccion del metodo 'sumatoria'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'sumatoria'. 
+.CODE
+ADD
+.CODE
+; Retorno de expresion del metodo 'sumatoria' de la clase 'recursivos'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'sumatoria' de la clase 'recursivos'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'sumatoria' de la clase 'recursivos'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'factorial' DE LA CLASE 'recursivos'
+L_MET_recursivos_2_factorial_2: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+PUSH 0
+.CODE
+EQ
+.CODE
+BF L_ENDIFTHEN_3_factorial_recursivos
+.CODE
+PUSH 1
+.CODE
+; Retorno de expresion del metodo 'factorial' de la clase 'recursivos'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'factorial' de la clase 'recursivos'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'factorial' de la clase 'recursivos'. 
+L_ENDIFTHEN_3_factorial_recursivos: NOP
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'factorial'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'factorial' de la clase 'recursivos'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 4  ; IdMethodCallNode. Cargamos el parametro 'n'. 
+.CODE
+PUSH 1
+.CODE
+SUB
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+PUSH VT_recursivos_2
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'factorial'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'factorial'. 
+.CODE
+MUL
+.CODE
+; Retorno de expresion del metodo 'factorial' de la clase 'recursivos'.
+STORE 5  ; ReturnExpNode. Almacenamos el retorno del metodo 'factorial' de la clase 'recursivos'. 
+STOREFP  ; ReturnExpNode. Actualizamos el FP para que apunte al RA del llamador 
+RET 2  ; ReturnExpNode. Retornamos de la unidad liberando el espacio que ocupaban los parametros y el THIS del metodo 'factorial' de la clase 'recursivos'. 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 2  ; Retornamos de la unidad 
+.CODE
+; INICIALIZAMOS EL CI DEL METODO 'main' DE LA CLASE 'recursivos'
+L_MET_recursivos_2_main_3: LOADFP  ; Guardamos el ED al RA llamador 
+LOADSP  ; Apilamos la locación donde empieza el RA de la unidad 
+STOREFP  ; Actualizamos el FP con el valor del tope de la pila 
+RMEM 2  ; Reservamos memoria para las variables locales del metodo 'main' 
+.CODE
+PUSH 7
+.CODE
+STORE 0  ; AssignNode. El lado izquierdo es una variable local del metodo 'main'. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'fibonacci'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'fibonacci' de la clase 'recursivos'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'numero'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+PUSH VT_recursivos_2
+LOADREF 0  ; MethodCallNode. Recuperamos la direccion del metodo 'fibonacci'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'fibonacci'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printIln
+CALL  ; CallNode. Llamada al metodo 'printIln' de System. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'sumatoria'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'sumatoria' de la clase 'recursivos'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'numero'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+PUSH VT_recursivos_2
+LOADREF 1  ; MethodCallNode. Recuperamos la direccion del metodo 'sumatoria'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'sumatoria'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printIln
+CALL  ; CallNode. Llamada al metodo 'printIln' de System. 
+.CODE
+RMEM 1  ; IdMethodCallNode. Reservamos una locacion de memoria para el this ficticio. 
+.CODE
+.CODE
+LOAD 3  ; MethodCallNode. Apilamos el THIS para invocar al metodo 'factorial'. 
+RMEM 1  ; MethodCallNode. Reservamos una locacion de memoria para el resultado del metodo 'factorial' de la clase 'recursivos'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS haciendo un SWAP con RETVAL. 
+.CODE
+LOAD 0  ; IdMethodCallNode. Cargamos la variable local 'numero'. 
+SWAP  ; MethodCallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+PUSH VT_recursivos_2
+LOADREF 2  ; MethodCallNode. Recuperamos la direccion del metodo 'factorial'. 
+CALL  ; MethodCallNode. Llamamos al metodo 'factorial'. 
+SWAP  ; CallNode. Acomodamos el THIS cada vez que generamos el codigo para un parametro. 
+.CODE
+PUSH L_MET_System_1_printIln
+CALL  ; CallNode. Llamada al metodo 'printIln' de System. 
+FMEM 2  ; Liberamos la memoria de las variables locales del metodo 'main' 
+STOREFP ; Se actualiza el FP para que apunte al RA del llamador
+RET 1  ; Retornamos de la unidad 
